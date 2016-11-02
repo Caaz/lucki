@@ -1,25 +1,40 @@
-# lucki
+# Lucki Media Player
 
-> My rad app
+> A music player by developers for developers. Hackable, Stackable, Droppable, Poppable.
 
+Lucki Media Player is a simple media player. It makes no attempts to be the best, only the most flexible.
 
-## Dev
+## Todo
+- [ ] Cache Library
+- [x] Play Music
+- [x] List Music
+- [ ] Ability to add arbitrary tracks to the library
+- [ ] Ability to create playlists
+- [ ] Play music other than MP3
+- [ ] Ability to adjust tags
+- [ ] Organize Library
+- [ ] Stop using CLI pug
+- [ ] Stop using CLI sass
+- [ ] Custom User defined SCSS stylesheets.
+- [ ] Custom Plugins with JS
+- [ ] Custom Layout with Pug
 
-```
-$ npm install
-```
+## Development
+
+### Install
+
+`npm install`
+
+You're also going to need pugjs and sass to compile the views and assets for electron.
+I want to change that, but that's where we are right now.
 
 ### Run
 
-```
-$ npm start
-```
+`npm start`
 
 ### Build
 
-```
-$ npm run build
-```
+`npm run build`
 
 Builds the app for macOS, Linux, and Windows, using [electron-packager](https://github.com/electron-userland/electron-packager).
 
