@@ -4,6 +4,8 @@
 
 Lucki Media Player is a simple media player. It makes no attempts to be the best, only the most flexible.
 
+![screenshot](https://dl.dropboxusercontent.com/u/9305622/KEEP/Dev/lucki.png "Screenshot")
+
 ## Todo
 - [ ] Cache Library
 - [x] Play Music
