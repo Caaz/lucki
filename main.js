@@ -14,7 +14,7 @@ const url = require('url')
 let mainWindow
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({width: 800, height: 600,autoHideMenuBar:true})
   // Load up the contents.
   // mainWindow.setMenu(null);
   mainWindow.loadURL(url.format({
@@ -37,30 +37,31 @@ app.on('activate', function () {
 
 function readFiles(files, sender) {
   let file = files.shift();
-  if(!file) {
-    sender.send('status', 'Library read');
-    return;
-  }
-  else {
+  if(file) {
     sender.send('status', 'Reading '+file);
     let data = fs.readFileSync(file);
     ID3.parse(data).then((tag) => {
       tag.location = file;
       if(tag.title == '') {
         let fparts = file.split('/');
-        tag.title = fparts[fparts.length-1].split('.')[0];
+        let title = fparts[fparts.length-1].split('.');
+        title.pop();
+        tag.title = title.join('.');
       }
-      sender.send('add', tag);
+      if (!(!tag.title && !tag.artist && !tag.album)) { sender.send('add', tag); }
       readFiles(files,sender);
     });
+  } else {
+    sender.send('status', 'Library read');
+    return;
   }
 }
 ipcMain.on('library', (event, arg) => {
   if(arg == 'get') {
     event.sender.send('status', 'Retrieving Library');
     glob(process.env.HOME+"/Music/**/*.mp3", function (err, files) {
-      if(err) { console.log(err); }
-      else { readFiles(files, event.sender); }
+      if(err) console.log(err);
+      else readFiles(files, event.sender);
     });
   }
 })

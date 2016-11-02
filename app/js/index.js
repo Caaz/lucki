@@ -4,12 +4,14 @@ const {ipcRenderer} = require('electron')
 let audio;
 let $content;
 let $status;
+let $nowPlaying;
 $(function(){
   console.log("We in this");
   audio = $('audio')[0];
   audio.onended = next;
   $content = $('#content tbody');
   $status = $('#status');
+  $nowPlaying = $('#now-playing');
   $('#controls').click(function(e){
     if(e.target.id == 'toggle-play') togglePlay();
     else if(e.target.id == 'next-track') next();
@@ -17,16 +19,19 @@ $(function(){
   });
   $('#content').click(function(e) {
     let target = e.target.parentNode.dataset;
-    if(target.playSrc) playIndex($(e.target.parentNode).index());
+    console.log('click at');
+    console.log(target);
+    if(target.playable) playIndex($(e.target.parentNode).index());
   });
 
   ipcRenderer.on('add', (event, arg) => {
-    $content.append(
-      '<tr data-play-src="'+encodeURI(arg.location)+'">'+
-        '<td>'+arg.title+'</td>'+
-        '<td>'+arg.artist+'</td>'+
-        '<td>'+arg.album+'</td>'+
-      '</tr>');
+    let $row = $('<tr data-playable=true>'+
+      '<td>'+arg.title+'</td>'+
+      '<td>'+arg.artist+'</td>'+
+      '<td>'+arg.album+'</td>'+
+    '</tr>');
+    $row.data({info:arg});
+    $content.append($row);
     // console.log("Got "+arg);
   })
   ipcRenderer.on('status', (event, arg) => { $status.text(arg); })
@@ -37,8 +42,11 @@ function playIndex(index) {
   console.log("Playing index "+index);
   if(audio.dataset.index) { $content.children()[audio.dataset.index].className = '' }
   audio.dataset.index = index;
-  $content.children()[index].className = 'playing';
-  audio.src = $content.children()[index].dataset.playSrc;
+  let $target = $($content.children()[index]);
+  $target.addClass('playing');
+  let info = $target.data('info');
+  audio.src = info.location;
+  $nowPlaying.html('<span>'+info.title+'</span><span>'+info.artist+' - '+info.album+'</span>');
   play();
 }
 function play() { audio.play(); updateInfo(); }
