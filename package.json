@@ -1,0 +1,52 @@
+{
+  "name": "lucki",
+  "productName": "Lucki Media",
+  "version": "0.0.0",
+  "description": "A media player",
+  "license": "MIT",
+  "repository": "Caaz/lucki",
+  "author": {
+    "name": "Daniel Caaz",
+    "email": "daniel@caaz.me",
+    "url": "caaz.me"
+  },
+  "scripts": {
+    "test": "xo",
+    "prestart": "pug -P -o app src && sass -C --sourcemap=none --update src:app",
+    "start": "electron .",
+    "build": "electron-packager . --out=dist --asar --overwrite --all"
+  },
+  "main": "main.js",
+  "files": [
+    "app"
+  ],
+  "keywords": [
+    "music",
+    "audio",
+    "media",
+    "electron-app",
+    "electron"
+  ],
+  "dependencies": {
+    "audio-context": "^0.1.0",
+    "audio-loader": "^0.6.0",
+    "audio-play": "^2.0.1",
+    "electron-debug": "^1.0.0",
+    "id3-parser": "^1.0.3",
+    "jquery": "^3.1.1"
+  },
+  "devDependencies": {
+    "audio-loader": "^0.6.0",
+    "devtron": "^1.1.0",
+    "electron-packager": "^8.0.0",
+    "electron": "^1.3.3",
+    "xo": "^0.16.0"
+  },
+  "xo": {
+    "esnext": true,
+    "envs": [
+      "node",
+      "browser"
+    ]
+  }
+}
