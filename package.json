@@ -14,6 +14,7 @@
     "test": "xo",
     "prestart": "pug -P -o app src && sass -C --sourcemap=none --update src:app",
     "start": "electron .",
+    "prebuild": "pug -P -o app src && sass -C --sourcemap=none --update src:app",
     "build": "electron-packager . --out=dist --asar --overwrite --all"
   },
   "main": "main.js",
@@ -28,15 +29,11 @@
     "electron"
   ],
   "dependencies": {
-    "audio-context": "^0.1.0",
-    "audio-loader": "^0.6.0",
-    "audio-play": "^2.0.1",
     "electron-debug": "^1.0.0",
     "id3-parser": "^1.0.3",
     "jquery": "^3.1.1"
   },
   "devDependencies": {
-    "audio-loader": "^0.6.0",
     "devtron": "^1.1.0",
     "electron-packager": "^8.0.0",
     "electron": "^1.3.3",

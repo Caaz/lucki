@@ -31,6 +31,9 @@ $control_size: 2.5em;
     align-items:center;
     justify-content:center;
     border-right:1px solid lighten($color_base,$lighten_amount);
+    &:active {
+      background-color:darken($color_base,$darken_amount);
+    }
   }
 }
 #album-art {
@@ -62,8 +65,11 @@ $control_size: 2.5em;
       font-size:.9em;
       padding:.3em 0;
     }
-    tbody tr:nth-child(odd) {
-      background-color:darken($color_base,$darken_amount);
-    }
+    tbody tr:nth-child(odd) { background-color:darken($color_base,$darken_amount); }
+    .playing td { font-weight:bold; }
   }
+}
+#status {
+  font-family:sans-serif;
+  font-size:.7em;
 }

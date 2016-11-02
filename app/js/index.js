@@ -23,7 +23,6 @@ $(function(){
   ipcRenderer.on('add', (event, arg) => {
     $content.append(
       '<tr data-play-src="'+encodeURI(arg.location)+'">'+
-        '<td></td>'+
         '<td>'+arg.title+'</td>'+
         '<td>'+arg.artist+'</td>'+
         '<td>'+arg.album+'</td>'+
@@ -35,15 +34,18 @@ $(function(){
 });
 
 function playIndex(index) {
+  console.log("Playing index "+index);
+  if(audio.dataset.index) { $content.children()[audio.dataset.index].className = '' }
   audio.dataset.index = index;
+  $content.children()[index].className = 'playing';
   audio.src = $content.children()[index].dataset.playSrc;
   play();
 }
 function play() { audio.play(); updateInfo(); }
 function pause() { audio.pause(); updateInfo(); }
 function togglePlay() { if(audio.paused) play(); else pause() }
-function next() { playIndex((audio.dataset.index)?++audio.dataset.index:0); }
-function previous() { playIndex((audio.dataset.index)?--audio.dataset.index:0); }
+function next() { playIndex((audio.dataset.index)?(parseInt(audio.dataset.index)+1):0); }
+function previous() { playIndex((audio.dataset.index)?(parseInt(audio.dataset.index)-1):0); }
 function updateInfo() {
   let isPaused = audio.paused
   $('#toggle-play').toggleClass('fa-play',isPaused).toggleClass('fa-pause',!isPaused)

@@ -58,7 +58,7 @@ function readFiles(files, sender) {
 ipcMain.on('library', (event, arg) => {
   if(arg == 'get') {
     event.sender.send('status', 'Retrieving Library');
-    glob("/home/caaz/Music/Panda/**/*.mp3", function (err, files) {
+    glob(process.env.HOME+"/Music/**/*.mp3", function (err, files) {
       if(err) { console.log(err); }
       else { readFiles(files, event.sender); }
     });
