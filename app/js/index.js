@@ -16,10 +16,14 @@ $(function(){
     else if(e.target.id == 'next-track') next();
     else if(e.target.id == 'previous-track') previous();
   });
-  $('#content').click(function(e) {
+  $('#content').dblclick(function(e) {
     let target = e.target.parentNode.dataset;
     console.log(target);
     if(target.playable) playIndex($(e.target.parentNode).index());
+  });
+  $('#content').click(function(e) {
+    let target = e.target.parentNode;
+    if(target.dataset.playable) select($(target));
   });
   ipcRenderer.on('library', (event, library) => {
     let $newContent = $('<tbody>');
@@ -59,6 +63,10 @@ function playIndex(index) {
   })
   // $nowPlaying.html('<span>'+info.title+'</span><span>'+info.artist+' - '+info.album+'</span>');
   play();
+}
+function select($item) {
+  $('tr.selected').removeClass('selected')
+  $item.addClass('selected');
 }
 function play() { audio.play(); updateInfo(); }
 function pause() { audio.pause(); updateInfo(); }

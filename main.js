@@ -1,13 +1,14 @@
 const electron = require('electron')
 const app = electron.app
+const Menu = electron.Menu
 const BrowserWindow = electron.BrowserWindow
 const mkdirp = require('mkdirp');
 
 const path = require('path')
 const url = require('url')
 
-//
-require('./ipc');
+// Library management.
+const library = require('./library');
 
 
 // Make configuration folder.
@@ -26,6 +27,17 @@ function createWindow () {
     protocol: 'file:',
     slashes: true
   }))
+  mainWindow.setMenu(Menu.buildFromTemplate([
+    {
+      label:'Library',
+      submenu: [
+        {
+          label:'Update',
+          click (i,w,e) { library.update(w) }
+        }
+      ]
+    }
+  ]))
   // Erase self when closing window.
   mainWindow.on('closed', function () { mainWindow = null })
 }
