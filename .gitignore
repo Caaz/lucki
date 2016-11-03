@@ -1,5 +1,4 @@
 node_modules
 /dist
-/app/*.html
 /app/*.css
 /app/font-awesome/*.css

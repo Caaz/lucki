@@ -1,7 +1,7 @@
 {
   "name": "lucki",
   "productName": "Lucki Media",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A media player",
   "license": "MIT",
   "repository": "Caaz/lucki",
@@ -12,9 +12,9 @@
   },
   "scripts": {
     "test": "xo",
-    "prestart": "pug -P -o app src && sass -C --sourcemap=none --update src:app",
+    "prestart": "sass -C --sourcemap=none --update src:app",
     "start": "electron .",
-    "prebuild": "pug -P -o app src && sass -C --sourcemap=none --update src:app",
+    "prebuild": "sass -C --sourcemap=none --update src:app",
     "build": "electron-packager . --out=dist --asar --overwrite --all"
   },
   "main": "main.js",
@@ -32,7 +32,8 @@
     "electron-debug": "^1.0.0",
     "id3-parser": "^1.0.3",
     "jquery": "^3.1.1",
-    "mkdirp": "^0.5.1"
+    "mkdirp": "^0.5.1",
+    "pug": "^2.0.0-beta6"
   },
   "devDependencies": {
     "devtron": "^1.1.0",

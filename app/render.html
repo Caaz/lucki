@@ -1,0 +1,11 @@
+<!doctype html>
+<html>
+  <link href="./reset.css" rel="stylesheet" />
+  <link href="./font-awesome/font-awesome.css" rel="stylesheet" />
+  <script>
+    require('./js/index')
+    var pug = require('pug')
+    var html = pug.renderFile(__dirname+'/index.pug', {})
+    document.write(html);
+  </script>
+</html>

@@ -1,11 +1,11 @@
-const fs = require('fs');
-const glob = require("glob");
-const ID3 = require('id3-parser');
+const fs = require('fs')
+const glob = require("glob")
+const ID3 = require('id3-parser')
 const {ipcMain} = require('electron')
-let library;
+let library
 
 ipcMain.on('library', (event, arg) => {
-  if(arg == 'get' && (!library) && (!load(event.sender))) update(event.sender);
+  if(arg == 'get' && (!library) && (!load(event.sender))) update(event.sender)
   else if(arg == 'update') update(event.sender)
 })
 function load(out) {
@@ -16,9 +16,9 @@ function load(out) {
     library = JSON.parse(data)
     out.send('status', 'Library cache loaded')
     out.send('library',library)
-    return true;
+    return true
   }
-  return false;
+  return false
 }
 function save(out) {
   out.send('status', 'Saving library cache')
@@ -26,12 +26,12 @@ function save(out) {
   fs.writeFileSync(cache,JSON.stringify(library))
 }
 function update(out) {
-  out.send('status', 'Updating Library');
-  library = {};
+  out.send('status', 'Updating Library')
+  library = {}
   glob(process.env.HOME+"/Music/**/*.mp3", function (err, files) {
-    if(err) console.log(err);
-    else parseFiles(files, out);
-  });
+    if(err) console.log(err)
+    else parseFiles(files, out)
+  })
 }
 function parseFiles(files, out) {
   let file = files.shift()
@@ -57,4 +57,4 @@ function parseFiles(files, out) {
 }
 module.exports = {
   update: update,
-};
+}
