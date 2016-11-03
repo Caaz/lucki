@@ -34,8 +34,7 @@ Lucki Media Player is a simple media player. It makes no attempts to be the best
 
 `npm install`
 
-You're also going to need pugjs and sass to compile the views and assets for electron.
-I want to change that, but that's where we are right now.
+At the moment you'll need CLI sass installed as well -- Working on a fix for that!
 
 ### Run
 

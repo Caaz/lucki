@@ -1,7 +1,10 @@
 <!doctype html>
 <html>
   <link href="./reset.css" rel="stylesheet" />
-  <link href="./font-awesome/font-awesome.css" rel="stylesheet" />
+  <script>
+    var fontAwesome = require('node-font-awesome');
+    document.write('<link href="'+fontAwesome.css+'" rel="stylesheet">');
+  </script>
   <script>
     require('./js/index')
     var pug = require('pug')
