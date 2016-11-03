@@ -19,11 +19,11 @@ Lucki Media Player is a simple media player. It makes no attempts to be the best
 - [ ] Play music other than MP3
 - [ ] Ability to adjust tags
 - [ ] Organize Library
-- [ ] Stop using CLI sass
 - [ ] Custom User defined SCSS stylesheets.
 - [ ] Custom Plugins with JS
 - [ ] Custom Layout with Pug
 - [x] Stop using CLI pug
+- [x] Stop using CLI sass
 - [x] Cache Library
 - [x] Play Music
 - [x] List Music

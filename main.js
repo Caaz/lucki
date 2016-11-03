@@ -1,3 +1,4 @@
+require('require-rebuild')();
 const electron = require('electron')
 const app = electron.app
 const Menu = electron.Menu
@@ -6,6 +7,7 @@ const mkdirp = require('mkdirp')
 
 const path = require('path')
 const url = require('url')
+
 
 // Library management.
 const library = require('./library')

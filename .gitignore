@@ -1,4 +1,2 @@
 node_modules
 /dist
-/app/*.css
-/app/font-awesome/*.css
