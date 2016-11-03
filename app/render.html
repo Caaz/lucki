@@ -9,7 +9,6 @@
     let fontAwesome = require('node-font-awesome');
 
     let content = fs.readFileSync(__dirname+'/less/index.less').toString();
-    console.log("Got Content "+content);
     less.render(content).then((output) => {
       let html = pug.renderFile(__dirname+'/index.pug', {})
       document.write('<link href="'+fontAwesome.css+'" rel="stylesheet">');
