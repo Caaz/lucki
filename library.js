@@ -14,6 +14,7 @@ function load(out) {
     out.send('status', 'Loading library cache')
     let data = fs.readFileSync(cache)
     library = JSON.parse(data)
+    out.send('status', 'Library cache loaded')
     out.send('library',library)
     return true;
   }
@@ -35,6 +36,7 @@ function update(out) {
 function parseFiles(files, out) {
   let file = files.shift()
   if(file) {
+    out.send('status','Reading: '+file)
     let data = fs.readFileSync(file)
     ID3.parse(data).then((tag) => {
       tag.location = file
@@ -45,7 +47,7 @@ function parseFiles(files, out) {
         tag.title = title.join('.')
       }
       if (!(!tag.title && !tag.artist && !tag.album)) { library[file] = tag }
-      readFiles(files,out)
+      parseFiles(files,out)
     })
   } else {
     out.send('status', 'Library updated')
