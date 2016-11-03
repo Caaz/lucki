@@ -1,5 +1,6 @@
 @color_text: #DDD;
 @color_base: #2d2d2d;
+@color_accent: #FFF;
 @darken_amount: 5%;
 @lighten_amount: 5%;
 * {
@@ -19,34 +20,47 @@ header,footer {
   background-color:@color_base;
 }
 main {
-  border-top:1px solid lighten(@color_base,@lighten_amount);
+  // border-top:1px solid lighten(@color_base,@lighten_amount);
   border-bottom:1px solid lighten(@color_base,@lighten_amount);
   background-color:@color_base;
   flex-grow:1;
   display:flex;
 }
-@control_size: 2.5em;
+@control_size: 2em;
+.button {
+  width:@control_size;
+  height:@control_size;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid lighten(@color_base,@lighten_amount);
+  &:active {
+    background-color:darken(@color_base,@darken_amount);
+  }
+}
 #controls {
   display:flex;
-  > * {
-    width:@control_size;
-    height:@control_size;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-right:1px solid lighten(@color_base,@lighten_amount);
-    border-top:1px solid lighten(@color_base,@lighten_amount);
-    &:active {
-      background-color:darken(@color_base,@darken_amount);
-    }
-  }
+  > * { border-left:none; }
 }
 #now-playing {
   display:flex;
   flex-direction:column;
   justify-content:space-around;
   padding-left:.5em;
+  flex-grow:1;
   * { font-family:sans-serif; }
+}
+#search {
+  display:flex;
+  justify-content:space-around;
+  input {
+    padding:0 1em;
+    border:1px solid lighten(@color_base,@lighten_amount);
+    border-right:none;
+    background-color:darken(@color_base,@darken_amount);
+    color:@color_text;
+    &:focus { outline:none; }
+  }
 }
 // #playlists {
 //   flex-shrink:0;
@@ -59,7 +73,7 @@ main {
   overflow-y:scroll;
   > table {
     width:100%;
-    td {
+    td,th {
       font-size:.9em;
       padding:.3em;
     }

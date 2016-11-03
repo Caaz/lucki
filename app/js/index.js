@@ -1,16 +1,21 @@
 const $ = require('jquery')
 const {ipcRenderer} = require('electron')
 
-let audio
-let $content
-let $status
-let $nowPlaying
+let audio;
+
+let $allTracks;
+
+let library;
+
+let $status;
+let $nowPlaying;
 $(function(){
   audio = $('audio')[0]
   audio.onended = next
-  $content = $('#content tbody')
   $status = $('#status')
   $nowPlaying = $('#now-playing')
+  $('#search input').keyup(search);
+  $('#search .button').click(search);
   $('#controls').click(function(e){
     if(e.target.id == 'toggle-play') togglePlay()
     else if(e.target.id == 'next-track') next()
@@ -25,40 +30,36 @@ $(function(){
     let target = e.target.parentNode
     if(target.dataset.playable) select($(target))
   })
-  ipcRenderer.on('library', (event, library) => {
+  ipcRenderer.on('library', (event, lib) => {
     let $newContent = $('<tbody>')
+    library = lib
     for(let file in library) {
       track = library[file]
-      let $row = $('<tr data-playable=true>'+
+      $newContent.append('<tr data-playable=true data-library-key="'+file+'">'+
       '<td>'+track.title+'</td>'+
       '<td>'+track.artist+'</td>'+
       '<td>'+track.album+'</td>'+
-      '</tr>')
-      $row.data({info:track})
-      $newContent.append($row)
+      '</tr>');
     }
-    $content.replaceWith($newContent)
-    $content = $newContent
+    $('#content tbody').replaceWith($newContent)
+    $allTracks = $newContent.clone();
   })
   ipcRenderer.on('status', (event, arg) => { $status.text(arg); })
   ipcRenderer.send('library', 'get')
 })
 
 function playIndex(index) {
-  if(audio.dataset.index) { $content.children()[audio.dataset.index].className = '' }
+  let $tracks = $('#content tbody');
+  if(audio.dataset.index) { $tracks.children()[audio.dataset.index].className = '' }
   audio.dataset.index = index
-  let $target = $($content.children()[index])
+  let $target = $($tracks.children()[index])
   $target.addClass('playing')
-  let info = $target.data('info')
+  let info = library[$target[0].dataset.libraryKey];
   audio.src = info.location
 
   $nowPlaying.children().first().eraseText(function($self) {
-    let $target = $($content.children()[index])
-    let info = $target.data('info')
     $self.typeText(info.title)
   }).next().eraseText(function($self) {
-    let $target = $($content.children()[index])
-    let info = $target.data('info')
     $self.typeText(info.artist+' - '+info.album)
   })
   // $nowPlaying.html('<span>'+info.title+'</span><span>'+info.artist+' - '+info.album+'</span>')
@@ -67,6 +68,14 @@ function playIndex(index) {
 function select($item) {
   $('tr.selected').removeClass('selected')
   $item.addClass('selected')
+}
+function search() {
+  let query = $('#search input').val();
+  console.log("Searching for "+query);
+  console.log($allTracks.length);
+  var output = [];
+  $allTracks.children().each(function(i, e) { if(e.innerText.match((new RegExp(query, "i")))) { output.push($(e).clone()); } });
+  $("#content tbody").empty().append(output);
 }
 function play() { audio.play(); updateInfo(); }
 function pause() { audio.pause(); updateInfo(); }

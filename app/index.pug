@@ -1,14 +1,16 @@
 //- Probably valid.
-title Lucki Media
-link(href="./index.css" rel="stylesheet")
+title Lucki Media Player
 header
   div#controls
-    i.fa.fa-step-backward#previous-track
-    i.fa.fa-play#toggle-play
-    i.fa.fa-step-forward#next-track
+    i.button.fa.fa-step-backward#previous-track
+    i.button.fa.fa-play#toggle-play
+    i.button.fa.fa-step-forward#next-track
   div#now-playing
     span
     span
+  div#search
+    input(type='text')
+    i.button.fa.fa-search#submit-search
 main
   //- div#playlists
     ul
