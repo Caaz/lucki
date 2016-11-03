@@ -10,7 +10,6 @@ Lucki Media Player is a simple media player. It makes no attempts to be the best
 - [ ] Watch library folder for changes
 - [ ] Keyboard controls
 - [ ] API for now playing information and external controls.
-- [ ] Shuffle
 - [ ] Configuration window
 - [ ] Use libgroove to play audio on the main process instead of the render process.
 - [ ] Ability to add arbitrary tracks to the library
@@ -21,6 +20,7 @@ Lucki Media Player is a simple media player. It makes no attempts to be the best
 - [ ] Custom User defined Less stylesheets.
 - [ ] Custom Plugins with JS
 - [ ] Custom Layout with Pug
+- [x] Shuffle
 - [x] Search Library
 - [x] Stop using CLI pug
 - [x] Stop using CLI sass

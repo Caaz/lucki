@@ -1,13 +1,15 @@
 const $ = require('jquery')
 const {ipcRenderer} = require('electron')
 
+// Audio object for playing
 let audio;
-
+// $allTracks for searching
 let $allTracks;
-
+// library for holding information on tracks.
 let library;
-
+// Status bar
 let $status;
+// Now playing information.
 let $nowPlaying;
 $(function(){
   audio = $('audio')[0]
@@ -47,22 +49,19 @@ $(function(){
   ipcRenderer.on('status', (event, arg) => { $status.text(arg); })
   ipcRenderer.send('library', 'get')
 })
-
+function playKey(key) {
+  let track = library[key];
+  audio.src = encodeURI(track.location).replace(/\?/g, '%3F');
+  $nowPlaying.children().first().eraseText(function($self) { $self.typeText(track.title) })
+  .next().eraseText(function($self) { $self.typeText(track.artist+' - '+track.album) });
+  play();
+}
 function playIndex(index) {
   audio.dataset.index = index
   let $tracks = $('#content tbody');
   let $target = $($tracks.children()[index]).addClass('playing')
   $tracks.find('.playing').removeClass('playing');
-  let info = library[$target[0].dataset.libraryKey];
-  audio.src = encodeURI(info.location).replace(/\?/g, '%3F')
-
-  $nowPlaying.children().first().eraseText(function($self) {
-    $self.typeText(info.title)
-  }).next().eraseText(function($self) {
-    $self.typeText(info.artist+' - '+info.album)
-  })
-  // $nowPlaying.html('<span>'+info.title+'</span><span>'+info.artist+' - '+info.album+'</span>')
-  play()
+  playKey($target[0].dataset.libraryKey);
 }
 function select($item) {
   $('tr.selected').removeClass('selected')
@@ -79,7 +78,10 @@ function search() {
 function play() { audio.play(); updateInfo(); }
 function pause() { audio.pause(); updateInfo(); }
 function togglePlay() { if(audio.paused) play(); else pause() }
-function next() { playIndex((audio.dataset.index)?(parseInt(audio.dataset.index)+1):0); }
+function next() {
+  if($('#shuffle').val()) { playIndex(Math.floor(Math.random()* $('#content tbody tr').length)) }
+  else { playIndex((audio.dataset.index)?(parseInt(audio.dataset.index)+1):0); }
+}
 function previous() { playIndex((audio.dataset.index)?(parseInt(audio.dataset.index)-1):0); }
 function updateInfo() {
   let isPaused = audio.paused
