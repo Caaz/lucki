@@ -1,7 +1,7 @@
 {
   "name": "lucki",
   "productName": "Lucki Media",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A media player",
   "license": "MIT",
   "repository": "Caaz/lucki",
@@ -31,7 +31,8 @@
   "dependencies": {
     "electron-debug": "^1.0.0",
     "id3-parser": "^1.0.3",
-    "jquery": "^3.1.1"
+    "jquery": "^3.1.1",
+    "mkdirp": "^0.5.1"
   },
   "devDependencies": {
     "devtron": "^1.1.0",

@@ -7,9 +7,6 @@ Lucki Media Player is a simple media player. It makes no attempts to be the best
 ![screenshot](https://dl.dropboxusercontent.com/u/9305622/KEEP/Dev/lucki.png "Screenshot")
 
 ## Todo
-- [ ] Cache Library
-- [x] Play Music
-- [x] List Music
 - [ ] Ability to add arbitrary tracks to the library
 - [ ] Ability to create playlists
 - [ ] Play music other than MP3
@@ -20,6 +17,9 @@ Lucki Media Player is a simple media player. It makes no attempts to be the best
 - [ ] Custom User defined SCSS stylesheets.
 - [ ] Custom Plugins with JS
 - [ ] Custom Layout with Pug
+- [x] Cache Library
+- [x] Play Music
+- [x] List Music
 
 ## Development
 

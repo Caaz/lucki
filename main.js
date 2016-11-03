@@ -1,16 +1,20 @@
 const electron = require('electron')
-const {ipcMain} = require('electron') // Figure out why the syntax is like this.
-const fs = require('fs');
-const glob = require("glob");
-const ID3 = require('id3-parser');
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
+const mkdirp = require('mkdirp');
 
 const path = require('path')
 const url = require('url')
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+//
+require('./ipc');
+
+
+// Make configuration folder.
+mkdirp(process.env.HOME+'/.lucki/', (err) => { if (err) console.error(err) });
+
+
+
 let mainWindow
 function createWindow () {
   // Create the browser window.
@@ -31,37 +35,4 @@ app.on('window-all-closed', function () {
 })
 app.on('activate', function () {
   if (mainWindow === null) createWindow()
-})
-
-
-
-function readFiles(files, sender) {
-  let file = files.shift();
-  if(file) {
-    sender.send('status', 'Reading '+file);
-    let data = fs.readFileSync(file);
-    ID3.parse(data).then((tag) => {
-      tag.location = file;
-      if(tag.title == '') {
-        let fparts = file.split('/');
-        let title = fparts[fparts.length-1].split('.');
-        title.pop();
-        tag.title = title.join('.');
-      }
-      if (!(!tag.title && !tag.artist && !tag.album)) { sender.send('add', tag); }
-      readFiles(files,sender);
-    });
-  } else {
-    sender.send('status', 'Library read');
-    return;
-  }
-}
-ipcMain.on('library', (event, arg) => {
-  if(arg == 'get') {
-    event.sender.send('status', 'Retrieving Library');
-    glob(process.env.HOME+"/Music/**/*.mp3", function (err, files) {
-      if(err) console.log(err);
-      else readFiles(files, event.sender);
-    });
-  }
 })
