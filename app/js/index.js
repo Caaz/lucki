@@ -49,13 +49,12 @@ $(function(){
 })
 
 function playIndex(index) {
-  let $tracks = $('#content tbody');
-  if(audio.dataset.index) { $tracks.children()[audio.dataset.index].className = '' }
   audio.dataset.index = index
-  let $target = $($tracks.children()[index])
-  $target.addClass('playing')
+  let $tracks = $('#content tbody');
+  let $target = $($tracks.children()[index]).addClass('playing')
+  $tracks.find('.playing').removeClass('playing');
   let info = library[$target[0].dataset.libraryKey];
-  audio.src = info.location
+  audio.src = encodeURI(info.location).replace(/\?/g, '%3F')
 
   $nowPlaying.children().first().eraseText(function($self) {
     $self.typeText(info.title)
@@ -70,11 +69,11 @@ function select($item) {
   $item.addClass('selected')
 }
 function search() {
-  let query = $('#search input').val();
-  console.log("Searching for "+query);
-  console.log($allTracks.length);
+  let query = $('#search input').val().toLowerCase();
   var output = [];
-  $allTracks.children().each(function(i, e) { if(e.innerText.match((new RegExp(query, "i")))) { output.push($(e).clone()); } });
+  $allTracks.children().each(function(i, e) {
+    if(e.innerText.toLowerCase().indexOf(query) != -1) { output.push($(e).clone()); }
+  });
   $("#content tbody").empty().append(output);
 }
 function play() { audio.play(); updateInfo(); }
