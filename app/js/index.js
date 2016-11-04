@@ -87,7 +87,8 @@ function play() { audio.play(); updateInfo(); }
 function pause() { audio.pause(); updateInfo(); }
 function togglePlay() { if(audio.paused) play(); else pause() }
 function next() {
-  if($('#shuffle')[0].checked) { playIndex(Math.floor(Math.random()* $('#content tbody tr').length)) }
+  if($('#repeat')[0].checked) { play() }
+  else if($('#shuffle')[0].checked) { playIndex(Math.floor(Math.random()* $('#content tbody tr').length)) }
   else { playIndex((audio.dataset.index)?(parseInt(audio.dataset.index)+1):0); }
 }
 function previous() { playIndex((audio.dataset.index)?(parseInt(audio.dataset.index)-1):0); }
