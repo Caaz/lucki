@@ -57,12 +57,16 @@ input[type="checkbox"]:checked + label {
   background-color: darken(@color_base,@darken_amount);
   justify-content:space-around;
   padding-left: 0.5em;
-  padding-bottom: 0.5em;
   margin-right: 0.5em;
   flex-grow:1;
   white-space: nowrap;
   overflow: hidden;
   * { font-family:sans-serif; }
+  .small{
+    opacity: 0.5;
+    font-weight: 100;
+    font-size: 14px;
+  }
 }
 #search {
   display:flex;
