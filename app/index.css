@@ -1,0 +1,61 @@
+* {
+  font-family: sans-serif; }
+
+body, html {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  color: #DDD; }
+
+header, footer {
+  display: flex;
+  flex-shrink: 0;
+  background-color: #2d2d2d; }
+
+main {
+  border-top: 1px solid #3a3a3a;
+  border-bottom: 1px solid #3a3a3a;
+  background-color: #2d2d2d;
+  flex-grow: 1;
+  display: flex; }
+
+#controls {
+  display: flex; }
+  #controls > * {
+    width: 2.5em;
+    height: 2.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #3a3a3a; }
+
+#album-art {
+  width: 2.5em;
+  height: 2.5em;
+  border-right: 1px solid #3a3a3a; }
+
+#track-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding-left: .5em; }
+  #track-info * {
+    font-family: sans-serif; }
+
+#playlists {
+  flex-shrink: 0;
+  border-right: 1px solid #3a3a3a; }
+  #playlists li {
+    padding: .4em; }
+
+#content {
+  flex-grow: 1;
+  max-height: 100%;
+  overflow-y: scroll; }
+  #content > table {
+    width: 100%; }
+    #content > table td {
+      font-size: .9em;
+      padding: .3em 0; }
+    #content > table tbody tr:nth-child(odd) {
+      background-color: #202020; }
