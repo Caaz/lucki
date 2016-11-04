@@ -18,24 +18,57 @@ $(function(){
   audio.onended = next
   $status = $('#status')
   $nowPlaying = $('#now-playing')
-  $('#search input').keyup(function(){
-    if(searchable) {
-      searchable = false;
-      window.setTimeout(search,1000);
-    }
-  });
   $('#search .button').click(search);
   $('#controls').click(function(e){
     if(e.target.id == 'toggle-play') togglePlay()
     else if(e.target.id == 'next-track') next()
     else if(e.target.id == 'previous-track') previous()
   })
-  $('#content').dblclick(function(e) {
+  let $content = $('#content');
+  var ar=new Array(37,38,39,40);
+
+  $(document).keydown(function(e) {
+    if((e.which <= 40) && (e.which >= 37)) {
+      e.preventDefault();
+      return false;
+    }
+    return true;
+  });
+  $(document).keyup(function(e){
+    if(e.target.tagName === 'BODY') {
+      console.log(e.key);
+      // if(e.key === "ArrowRight") {
+      //   console.log("Got right!");
+      // }
+      switch(e.key){
+        case "ArrowRight":
+          next();
+          break;
+        case "ArrowLeft":
+          previous();
+          break;
+        case "ArrowUp":
+          select($('tr.selected').prev());
+          break;
+        case "ArrowDown":
+          select($('tr.selected').next());
+          break;
+        case "Enter":
+          playIndex($('tr.selected').index());
+          break;
+      }
+    }
+    else if(e.target.tagName === 'INPUT') {
+      // Search
+      if(searchable) { searchable = false; window.setTimeout(search,1000); }
+    }
+  });
+  $content.dblclick(function(e) {
     let target = e.target.parentNode.dataset
     console.log(target)
     if(target.playable) playIndex($(e.target.parentNode).index())
   })
-  $('#content').click(function(e) {
+  $content.click(function(e) {
     let target = e.target.parentNode
     if(target.dataset.playable) select($(target))
   })
