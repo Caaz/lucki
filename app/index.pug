@@ -2,7 +2,7 @@
 title Lucki Media Player
 header
   div#controls
-    i.button.fa.fa-step-backward.fa-lg#previous-track
+    i.button.fa.fa-step-backward.fa-lg.disabled#previous-track
     i.button.fa.fa-play.fa-lg#toggle-play
     i.button.fa.fa-step-forward.fa-lg#next-track
     input.hidden#shuffle(name='shuffle' type="checkbox")
@@ -13,7 +13,7 @@ header
     span
     span.small
   div#search
-    input(type='text' placeholder="search")
+    input(type='text' placeholder="Search")
     i.button.fa.fa-search#submit-search
 main
   div#content

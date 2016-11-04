@@ -7,6 +7,8 @@ let audio;
 let $allTracks;
 // library for holding information on tracks.
 let library;
+// hold previously played music.
+let played = [];
 // Status bar
 let $status;
 // Now playing information.
@@ -86,21 +88,25 @@ $(function(){
   ipcRenderer.on('status', (event, arg) => { $status.text(arg); })
   ipcRenderer.send('library', 'get')
 })
-function playKey(key) {
+function playKey(key,skipPush) {
   let track = library[key];
   audio.src = encodeURI(track.location).replace(/\?/g, '%3F');
   $nowPlaying.children().first().eraseText(function($self) { $self.typeText(track.title) })
   .next().eraseText(function($self) { $self.typeText(track.artist+' - '+track.album) });
+  $('#content tbody').find('.playing').removeClass('playing');
+  $('#content tr[data-library-key="'+key+'"]').addClass('playing')
   play();
+  if(!skipPush) {
+    played.push(key);
+    $('#previous-track').removeClass('disabled');
+  }
 }
 function playIndex(index) {
   audio.dataset.index = index
-  let $tracks = $('#content tbody');
-  $tracks.find('.playing').removeClass('playing');
-  let $target = $($tracks.children()[index]).addClass('playing')
-  playKey($target[0].dataset.libraryKey);
+  playKey($('#content tbody').children()[index].dataset.libraryKey);
 }
 function select($item) {
+  if($item.length == 0) return
   $('tr.selected').removeClass('selected');
   $item.addClass('selected');
   let $content = $('#content');
@@ -126,7 +132,11 @@ function next() {
   else if($('#shuffle')[0].checked) { playIndex(Math.floor(Math.random()* $('#content tbody tr').length)) }
   else { playIndex((audio.dataset.index)?(parseInt(audio.dataset.index)+1):0); }
 }
-function previous() { playIndex((audio.dataset.index)?(parseInt(audio.dataset.index)-1):0); }
+function previous() {
+  if(played.length == 0) return
+  playKey(played.pop(),true);
+  if(played.length == 0) $('#previous-track').addClass('disabled');
+}
 function updateInfo() {
   let isPaused = audio.paused
   $('#toggle-play').toggleClass('fa-play',isPaused).toggleClass('fa-pause',!isPaused)
