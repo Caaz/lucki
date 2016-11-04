@@ -91,18 +91,8 @@ input[type="checkbox"]:checked + label {
   overflow-y: auto;
   > table {
     width: 100%;
-    thead {
-      position: fixed;
-      width: 100%;
-      background-color: @color_base;
-      > tr { display: flex; }
-      td,th {
-        display: flex;
-        flex-grow: 1;
-      }
-    }
+    thead { background-color: @color_base; }
     td,th {
-      border-bottom: 1px solid darken(@color_base,@darken_amount);
       font-size: 0.9em;
       padding: 0.3em;
     }
