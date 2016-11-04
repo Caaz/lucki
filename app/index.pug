@@ -2,24 +2,24 @@
 title Lucki Media Player
 header
   div#controls
-    i.button.fa.fa-step-backward#previous-track
-    i.button.fa.fa-play#toggle-play
-    i.button.fa.fa-step-forward#next-track
+    i.button.fa.fa-step-backward.fa-lg#previous-track
+    i.button.fa.fa-play.fa-lg#toggle-play
+    i.button.fa.fa-step-forward.fa-lg#next-track
     input.hidden#shuffle(name='shuffle' type="checkbox" value="false")
-    label.button.fa.fa-random(for='shuffle')
+    label.button.fa.fa-random.fa-lg(for='shuffle')
   div#now-playing
     span
     span
   div#search
-    input(type='text')
+    input(type='text' placeholder="search")
     i.button.fa.fa-search#submit-search
 main
   div#content
     table
       thead: tr
-        th Track Name
-        th Artist Name
-        th Album Name
+        th Title
+        th Artist
+        th Album
       tbody
 footer: span#status
 div.hidden: audio

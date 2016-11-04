@@ -96,6 +96,7 @@ function updateInfo() {
   $('#toggle-play').toggleClass('fa-play',isPaused).toggleClass('fa-pause',!isPaused)
 }
 
+
 // Typer
 $.fn.typeText = function(text,callback) {
   if((typeof text) == 'string') { text = text.split(''); this.text(''); }
