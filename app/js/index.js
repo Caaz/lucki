@@ -36,10 +36,7 @@ $(function(){
   });
   $(document).keydown(function(e){
     if(e.target.tagName === 'BODY') {
-      console.log(e.key);
-      // if(e.key === "ArrowRight") {
-      //   console.log("Got right!");
-      // }
+      // console.log(e.key);
       switch(e.key){
         case "ArrowRight":
           next();
@@ -104,8 +101,13 @@ function playIndex(index) {
   playKey($target[0].dataset.libraryKey);
 }
 function select($item) {
-  $('tr.selected').removeClass('selected')
-  $item.addClass('selected')
+  $('tr.selected').removeClass('selected');
+  $item.addClass('selected');
+  let $content = $('#content');
+  let topAdjust = $item.offset().top-$content.offset().top;
+  let bottomAdjust = topAdjust+$item.height()-$content.height()
+  if(topAdjust < 0) $content[0].scrollTop+=topAdjust
+  else if(bottomAdjust > 0) $content[0].scrollTop+=bottomAdjust
 }
 function search() {
   let query = $('#search input').val().toLowerCase();
