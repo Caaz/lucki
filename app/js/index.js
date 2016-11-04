@@ -11,12 +11,19 @@ let library;
 let $status;
 // Now playing information.
 let $nowPlaying;
+// IF searchable!
+let searchable = true;
 $(function(){
   audio = $('audio')[0]
   audio.onended = next
   $status = $('#status')
   $nowPlaying = $('#now-playing')
-  $('#search input').keyup(search);
+  $('#search input').keyup(function(){
+    if(searchable) {
+      searchable = false;
+      window.setTimeout(search,1000);
+    }
+  });
   $('#search .button').click(search);
   $('#controls').click(function(e){
     if(e.target.id == 'toggle-play') togglePlay()
@@ -74,6 +81,7 @@ function search() {
     if(e.innerText.toLowerCase().indexOf(query) != -1) { output.push($(e).clone()); }
   });
   $("#content tbody").empty().append(output);
+  searchable = true;
 }
 function play() { audio.play(); updateInfo(); }
 function pause() { audio.pause(); updateInfo(); }
