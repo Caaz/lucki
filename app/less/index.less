@@ -1,6 +1,6 @@
 @color_text: #DDD;
 @color_base: #2d2d2d;
-@color_accent: #FFF;
+@color_accent: #0FB;
 @darken_amount: 5%;
 @lighten_amount: 5%;
 * {
@@ -38,18 +38,17 @@ main {
   display:flex;
   align-items:center;
   justify-content:center;
-  // border:1px solid lighten(@color_base,@lighten_amount);
-  &:active {
-    background-color:darken(@color_base,@darken_amount*2);
-  }
+  &:hover { color:@color_accent; }
+  &:active { color:darken(@color_accent,@darken_amount*4); }
 }
 input[type="checkbox"]:checked + label {
-  background-color:darken(@color_base,@darken_amount);
+  color:@color_accent;
+  text-decoration:underline;
 }
 #controls {
   display:flex;
-  background-color: darken(@color_base,@darken_amount);
-  border:1px solid lighten(@color_base,@lighten_amount);
+  // background-color: darken(@color_base,@darken_amount);
+  // border:1px solid lighten(@color_base,@lighten_amount);
 }
 #now-playing {
   display:flex;
