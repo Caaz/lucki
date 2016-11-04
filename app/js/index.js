@@ -66,8 +66,8 @@ function playKey(key) {
 function playIndex(index) {
   audio.dataset.index = index
   let $tracks = $('#content tbody');
-  let $target = $($tracks.children()[index]).addClass('playing')
   $tracks.find('.playing').removeClass('playing');
+  let $target = $($tracks.children()[index]).addClass('playing')
   playKey($target[0].dataset.libraryKey);
 }
 function select($item) {

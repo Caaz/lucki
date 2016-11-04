@@ -90,7 +90,7 @@ input[type="checkbox"]:checked + label {
   max-height: 100%;
   overflow-y: auto;
   > table {
-    width: 100%;
+    // width: 100%;
     thead { background-color: @color_base; }
     td,th {
       font-size: 0.9em;
@@ -100,7 +100,10 @@ input[type="checkbox"]:checked + label {
       tr:nth-child(odd) { background-color:darken(@color_base,@darken_amount); }
       tr.selected { background-color:lighten(@color_base,@lighten_amount)!important }
     }
-    .playing td { font-weight:bold; }
+    .playing td {
+      font-weight:bold; 
+      color:@color_accent;
+    }
   }
 }
 #status {
