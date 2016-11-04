@@ -13,6 +13,7 @@ body, html {
   flex-direction:column;
   height:100vh;
   color:@color_text;
+  background-color:@color_base;
 }
 header,footer {
   display:flex;
@@ -20,7 +21,8 @@ header,footer {
   background-color:@color_base;
 }
 header{
-  border-bottom: solid 1px darken(@color_base,@darken_amount);
+  margin: 0.5em;
+  // border-bottom: solid 1px darken(@color_base,@darken_amount);
 }
 main {
   // border-top:1px solid lighten(@color_base,@lighten_amount);
@@ -38,7 +40,7 @@ main {
   justify-content:center;
   // border:1px solid lighten(@color_base,@lighten_amount);
   &:active {
-    background-color:darken(@color_base,@darken_amount);
+    background-color:darken(@color_base,@darken_amount*2);
   }
 }
 input[type="checkbox"]:checked + label {
@@ -46,19 +48,17 @@ input[type="checkbox"]:checked + label {
 }
 #controls {
   display:flex;
-  // padding-top: 0.5em;
-  margin-right: 0.5em;
-  // padding-bottom: 0.5em;
-//   > * { border-left:soil; }
+  background-color: darken(@color_base,@darken_amount);
+  border:1px solid lighten(@color_base,@lighten_amount);
 }
 #now-playing {
   display:flex;
   flex-direction:column;
   background-color: darken(@color_base,@darken_amount);
+  border:1px solid lighten(@color_base,@lighten_amount);
   justify-content:space-around;
-  padding-left: 0.5em;
-  padding-bottom: 0.5em;
-  margin-right: 0.5em;
+  padding: 0.3em;
+  margin: 0 0.5em;
   flex-grow:1;
   white-space: nowrap;
   overflow: hidden;
@@ -68,32 +68,30 @@ input[type="checkbox"]:checked + label {
   display:flex;
   align-self: center;
   input {
-    // border:1px solid lighten(@color_base,@lighten_amount);
-    // border-right:none;
+    border:1px solid lighten(@color_base,@lighten_amount);
+    border-right:none;
     padding: 0.5em;
     background-color:darken(@color_base,@darken_amount);
     color:@color_text;
     &:focus { outline:none; }
   }
+  i {
+    border:1px solid lighten(@color_base,@lighten_amount);
+    background-color:darken(@color_base,@darken_amount);
+    border-left:none;
+  }
 }
-// #playlists {
-//   flex-shrink:0;
-//   border-right:1px solid lighten(@color_base,@lighten_amount);
-//   li { padding:.4em; }
-// }
 #content {
   flex-grow:1;
   max-height: 100%;
   overflow-y: auto;
   > table {
     width: 100%;
-    thead { 
-      position: fixed; 
+    thead {
+      position: fixed;
       width: 100%;
       background-color: @color_base;
-    > tr {
-      display: flex;
-      }
+      > tr { display: flex; }
       td,th {
         display: flex;
         flex-grow: 1;
