@@ -34,7 +34,7 @@ $(function(){
     }
     return true;
   });
-  $(document).keyup(function(e){
+  $(document).keydown(function(e){
     if(e.target.tagName === 'BODY') {
       console.log(e.key);
       // if(e.key === "ArrowRight") {
