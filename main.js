@@ -1,72 +1,20 @@
-const electron = require('electron')
-const app = electron.app
-const Menu = electron.Menu
-const BrowserWindow = electron.BrowserWindow
-const mkdirp = require('mkdirp')
+const {app} = require('electron');
+const mkdirp = require('mkdirp');
+const path = require('path');
 
-const path = require('path')
-const url = require('url')
+global.appRoot = path.resolve(__dirname);
 
-
-// Library management.
-const library = require('./src/library')
-
+// Main browser window.
+const browser = require('./src/browser');
 
 // Make configuration folder.
-mkdirp(process.env.HOME+'/.lucki/', (err) => { if (err) console.error(err) })
+mkdirp(process.env.HOME+'/.lucki/', (err) => { if (err) console.error(err) });
 
-
-
-let mainWindow
-function createWindow () {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600,autoHideMenuBar:true})
-  // Load up the contents.
-  // mainWindow.setMenu(null)
-  mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'app/render.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
-
-
-  mainWindow.setMenu(Menu.buildFromTemplate([
-    {
-      label:'Library',
-      submenu: [
-        {
-          label:'Update',
-          click (i,w,e) { library.update(w) }
-        }
-      ]
-    },
-    {
-      label: 'View',
-      submenu: [
-        {
-          label: 'Reload',
-          accelerator: 'CmdOrCtrl+R',
-          click (item, focusedWindow) {
-            if (focusedWindow) focusedWindow.reload()
-          }
-        },
-        {
-          label: 'Toggle Developer Tools',
-          accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
-          click (item, focusedWindow) {
-            if (focusedWindow) focusedWindow.webContents.toggleDevTools()
-          }
-        },
-      ]
-    }
-  ]))
-  // Erase self when closing window.
-  mainWindow.on('closed', function () { mainWindow = null })
-}
-app.on('ready', createWindow)
+// Open browser window when the app is ready!
+app.on('ready', browser.open);
+// Open it when it's clicked on the dock if it wasn't open already (OSX)
+app.on('activate', function () { if (!browser.isOpen) browser.open(); });
+// If all windows are closed, close the app. Eventually disable this line, we never wanna quit when the browsser window is closed.
 app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') app.quit()
-})
-app.on('activate', function () {
-  if (mainWindow === null) createWindow()
+  if (process.platform !== 'darwin') app.quit();
 })
