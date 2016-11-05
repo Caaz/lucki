@@ -2,18 +2,18 @@ const {BrowserWindow,Menu} = require('electron');
 // Library management.
 const library = require('./library')
 
-let browser
-function isOpen() { return (browser != null); }
+let win
+function isOpen() { return (win != null); }
 function open () {
   // TODO: Save these values in config.
-  browser = new BrowserWindow({
+  win = new BrowserWindow({
     width: 800,
     height: 600,
     autoHideMenuBar:true
   })
-  browser.loadURL('file://'+global.appRoot+'/app/render.html')
+  win.loadURL('file://'+global.appRoot+'/app/render.html?view=browser')
   // The length of this pains me.
-  browser.setMenu(Menu.buildFromTemplate([
+  win.setMenu(Menu.buildFromTemplate([
     {
       label:'Library',
       submenu: [
@@ -44,7 +44,7 @@ function open () {
     }
   ]))
   // Erase self when closing window.
-  browser.on('closed', function () { browser = null })
+  win.on('closed', function () { browser = null })
 }
 module.exports = {
   open: open,

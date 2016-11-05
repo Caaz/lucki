@@ -2,17 +2,28 @@
 <html>
   <link href="./reset.css" rel="stylesheet" />
   <script>
-    require('./js/index');
     let fs = require('fs');
     let pug = require('pug');
     let less = require('less');
-    let fontAwesome = require('node-font-awesome');
-
-    document.write('<link href="'+fontAwesome.css+'" rel="stylesheet">');
-    let content = fs.readFileSync(__dirname+'/less/index.less').toString();
-    less.render(content).then((output) => {
-      document.write('<style>'+output.css+'</style>');
-      document.write(pug.renderFile(__dirname+'/index.pug'));
-    });
+    function getParam(name) {
+      url = window.location.href;
+      name = name.replace(/[\[\]]/g, "\\$&");
+      var regex = new RegExp("[?&]"+name+"(=([^&#]*)|&|#|$)");
+      var results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+    function render(view) {
+      if(!view) { alert("No view defined!"); return; }
+      require(__dirname+'/'+view+'/script.js');
+      document.write('<link href="'+require('node-font-awesome').css+'" rel="stylesheet">');
+      let content = fs.readFileSync(__dirname+'/'+view+'/style.less').toString();
+      less.render(content).then((output) => {
+        document.write('<style>'+output.css+'</style>');
+        document.write(pug.renderFile(__dirname+'/'+view+'/layout.pug'));
+      });
+    }
+    render(getParam('view'));
   </script>
 </html>
