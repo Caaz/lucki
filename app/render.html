@@ -1,6 +1,5 @@
 <!doctype html>
 <html>
-  <link href="./reset.css" rel="stylesheet" />
   <script>
     let fs = require('fs');
     let pug = require('pug');
@@ -16,12 +15,15 @@
     }
     function render(view) {
       if(!view) { alert("No view defined!"); return; }
-      require(__dirname+'/'+view+'/script.js');
-      document.write('<link href="'+require('node-font-awesome').css+'" rel="stylesheet">');
-      let content = fs.readFileSync(__dirname+'/'+view+'/style.less').toString();
-      less.render(content).then((output) => {
-        document.write('<style>'+output.css+'</style>');
-        document.write(pug.renderFile(__dirname+'/'+view+'/layout.pug'));
+      let theme = __dirname+'/../themes/Default/';
+      let style = theme+'main.less';
+      let content = fs.readFileSync(style).toString();
+      less.render(content,{paths:[theme]}).then((output) => {
+        require(__dirname+'/'+view+'/script');
+        document.write('<link href="./reset.css" rel="stylesheet">'+
+          '<link href="'+require('node-font-awesome').css+'" rel="stylesheet">'+
+          '<style>'+output.css+'</style>'+
+          pug.renderFile(__dirname+'/'+view+'/layout.pug'));
       });
     }
     render(getParam('view'));

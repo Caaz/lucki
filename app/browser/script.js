@@ -16,15 +16,17 @@ let $nowPlaying;
 // IF searchable!
 let searchable = true;
 $(function(){
-  audio = $('audio')[0]
-  audio.onended = next
-  $status = $('#status')
-  $nowPlaying = $('#now-playing')
+
+  audio = $('audio')[0];
+  console.log(audio);
+  audio.onended = next;
+  $status = $('#status');
+  $nowPlaying = $('#now-playing');
   $('#search .button').click(search);
   $('#controls').click(function(e){
-    if(e.target.id == 'toggle-play') playToggle()
-    else if(e.target.id == 'next-track') next()
-    else if(e.target.id == 'previous-track') previous()
+    if(e.target.id == 'toggle-play') playToggle();
+    else if(e.target.id == 'next-track') next();
+    else if(e.target.id == 'previous-track') previous();
   })
   let $content = $('#content');
   var ar=new Array(37,38,39,40);

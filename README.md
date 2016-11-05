@@ -19,7 +19,7 @@ Lucki Media Player is a simple media player. It makes no attempts to be the best
   - [ ] Create new playlists
   - [ ] Drag and drop
 - Add configuration options
-  - [ ] Custom theming with less and pugjs
+  - [ ] Custom Themes
   - [ ] Custom Library location
 - Use libgroove
   - [ ] Update Library Scraper to include more than just .mp3
@@ -40,6 +40,9 @@ Lucki Media Player is a simple media player. It makes no attempts to be the best
     - [ ] ToggleRepeat
   - Utilities
     - [ ] Search
+- Misc
+  [ ] Cache Compiled less
+  [ ] Cache Compiled pug
 
 ## Development
 
