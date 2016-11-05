@@ -11,7 +11,7 @@ function open () {
     height: 600,
     autoHideMenuBar:true
   })
-  win.loadURL('file://'+global.appRoot+'/app/render.html?view=browser')
+  win.loadURL('file://'+global.appRoot+'/views/render.html?view=browser')
   // The length of this pains me.
   win.setMenu(Menu.buildFromTemplate([
     {

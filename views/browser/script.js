@@ -16,9 +16,7 @@ let $nowPlaying;
 // IF searchable!
 let searchable = true;
 $(function(){
-
   audio = $('audio')[0];
-  console.log(audio);
   audio.onended = next;
   $status = $('#status');
   $nowPlaying = $('#now-playing');

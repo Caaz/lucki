@@ -10,7 +10,7 @@ function open () {
     height: 600,
     autoHideMenuBar:true
   })
-  win.loadURL('file://'+global.appRoot+'/app/render.html?view=config')
+  win.loadURL('file://'+global.appRoot+'/views/render.html?view=config')
   // Erase self when closing window.
   win.on('closed', function () { win = null })
 }
