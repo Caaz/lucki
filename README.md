@@ -6,27 +6,40 @@ Lucki Media Player is a simple media player. It makes no attempts to be the best
 
 ![screenshot](https://dl.dropboxusercontent.com/u/9305622/KEEP/Dev/lucki.png "Screenshot")
 
-## Todo
-- [ ] Watch library folder for changes
-- [ ] Keyboard controls
-- [ ] API for now playing information and external controls.
-- [ ] Configuration window
-- [ ] Use libgroove to play audio on the main process instead of the render process.
-- [ ] Ability to add arbitrary tracks to the library
-- [ ] Ability to create playlists
-- [ ] Play music other than MP3
-- [ ] Ability to adjust tags
-- [ ] Organize Library
-- [ ] Custom User defined Less stylesheets.
-- [ ] Custom Plugins with JS
-- [ ] Custom Layout with Pug
-- [x] Shuffle
-- [x] Search Library
-- [x] Stop using CLI pug
-- [x] Stop using CLI sass
-- [x] Cache Library
-- [x] Play Music
-- [x] List Music
+## Feature List and to-do
+- UI Improvements
+  - [x] Keyboard controls
+- Library Management
+  - [ ] Watch library folder for changes
+  - Tag Management
+    - [ ] Download album art
+    - [ ] Download tags
+    - [ ] Download lyrics
+- Playlist Management
+  - [ ] Create new playlists
+  - [ ] Drag and drop
+- Add configuration options
+  - [ ] Custom theming with less and pugjs
+  - [ ] Custom Library location
+- Use libgroove
+  - [ ] Update Library Scraper to include more than just .mp3
+  - Library Cache store more information on files
+    - [ ] Last file change timestamp
+    - [ ] Location
+    - [ ] File Size
+    - [ ] ID3 Tags
+    - [ ] Play Length
+    - [ ] Visualizer Information
+- External API Service
+  - Media Controls
+    - [ ] Play
+    - [ ] Pause
+    - [ ] PlayToggle
+    - [ ] Next
+    - [ ] ToggleShuffle
+    - [ ] ToggleRepeat
+  - Utilities
+    - [ ] Search
 
 ## Development
 

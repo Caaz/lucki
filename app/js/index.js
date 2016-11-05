@@ -22,7 +22,7 @@ $(function(){
   $nowPlaying = $('#now-playing')
   $('#search .button').click(search);
   $('#controls').click(function(e){
-    if(e.target.id == 'toggle-play') togglePlay()
+    if(e.target.id == 'toggle-play') playToggle()
     else if(e.target.id == 'next-track') next()
     else if(e.target.id == 'previous-track') previous()
   })
@@ -30,7 +30,7 @@ $(function(){
   var ar=new Array(37,38,39,40);
 
   $(document).keydown(function(e) {
-    if((e.which <= 40) && (e.which >= 37)) {
+    if((e.which <= 40) && (e.which >= 37) || (e.key === ' ')) {
       e.preventDefault();
       return false;
     }
@@ -54,6 +54,9 @@ $(function(){
           break;
         case "Enter":
           playIndex($('tr.selected').index());
+          break;
+        case " ":
+          playToggle();
           break;
       }
     }
@@ -124,9 +127,9 @@ function search() {
   $("#content tbody").empty().append(output);
   searchable = true;
 }
+function playToggle() { if(audio.paused) play(); else pause() }
 function play() { audio.play(); updateInfo(); }
 function pause() { audio.pause(); updateInfo(); }
-function togglePlay() { if(audio.paused) play(); else pause() }
 function next() {
   if($('#repeat')[0].checked) { play() }
   else if($('#shuffle')[0].checked) { playIndex(Math.floor(Math.random()* $('#content tbody tr').length)) }
