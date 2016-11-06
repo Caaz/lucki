@@ -89,7 +89,7 @@ $(function(){
     $allTracks = $newContent.clone();
   })
   ipcRenderer.on('status', (event, arg) => { $status.text(arg); })
-  ipcRenderer.send('library', 'get')
+  ipcRenderer.send('library', 'get');
 })
 function playKey(key,skipPush) {
   let track = library[key];

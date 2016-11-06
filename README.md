@@ -41,8 +41,7 @@ Lucki Media Player is a simple media player. It makes no attempts to be the best
   - Utilities
     - [ ] Search
 - Misc
-  [ ] Cache Compiled less
-  [ ] Cache Compiled pug
+  - [ ] Cache Compiled less
 
 ## Development
 

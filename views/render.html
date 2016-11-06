@@ -1,9 +1,12 @@
 <!doctype html>
 <html>
   <script>
+    console.time('require');
     let fs = require('fs');
     let pug = require('pug');
     let less = require('less');
+    let fa = require('node-font-awesome');
+    console.timeEnd('require');
     function getParam(name) {
       url = window.location.href;
       name = name.replace(/[\[\]]/g, "\\$&");
@@ -18,12 +21,18 @@
       let theme = __dirname+'/../themes/Default/';
       let style = theme+'main.less';
       let content = fs.readFileSync(style).toString();
+      console.time('less');
       less.render(content,{paths:[theme]}).then((output) => {
+        console.timeEnd('less');
+        console.time('script');
         require(__dirname+'/'+view+'/script');
+        console.timeEnd('script');
         document.write('<link href="./reset.css" rel="stylesheet">'+
-          '<link href="'+require('node-font-awesome').css+'" rel="stylesheet">'+
-          '<style>'+output.css+'</style>'+
-          pug.renderFile(__dirname+'/'+view+'/layout.pug'));
+        '<link href="'+fa.css+'" rel="stylesheet">'+
+        '<style>'+output.css+'</style>');
+        console.time('pug');
+        document.write(pug.renderFile(__dirname+'/'+view+'/layout.pug'));
+        console.timeEnd('pug');
       });
     }
     render(getParam('view'));
