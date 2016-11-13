@@ -5,7 +5,6 @@
     let fs = require('fs');
     let pug = require('pug');
     let less = require('less');
-    let fa = require('node-font-awesome');
     console.timeEnd('require');
     function getParam(name) {
       url = window.location.href;
@@ -28,7 +27,7 @@
         require(__dirname+'/'+view+'/script');
         console.timeEnd('script');
         document.write('<link href="./reset.css" rel="stylesheet">'+
-        '<link href="'+fa.css+'" rel="stylesheet">'+
+        '<link href="'+__dirname+'/../node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">'+
         '<style>'+output.css+'</style>');
         console.time('pug');
         document.write(pug.renderFile(__dirname+'/'+view+'/layout.pug'));
