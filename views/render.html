@@ -20,18 +20,19 @@
       let theme = __dirname+'/../themes/Default/';
       let style = theme+'main.less';
       let content = fs.readFileSync(style).toString();
+
+      console.time('pug');
+      let layout = pug.renderFile(__dirname+'/'+view+'/layout.pug')
+      console.timeEnd('pug');
+
       console.time('less');
       less.render(content,{paths:[theme]}).then((output) => {
         console.timeEnd('less');
-        console.time('script');
-        require(__dirname+'/'+view+'/script');
-        console.timeEnd('script');
+
         document.write('<link href="./reset.css" rel="stylesheet">'+
         '<link href="'+__dirname+'/../node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">'+
-        '<style>'+output.css+'</style>');
-        console.time('pug');
-        document.write(pug.renderFile(__dirname+'/'+view+'/layout.pug'));
-        console.timeEnd('pug');
+        '<style>'+output.css+'</style>'+layout);
+        require(__dirname+'/'+view+'/main').ready();
       });
     }
     render(getParam('view'));

@@ -36,6 +36,8 @@ function open () {
       ]
     }
   ]))
+
+  win.webContents.openDevTools()
   // Erase self when closing window.
   win.on('closed', function () { browser = null })
 }
