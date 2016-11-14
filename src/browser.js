@@ -1,25 +1,25 @@
-const {BrowserWindow,Menu} = require('electron');
-// Library management.
+const {BrowserWindow, Menu} = require('electron')
 const library = require('./library')
 
 let win
-function isOpen() { return (win != null); }
-function open () {
-  // TODO: Save these values in config.
+function isOpen() {
+  return (win !== null)
+}
+function open() {
   win = new BrowserWindow({
     width: 800,
     height: 600,
-    autoHideMenuBar:true
+    autoHideMenuBar: true
   })
-  win.loadURL('file://'+global.appRoot+'/views/render.html?view=browser')
+  win.loadURL('file://' + global.appRoot + '/views/render.html?view=browser')
   // The length of this pains me.
   win.setMenu(Menu.buildFromTemplate([
     {
-      label:'Library',
+      label: 'Library',
       submenu: [
         {
-          label:'Update',
-          click (i,w,e) { library.update(w) }
+          label: 'Update',
+          click(i, w) { library.update(w) }
         }
       ]
     },
@@ -29,19 +29,21 @@ function open () {
         {
           label: 'Toggle Developer Tools',
           accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
-          click (item, focusedWindow) {
-            if (focusedWindow) focusedWindow.webContents.toggleDevTools()
+          click(item, focusedWindow) {
+            if(focusedWindow) focusedWindow.webContents.toggleDevTools()
           }
-        },
+        }
       ]
     }
   ]))
 
   win.webContents.openDevTools()
   // Erase self when closing window.
-  win.on('closed', function () { browser = null })
+  win.on('closed', () => {
+    win = null
+  })
 }
 module.exports = {
-  open: open,
-  isOpen: isOpen
+  open,
+  isOpen
 }
