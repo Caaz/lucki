@@ -1,20 +1,21 @@
-const {BrowserWindow,Menu} = require('electron');
-// Library management.
-// const library = require('./library')
+const {BrowserWindow} = require('electron')
 
 let win
-function isOpen() { return (win != null); }
-function open () {
+function open() {
   win = new BrowserWindow({
     width: 800,
     height: 600,
-    autoHideMenuBar:true
+    autoHideMenuBar: true
   })
-  win.loadURL('file://'+global.appRoot+'/views/render.html?view=config')
+  win.loadURL('file://' + global.appRoot + '/views/render.html?view=config')
   // Erase self when closing window.
-  win.on('closed', function () { win = null })
+  win.on('closed', () => {
+    win = null
+  })
 }
 module.exports = {
-  open: open,
-  isOpen: isOpen
+  open,
+  isOpen: () => {
+    return (win !== null)
+  }
 }
