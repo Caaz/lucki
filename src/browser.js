@@ -1,10 +1,7 @@
-const {BrowserWindow, Menu} = require('electron')
+const {BrowserWindow, Menu, ipcMain} = require('electron')
 const library = require('./library')
 
 let win
-function isOpen() {
-  return (win !== null)
-}
 function open() {
   win = new BrowserWindow({
     width: 800,
@@ -37,11 +34,18 @@ function open() {
     }
   ]))
 
+  ipcMain.on('player-state', (event, args) => {
+    if(isOpen()) win.webContents.send('player-state', args)
+  })
   win.webContents.openDevTools()
   // Erase self when closing window.
   win.on('closed', () => {
     win = null
   })
+}
+
+function isOpen() {
+  return ((typeof win !== 'undefined') && (win !== null))
 }
 module.exports = {
   open,

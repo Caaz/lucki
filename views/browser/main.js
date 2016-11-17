@@ -14,11 +14,16 @@ ipcRenderer.on('library', (event, library) => {
   }
   $library.html(newLibrary)
 })
+ipcRenderer.on('player-state', (event, state) => {
+  console.log(state)
+  $('#now-playing').html(sprintf(config.NOW_PLAYING_FORMAT, {track: state.track}))
+  $('#control-toggle-play').toggleClass('fa-play', state.paused).toggleClass('fa-pause', state.paused)
+})
 
 module.exports = {
   ready() {
     $library = $('#library')
-    ipcRenderer.send('library', 'get')
+    ipcRenderer.send('library', ['get'])
     const $document = $(document)
     $document.click(e => {
       [e.target, e.target.parentNode].forEach(target => {
@@ -30,7 +35,7 @@ module.exports = {
     })
     $document.dblclick(e => {
       [e.target, e.target.parentNode].forEach(target => {
-        if(target.dataset.libraryKey) ipcRenderer.send('play', target.dataset.libraryKey)
+        if(target.dataset.libraryKey) ipcRenderer.send('player', ['play', target.dataset.libraryKey])
       })
     })
   }

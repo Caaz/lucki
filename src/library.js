@@ -7,9 +7,14 @@ const cache = process.env.HOME + '/.lucki/library_cache_new.json'
 
 let library = false
 
-ipcMain.on('library', (event, arg) => {
+ipcMain.on('library', (event, args) => {
+  const command = args.shift()
   const output = event.sender
-  switch(arg) {
+  switch(command) {
+    case 'info':
+      output.send('info', library[args[0]])
+      event.returnValue = library[args[0]]
+      break
     case 'get':
       if(library) {
         output.send('library', library)
@@ -24,27 +29,28 @@ ipcMain.on('library', (event, arg) => {
       break
 
     default:
-      console.out('Unexpected library command: ' + arg)
+      console.out('Unexpected library command: ' + command)
   }
 })
 
 function load(out) {
   if(fs.existsSync(cache)) {
-    console.log('Loading library cache')
+    console.time('Load Library Cache')
     const data = fs.readFileSync(cache)
     library = JSON.parse(data)
-    console.log('Library cache loaded')
+    console.timeEnd('Load Library Cache')
     out.send('library', library)
     return true
   }
   return false
 }
 function save() {
-  console.log('Saving library cache')
+  console.time('Save Library')
   fs.writeFileSync(cache, JSON.stringify(library))
+  console.timeEnd('Save Library')
 }
 function update(out) {
-  console.log('Updating Library')
+  console.time('Update Library')
   library = {}
   glob(process.env.HOME + '/Music/**/*.mp3', (err, files) => {
     if(err) console.log(err)
@@ -70,7 +76,7 @@ function parseFiles(files, out) {
       parseFiles(files, out)
     })
   } else {
-    console.log('Library Updated')
+    console.timeEnd('Update Library')
     out.send('library', library)
     save(out)
   }

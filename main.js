@@ -1,5 +1,5 @@
 const path = require('path')
-const {app} = require('electron')
+const {app, ipcMain} = require('electron')
 const mkdirp = require('mkdirp')
 
 global.appRoot = path.resolve(__dirname)
@@ -12,14 +12,20 @@ mkdirp(global.appData, err => {
 
 // Main browser window.
 const browser = require('./src/browser')
+const player = require('./src/player')
 
-const openTriggers = ['ready', 'activate']
-openTriggers.forEach(trigger => {
-  app.on(trigger, () => {
-    if(!browser.isOpen) browser.open()
-  })
+app.on('ready', () => {
+  player.open()
+  browser.open()
+})
+app.on('activate', () => {
+  if(!browser.isOpen()) browser.open()
 })
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
+})
+
+ipcMain.on('echo', (event, arg) => {
+  console.log(arg)
 })
