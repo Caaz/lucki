@@ -6,6 +6,6 @@ module.exports = {
         '<td>%(track.album)s</td>' +
       '</tr>',
   NOW_PLAYING_FORMAT:
-      '<span>%(track.title)s</span>' +                   // Title
-      '<span class="small">%(track.artist)s - %(track.album)s</span>' // Artist - Album
+      '<span>%(track.title)s</span>' +
+      '<span class="small">%(track.artist)s - %(track.album)s</span>'
 }

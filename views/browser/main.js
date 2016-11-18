@@ -17,7 +17,7 @@ ipcRenderer.on('player-state', (event, state) => {
   playerState = state
   console.log(state)
   $('.playing').removeClass('playing')
-  $('#now-playing').html(sprintf(config.NOW_PLAYING_FORMAT, {track: state.track}))
+  $('#now-playing').html(sprintf(config.NOW_PLAYING_FORMAT, {key: state.libraryKey, track: state.track}))
   $('#control-toggle-play').toggleClass('fa-play', state.paused).toggleClass('fa-pause', !state.paused)
   if(!state.paused) $('[data-library-key="' + playerState.libraryKey + '"]').addClass('playing')
   if(state.ended) next()
@@ -30,9 +30,7 @@ function play(obj) {
   if(key) ipcRenderer.send('player', ['play', key])
 }
 function next() {
-  if($('#control-toggle-repeat').hasClass('enabled')) {
-    ipcRenderer.send('player', ['toggle', 'play'])
-  }
+  if($('#control-toggle-repeat').hasClass('enabled')) play(playerState.libraryKey)
   else if($('#control-toggle-shuffle').hasClass('enabled')) {
     const $tracks = $library.children()
     play($tracks[Math.floor(Math.random() * $tracks.length)])
@@ -41,12 +39,8 @@ function next() {
   else play($library.children()[0])
 }
 function previous() {
-  if(playerState && playerState.libraryKey) {
-    play($('[data-library-key="' + playerState.libraryKey + '"]').prev())
-  }
-  else {
-    $library.first().dblclick()
-  }
+  if(playerState && playerState.libraryKey) play($('[data-library-key="' + playerState.libraryKey + '"]').prev())
+  else play($library.children()[0])
 }
 
 function select($item) {
