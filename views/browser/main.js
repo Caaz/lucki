@@ -3,15 +3,18 @@ const $ = require('jquery')
 const {sprintf} = require('sprintf-js')
 const config = require('./config.js')
 
-let $library
+let $currentPlaylist
+let $allTracks
 let playerState
+let searchID
 
 ipcRenderer.on('library', (event, library) => {
   let newLibrary = ''
   for(const key in library) {
     if(library[key]) newLibrary += sprintf(config.TRACK_FORMAT, {key, track: library[key]})
   }
-  $library.html(newLibrary)
+  $currentPlaylist.html(newLibrary)
+  $allTracks = $currentPlaylist.clone()
 })
 ipcRenderer.on('player-state', (event, state) => {
   playerState = state
@@ -32,17 +35,26 @@ function play(obj) {
 function next() {
   if($('#control-toggle-repeat').hasClass('enabled')) play(playerState.libraryKey)
   else if($('#control-toggle-shuffle').hasClass('enabled')) {
-    const $tracks = $library.children()
+    const $tracks = $currentPlaylist.children()
     play($tracks[Math.floor(Math.random() * $tracks.length)])
   }
   else if(playerState && playerState.libraryKey) play($('[data-library-key="' + playerState.libraryKey + '"]').next())
-  else play($library.children()[0])
+  else play($currentPlaylist.children()[0])
 }
 function previous() {
   if(playerState && playerState.libraryKey) play($('[data-library-key="' + playerState.libraryKey + '"]').prev())
-  else play($library.children()[0])
+  else play($currentPlaylist.children()[0])
 }
-
+function search() {
+  const query = $('#search input').val().toLowerCase()
+  const output = []
+  $allTracks.children().each((i, e) => {
+    if(e.innerText.toLowerCase().indexOf(query) !== -1) {
+      output.push($(e).clone())
+    }
+  })
+  $currentPlaylist.html(output)
+}
 function select($item) {
   if($item.length === 0) return
   $('tr.selected').removeClass('selected')
@@ -56,14 +68,14 @@ function select($item) {
 
 module.exports = {
   ready() {
-    $library = $('#track-list')
+    $currentPlaylist = $('#track-list')
     ipcRenderer.send('library', ['get'])
     const $document = $(document)
 
     $document.keydown(e => {
       if(e.target.tagName === 'INPUT') {
-        // Search
-        // if(searchable) { searchable = false; window.setTimeout(search,1000); }
+        if(searchID) clearTimeout(searchID)
+        searchID = setTimeout(search, 500)
       } else {
         let prevent = true
         if(e.key === 'ArrowRight') next()
