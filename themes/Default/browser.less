@@ -89,7 +89,7 @@ main > div {
   flex-grow:1;
   max-height: 100%;
   overflow-y: auto;
-  > table {
+  table {
     table-layout: fixed;
     width: auto!important;
     max-width:100%!important;
@@ -118,8 +118,11 @@ main > div {
 
 //tablesorter fixes
 .tablesorter-resizable-handle {
-  width:1px;
-  background-color:darken(@color_base,@darken_amount);
+  width:3px;
+  // background-color:darken(@color_base,@darken_amount);
   position:absolute;
   height:100%!important;
+}
+.tablesorter-sticky-visible {
+  top:3.9em!important;
 }

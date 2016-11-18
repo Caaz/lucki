@@ -20,10 +20,14 @@ ipcRenderer.on('library', (event, library) => {
   $allTracks = $currentPlaylist.clone()
   console.log('Sorting')
   $currentPlaylist.parent().tablesorter({
-    widgets: ['resizable'],
+    debug: true,
+    widgets: ['resizable', 'stickyHeaders'],
     widgetOptions: {
       resizable: true,
-      resizable_targetLast: true
+      resizable_targetLast: true,
+      stickyHeaders_attachTo: 'main > div',
+      stickyHeaders_yScroll: 'main > div',
+      stickyHeaders_filteredToTop: true
     }
   })
   console.log('Sorted?')
