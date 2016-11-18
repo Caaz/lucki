@@ -9,7 +9,7 @@ function echo(obj) {
 }
 function update() {
   state.paused = audio.paused
-  state.loop = audio.loop
+  // state.loop = audio.loop
   state.muted = audio.muted
   state.playbackRate = audio.playbackRate
   state.volume = audio.volume
@@ -26,8 +26,6 @@ function setState(obj) {
   }
 }
 
-// echo('Hello World')
-// ipcRenderer.send('echo', 'Hello World!')
 document.addEventListener('DOMContentLoaded', () => {
   state = {}
   audio = document.getElementsByTagName('AUDIO')[0]
@@ -40,12 +38,22 @@ document.addEventListener('DOMContentLoaded', () => {
 ipcRenderer.on('play', (event, args) => {
   if(args.length > 0) {
     const track = ipcRenderer.sendSync('library', ['info', args[0]])
-    setState({track})
-    audio.src = track.location
-    echo('Playing track: ' + track.location)
+    if(track) {
+      setState({libraryKey: args[0], track})
+      audio.src = track.location
+      echo('Playing track: ' + track.location)
+    }
   }
   audio.play()
 })
 ipcRenderer.on('pause', () => {
   audio.pause()
+})
+ipcRenderer.on('toggle', (e, args) => {
+  switch(args[0]) {
+    case 'play':
+      if(audio.paused) audio.play()
+      else audio.pause()
+    default:
+  }
 })

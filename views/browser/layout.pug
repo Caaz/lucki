@@ -1,6 +1,6 @@
 title Lucki Media Player
 header
-  div.controls
+  //- div.controls
     i.button.fa.fa-step-backward.fa-lg.disabled#previous-track
     i.button.fa.fa-play.fa-lg#control-toggle-play
     i.button.fa.fa-step-forward.fa-lg#next-track
@@ -8,7 +8,7 @@ header
     i.button.fa.fa-repeat.fa-lg#control-toggle-repeat
   div#now-playing
     //- span#track-name
-  div#search
+  //- div#search
     input(type='text' placeholder="Search")
     i.button.fa.fa-search#submit-search
 main
@@ -18,7 +18,7 @@ main
         th Title
         th Artist
         th Album
-      tbody#library
+      tbody#track-list
 //- footer: span#status
 div.hidden
   audio
