@@ -1,6 +1,9 @@
 const {ipcRenderer} = require('electron')
 const $ = require('jquery')
+// const tablesorter = require('tablesorter')
 const {sprintf} = require('sprintf-js')
+const _ = require('tablesorter')
+// const _ = require('../../node_modules/tablesorter/dist/js/jquery.tablesorter.min.js')
 const config = require('./config.js')
 
 let $currentPlaylist
@@ -15,6 +18,15 @@ ipcRenderer.on('library', (event, library) => {
   }
   $currentPlaylist.html(newLibrary)
   $allTracks = $currentPlaylist.clone()
+  console.log('Sorting')
+  $currentPlaylist.parent().tablesorter({
+    widgets: ['resizable'],
+    widgetOptions: {
+      resizable: true,
+      resizable_targetLast: true
+    }
+  })
+  console.log('Sorted?')
 })
 ipcRenderer.on('player-state', (event, state) => {
   playerState = state
