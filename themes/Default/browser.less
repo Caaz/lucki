@@ -58,20 +58,10 @@ main {
   background-color: darken(@color_base, @darken_amount);
   span {
     display:block;
-    width:50%;
+    width:100%;
+    -webkit-transition: width 500ms;
     height:@playHeight;
-    background-color:@color_accent;
-    // &::after {
-    //   content:'';
-    //   display:block;
-    //   background-color:@color_accent;
-    //   float:right;
-    //   width:@playHeight*2;
-    //   height:@playHeight*2;
-    //   margin-top:-@playHeight/2;
-    //   margin-right:-@playHeight/2;
-    //   border-radius:50%;
-    // }
+    background:linear-gradient(90deg, darken(@color_accent, @darken_amount*3), @color_accent 50%, lighten(@color_accent, @lighten_amount*4));
   }
 }
 #search {

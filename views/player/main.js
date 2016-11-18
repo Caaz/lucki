@@ -27,7 +27,7 @@ function setState(obj) {
 document.addEventListener('DOMContentLoaded', () => {
   state = {}
   audio = document.getElementsByTagName('AUDIO')[0]
-  const updateTriggers = ['playing', 'pause']
+  const updateTriggers = ['playing', 'pause', 'timeupdate']
   updateTriggers.forEach(e => {
     audio.addEventListener(e, update)
   })

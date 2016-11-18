@@ -18,11 +18,10 @@ ipcRenderer.on('library', (event, library) => {
 })
 ipcRenderer.on('player-state', (event, state) => {
   playerState = state
-  console.log(state)
-  // $('#playhead > span').css({width:state.current})
-  $('.playing').removeClass('playing')
+  $('#playhead > span').css({width: ((state.currentTime / state.duration) * 100) + '%'})
   $('#now-playing').html(sprintf(config.NOW_PLAYING_FORMAT, {key: state.libraryKey, track: state.track}))
   $('#control-toggle-play').toggleClass('fa-play', state.paused).toggleClass('fa-pause', !state.paused)
+  $('.playing').removeClass('playing')
   if(!state.paused) $('[data-library-key="' + state.libraryKey + '"]').addClass('playing')
   if(state.ended) next()
 })
@@ -83,7 +82,7 @@ module.exports = {
         else if(e.key === 'ArrowLeft') previous()
         else if(e.key === 'ArrowUp') select($('.selected').prev())
         else if(e.key === 'ArrowDown') select($('.selected').next())
-        else if(e.key === ' '){
+        else if(e.key === ' ') {
           ipcRenderer.send('player', ['toggle', 'play'])
           console.log('Sending toggle play')
         }
