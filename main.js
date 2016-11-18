@@ -12,10 +12,8 @@ mkdirp(global.appData, err => {
 
 // Main browser window.
 const browser = require('./src/browser')
-const player = require('./src/player')
 
 app.on('ready', () => {
-  player.open()
   browser.open()
 })
 app.on('activate', () => {

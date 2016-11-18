@@ -1,12 +1,13 @@
 const {BrowserWindow, ipcMain} = require('electron')
 
 let win
-function open() {
+function open(parent) {
   console.log('Opening player.')
   win = new BrowserWindow({
     width: 0,
     height: 0,
-    skipTaskbar: true
+    skipTaskbar: true,
+    parent
   })
   win.loadURL('file://' + global.appRoot + '/views/player/layout.html')
   console.log('Hiding Player window')

@@ -1,5 +1,6 @@
 const {BrowserWindow, Menu, ipcMain} = require('electron')
 const library = require('./library')
+const player = require('./player')
 
 let win
 function open() {
@@ -8,6 +9,7 @@ function open() {
     height: 600,
     autoHideMenuBar: true
   })
+  player.open(win)
   win.loadURL('file://' + global.appRoot + '/views/render.html?view=browser')
   // The length of this pains me.
   win.setMenu(Menu.buildFromTemplate([
