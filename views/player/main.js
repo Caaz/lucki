@@ -20,9 +20,7 @@ function update() {
 }
 function setState(obj) {
   for(const key in obj) {
-    if(obj[key]) {
-      state[key] = obj[key]
-    }
+    if(obj[key]) state[key] = obj[key]
   }
 }
 
@@ -46,9 +44,7 @@ ipcRenderer.on('play', (event, args) => {
   }
   audio.play()
 })
-ipcRenderer.on('pause', () => {
-  audio.pause()
-})
+ipcRenderer.on('pause', audio.pause)
 ipcRenderer.on('toggle', (e, args) => {
   switch(args[0]) {
     case 'play':

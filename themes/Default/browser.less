@@ -29,13 +29,10 @@ main {
   display:flex;
   align-items:center;
   justify-content:center;
+  &.enabled { color:@color_accent; text-decoration:underline; }
   &.disabled { color:darken(@color_base,@darken_amount)!important; }
   &:hover { color:@color_accent; }
   &:active { color:darken(@color_accent,@darken_amount*4); }
-}
-input[type="checkbox"]:checked + label {
-  color:@color_accent;
-  text-decoration:underline;
 }
 .controls { display:flex; }
 #now-playing {

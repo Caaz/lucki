@@ -9,9 +9,7 @@ let playerState
 ipcRenderer.on('library', (event, library) => {
   let newLibrary = ''
   for(const key in library) {
-    if(library[key]) {
-      newLibrary += sprintf(config.TRACK_FORMAT, {key, track: library[key]})
-    }
+    if(library[key]) newLibrary += sprintf(config.TRACK_FORMAT, {key, track: library[key]})
   }
   $library.html(newLibrary)
 })
@@ -21,24 +19,30 @@ ipcRenderer.on('player-state', (event, state) => {
   $('.playing').removeClass('playing')
   $('#now-playing').html(sprintf(config.NOW_PLAYING_FORMAT, {track: state.track}))
   $('#control-toggle-play').toggleClass('fa-play', state.paused).toggleClass('fa-pause', !state.paused)
-  if(!state.paused) {
-    $('[data-library-key="' + playerState.libraryKey + '"]').addClass('playing')
-  }
-  if(state.ended) {
-    next()
-  }
+  if(!state.paused) $('[data-library-key="' + playerState.libraryKey + '"]').addClass('playing')
+  if(state.ended) next()
 })
+function play(obj) {
+  let key
+  if(typeof obj === 'string') key = obj
+  else if(obj.jquery) key = obj[0].dataset.libraryKey
+  else if(obj.dataset) key = obj.dataset.libraryKey
+  if(key) ipcRenderer.send('player', ['play', key])
+}
 function next() {
-  if(playerState && playerState.libraryKey) {
-    $('[data-library-key="' + playerState.libraryKey + '"]').next().dblclick()
+  if($('#control-toggle-repeat').hasClass('enabled')) {
+    ipcRenderer.send('player', ['toggle', 'play'])
   }
-  else {
-    $library.first().dblclick()
+  else if($('#control-toggle-shuffle').hasClass('enabled')) {
+    const $tracks = $library.children()
+    play($tracks[Math.floor(Math.random() * $tracks.length)])
   }
+  else if(playerState && playerState.libraryKey) play($('[data-library-key="' + playerState.libraryKey + '"]').next())
+  else play($library.children()[0])
 }
 function previous() {
   if(playerState && playerState.libraryKey) {
-    $('[data-library-key="' + playerState.libraryKey + '"]').prev().dblclick()
+    play($('[data-library-key="' + playerState.libraryKey + '"]').prev())
   }
   else {
     $library.first().dblclick()
@@ -73,10 +77,7 @@ module.exports = {
         else if(e.key === 'ArrowUp') select($('.selected').prev())
         else if(e.key === 'ArrowDown') select($('.selected').next())
         else if(e.key === ' ') ipcRenderer.send('player', ['toggle', 'play'])
-        else if(e.key === 'Enter') {
-          const selected = $('.selected')[0]
-          if(selected && selected.dataset.libraryKey) ipcRenderer.send('player', ['play', selected.dataset.libraryKey])
-        }
+        else if(e.key === 'Enter') play($('.selected'))
         else prevent = false
         if(prevent) e.preventDefault()
       }
@@ -84,7 +85,13 @@ module.exports = {
     $document.click(e => {
       [e.target, e.target.parentNode].forEach(target => {
         if(target.dataset.selectable) select($(target))
-        if(target.id) console.log('This has an ID of ' + target.id)
+        if(target.id) {
+          if(target.id === 'control-previous-track') previous()
+          else if(target.id === 'control-toggle-play') ipcRenderer.send('player', ['toggle', 'play'])
+          else if(target.id === 'control-toggle-shuffle') $(target).toggleClass('enabled')
+          else if(target.id === 'control-toggle-repeat') $(target).toggleClass('enabled')
+          else if(target.id === 'control-next-track') next()
+        }
       })
     })
     $document.dblclick(e => {
