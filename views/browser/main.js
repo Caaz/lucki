@@ -19,10 +19,11 @@ ipcRenderer.on('library', (event, library) => {
 ipcRenderer.on('player-state', (event, state) => {
   playerState = state
   console.log(state)
+  // $('#playhead > span').css({width:state.current})
   $('.playing').removeClass('playing')
   $('#now-playing').html(sprintf(config.NOW_PLAYING_FORMAT, {key: state.libraryKey, track: state.track}))
   $('#control-toggle-play').toggleClass('fa-play', state.paused).toggleClass('fa-pause', !state.paused)
-  if(!state.paused) $('[data-library-key="' + playerState.libraryKey + '"]').addClass('playing')
+  if(!state.paused) $('[data-library-key="' + state.libraryKey + '"]').addClass('playing')
   if(state.ended) next()
 })
 function play(obj) {
@@ -82,7 +83,10 @@ module.exports = {
         else if(e.key === 'ArrowLeft') previous()
         else if(e.key === 'ArrowUp') select($('.selected').prev())
         else if(e.key === 'ArrowDown') select($('.selected').next())
-        else if(e.key === ' ') ipcRenderer.send('player', ['toggle', 'play'])
+        else if(e.key === ' '){
+          ipcRenderer.send('player', ['toggle', 'play'])
+          console.log('Sending toggle play')
+        }
         else if(e.key === 'Enter') play($('.selected'))
         else prevent = false
         if(prevent) e.preventDefault()
@@ -97,6 +101,7 @@ module.exports = {
           else if(target.id === 'control-toggle-shuffle') $(target).toggleClass('enabled')
           else if(target.id === 'control-toggle-repeat') $(target).toggleClass('enabled')
           else if(target.id === 'control-next-track') next()
+          else if(target.id === 'control-search') search()
         }
       })
     })

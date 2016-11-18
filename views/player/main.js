@@ -31,9 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
   updateTriggers.forEach(e => {
     audio.addEventListener(e, update)
   })
+  ipcRenderer.on('pause', audio.pause)
 })
 
-ipcRenderer.on('play', (event, args) => {
+ipcRenderer.on('play', (e, args) => {
   if(args.length > 0) {
     const track = ipcRenderer.sendSync('library', ['info', args[0]])
     if(track) {
@@ -44,12 +45,10 @@ ipcRenderer.on('play', (event, args) => {
   }
   audio.play()
 })
-ipcRenderer.on('pause', audio.pause)
-ipcRenderer.on('toggle', (e, args) => {
-  switch(args[0]) {
-    case 'play':
-      if(audio.paused) audio.play()
-      else audio.pause()
-    default:
+ipcRenderer.on('toggle', (e, a) => {
+  const action = a.toString()
+  if(action === 'play') {
+    if(audio.paused) audio.play()
+    else audio.pause()
   }
 })

@@ -16,7 +16,9 @@ module.exports = {
     win.hide()
 
     ipcMain.on('player', (event, args) => {
-      win.webContents.send(args.shift(), args)
+      const command = args.shift()
+      console.log('Got player ' + command + ': ' + args)
+      win.webContents.send(command, args)
     })
 
     // Erase self when closing window.
