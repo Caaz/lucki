@@ -1,7 +1,7 @@
 {
   "name": "lucki",
   "productName": "Lucki Media",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "A media player",
   "license": "MIT",
   "repository": "Caaz/lucki",
@@ -17,7 +17,10 @@
   },
   "main": "main.js",
   "files": [
-    "app"
+    "app",
+    "themes",
+    "views",
+    "main.js"
   ],
   "keywords": [
     "music",
@@ -50,7 +53,7 @@
     "space": true,
     "esnext": true,
     "rules": {
-      "camelcase": 1,
+      "camelcase": 0,
       "max-statements-per-line": 1,
       "guard-for-in": 1,
       "keyword-spacing": 0,
