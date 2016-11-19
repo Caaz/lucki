@@ -10,7 +10,7 @@ body, html {
   flex-direction:column;
   height:100vh;
   max-height:100vh;
-  overflow-y:hidden;
+  overflow:hidden;
   color:@color_text;
 }
 header,footer {
@@ -89,12 +89,14 @@ main > div {
   overflow-y: auto;
   table {
     table-layout: fixed;
-    width: auto!important;
+    width: 100%;
     max-width:100%!important;
+    min-width:100%!important;
     thead { background-color: @color_base; }
     td,th {
       font-size: 0.9em;
       padding: 0.3em;
+      text-overflow:ellipsis;
     }
     tbody {
       background-color:@color_base;

@@ -25,7 +25,8 @@ ipcRenderer.on('library', (event, library) => {
     widgets: ['saveSort', 'resizable', 'stickyHeaders', 'filter', 'zebra'],
     widgetOptions: {
       resizable: true,
-      resizable_targetLast: true,
+      resizable_throttle: true,
+      // resizable_targetLast: true,
       stickyHeaders_attachTo: 'main > div',
       stickyHeaders_yScroll: 'main > div',
       stickyHeaders_filteredToTop: true,
@@ -37,12 +38,17 @@ ipcRenderer.on('library', (event, library) => {
   // console.log('Sorted?')
 })
 ipcRenderer.on('player-state', (event, state) => {
+  // if(!state.playing) $('.playing').removeClass('playing')
+  if((!playerState) || (state.libraryKey !== playerState.libraryKey)) {
+    $('#now-playing').html(sprintf(config.NOW_PLAYING_FORMAT, {key: state.libraryKey, track: state.track}))
+    if(state.playing) {
+      $('.playing').removeClass('playing')
+      $('[data-library-key="' + state.libraryKey + '"]').addClass('playing')
+    }
+  }
   playerState = state
   $('#playhead > span').css({width: ((state.currentTime / state.duration) * 100) + '%'})
-  $('#now-playing').html(sprintf(config.NOW_PLAYING_FORMAT, {key: state.libraryKey, track: state.track}))
   $('#control-toggle-play').toggleClass('fa-play', state.paused).toggleClass('fa-pause', !state.paused)
-  $('.playing').removeClass('playing')
-  if(!state.paused) $('[data-library-key="' + state.libraryKey + '"]').addClass('playing')
   if(state.ended) next()
 })
 function play(obj) {
