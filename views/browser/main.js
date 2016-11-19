@@ -22,7 +22,7 @@ ipcRenderer.on('library', (event, library) => {
   const $table = $currentPlaylist.parent()
   $table.tablesorter({
     // debug: true,
-    widgets: ['resizable', 'stickyHeaders', 'filter', 'zebra'],
+    widgets: ['saveSort', 'resizable', 'stickyHeaders', 'filter', 'zebra'],
     widgetOptions: {
       resizable: true,
       resizable_targetLast: true,
