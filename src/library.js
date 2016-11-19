@@ -16,20 +16,12 @@ ipcMain.on('library', (event, args) => {
       event.returnValue = library[args[0]]
       break
     case 'get':
-      if(library) {
-        output.send('library', library)
-        break
-      }
-      else if(load(output)) {
-        break
-      }
-
+      if((library) && (output.send('library', library))) break
+      else if(load(output)) break
     case 'update':
       update(output)
       break
-
-    default:
-      console.out('Unexpected library command: ' + command)
+    default: console.out('Unexpected library command: ' + command)
   }
 })
 

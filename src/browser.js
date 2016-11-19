@@ -39,7 +39,7 @@ function open() {
   ipcMain.on('player-state', (event, args) => {
     if(isOpen()) win.webContents.send('player-state', args)
   })
-  win.webContents.openDevTools()
+  // win.webContents.openDevTools()
   // Erase self when closing window.
   win.on('closed', () => {
     win = null

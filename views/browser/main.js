@@ -32,10 +32,8 @@ ipcRenderer.on('library', (event, library) => {
 ipcRenderer.on('player-state', (event, state) => {
   if((!playerState) || (state.libraryKey !== playerState.libraryKey)) {
     $('#now-playing').html(sprintf(config.NOW_PLAYING_FORMAT, {key: state.libraryKey, track: state.track}))
-    if(state.playing) {
-      $('.playing').removeClass('playing')
-      $('[data-library-key="' + state.libraryKey + '"]').addClass('playing')
-    }
+    $('.playing').removeClass('playing')
+    $('[data-library-key="' + state.libraryKey + '"]').addClass('playing')
   }
   playerState = state
   $('#playhead > span').css({width: ((state.currentTime / state.duration) * 100) + '%'})
