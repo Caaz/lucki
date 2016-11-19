@@ -5,13 +5,13 @@
   cursor:default;
 }
 body, html {
+  background-color: @color_base;
   display:flex;
   flex-direction:column;
   height:100vh;
   max-height:100vh;
   overflow-y:hidden;
   color:@color_text;
-  background-color:@color_base;
 }
 header,footer {
   display:flex;
@@ -20,8 +20,6 @@ header,footer {
 }
 header { padding: 0.5em; }
 main {
-  border-bottom:1px solid lighten(@color_base,@lighten_amount);
-  background-color:@color_base;
   flex-grow:1;
   display:flex;
 }
@@ -100,8 +98,14 @@ main > div {
       padding: 0.3em;
     }
     tbody {
-      tr:nth-child(odd) { background-color:darken(@color_base,@darken_amount); }
-      tr.selected { background-color:lighten(@color_base,@lighten_amount)!important }
+      background-color:@color_base;
+      // position:relative;
+      tr {
+        height:1.5em;
+        &.odd { background-color:darken(@color_base,@darken_amount); }
+        &.selected { background-color:lighten(@color_base,@lighten_amount)!important; }
+        &.filtered { display:none; }
+      }
     }
     .playing td {
       font-weight:bold;
@@ -116,10 +120,8 @@ main > div {
 }
 .hidden { display:none; }
 
-//tablesorter fixes
 .tablesorter-resizable-handle {
   width:3px;
-  // background-color:darken(@color_base,@darken_amount);
   position:absolute;
   height:100%!important;
 }

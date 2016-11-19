@@ -7,7 +7,7 @@ const _ = require('tablesorter')
 const config = require('./config.js')
 
 let $currentPlaylist
-let $allTracks
+// let $allTracks
 let playerState
 let searchID
 
@@ -17,20 +17,24 @@ ipcRenderer.on('library', (event, library) => {
     if(library[key]) newLibrary += sprintf(config.TRACK_FORMAT, {key, track: library[key]})
   }
   $currentPlaylist.html(newLibrary)
-  $allTracks = $currentPlaylist.clone()
-  console.log('Sorting')
-  $currentPlaylist.parent().tablesorter({
-    debug: true,
-    widgets: ['resizable', 'stickyHeaders'],
+  // $allTracks = $currentPlaylist.clone()
+  // console.log('Sorting')
+  const $table = $currentPlaylist.parent()
+  $table.tablesorter({
+    // debug: true,
+    widgets: ['resizable', 'stickyHeaders', 'filter', 'zebra'],
     widgetOptions: {
       resizable: true,
       resizable_targetLast: true,
       stickyHeaders_attachTo: 'main > div',
       stickyHeaders_yScroll: 'main > div',
-      stickyHeaders_filteredToTop: true
+      stickyHeaders_filteredToTop: true,
+      filter_columnFilters: false,
+      filter_ignoreCase: true
     }
   })
-  console.log('Sorted?')
+  // $.tablesorter.filter.bindSearch($table, $('#search > input'), true)
+  // console.log('Sorted?')
 })
 ipcRenderer.on('player-state', (event, state) => {
   playerState = state
@@ -62,14 +66,16 @@ function previous() {
   else play($currentPlaylist.children()[0])
 }
 function search() {
-  const query = $('#search input').val().toLowerCase()
-  const output = []
-  $allTracks.children().each((i, e) => {
-    if(e.innerText.toLowerCase().indexOf(query) !== -1) {
-      output.push($(e).clone())
-    }
-  })
-  $currentPlaylist.html(output)
+  const query = $('#search input').val()
+
+  $('main > div > table').trigger('search', [['', '', '', query]])
+  // const output = []
+  // $allTracks.children().each((i, e) => {
+  //   if(e.innerText.toLowerCase().indexOf(query) !== -1) {
+  //     output.push($(e).clone())
+  //   }
+  // })
+  // $currentPlaylist.html(output)
 }
 function select($item) {
   if($item.length === 0) return
