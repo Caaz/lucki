@@ -4,7 +4,6 @@ let win
 
 module.exports = {
   open(parent) {
-    console.log('Opening player.')
     win = new BrowserWindow({
       width: 0,
       height: 0,
@@ -12,12 +11,10 @@ module.exports = {
       parent
     })
     win.loadURL('file://' + global.appRoot + '/views/player/layout.html')
-    console.log('Hiding Player window')
     win.hide()
 
     ipcMain.on('player', (event, args) => {
       const command = args.shift()
-      console.log('Got player ' + command + ': ' + args)
       win.webContents.send(command, args)
     })
 

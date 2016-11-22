@@ -35,10 +35,10 @@ ipcRenderer.on('player-state', (event, state) => {
     $('.playing').removeClass('playing')
     $('[data-library-key="' + state.libraryKey + '"]').addClass('playing')
   }
+  if(state.ended && state.trigger === 'pause') next()
   playerState = state
   $('#playhead > span').css({width: ((state.currentTime / state.duration) * 100) + '%'})
   $('#control-toggle-play').toggleClass('fa-play', state.paused).toggleClass('fa-pause', !state.paused)
-  if(state.ended) next()
 })
 function play(obj) {
   let key

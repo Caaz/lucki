@@ -28,8 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
   state = {}
   audio = document.getElementsByTagName('AUDIO')[0]
   const updateTriggers = ['playing', 'pause', 'timeupdate']
-  updateTriggers.forEach(e => {
-    audio.addEventListener(e, update)
+  updateTriggers.forEach(trigger => {
+    audio.addEventListener(trigger, () => {
+      setState({trigger})
+      update()
+    })
   })
   ipcRenderer.on('pause', audio.pause)
 })
