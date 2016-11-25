@@ -12,8 +12,13 @@ ipcMain.on('library', (event, args) => {
   const output = event.sender
   switch(command) {
     case 'info':
-      output.send('info', library[args[0]])
-      event.returnValue = library[args[0]]
+      if(library[args[0]]) {
+        getTags(library[args[0]].location, tag => {
+          tag.location = library[args[0]].location
+          output.send('info', tag)
+        })
+        event.returnValue = library[args[0]]
+      }
       break
     case 'get':
       if((library) && (output.send('library', library))) break
@@ -49,13 +54,15 @@ function update(out) {
     else parseFiles(files, out)
   })
 }
+function getTags(file, callback) {
+  const data = fs.readFileSync(file)
+  ID3.parse(data).then(callback)
+}
 function parseFiles(files, out) {
   const file = files.shift()
   if(file) {
     // console.log("Reading "+file)
-    const data = fs.readFileSync(file)
-    ID3.parse(data).then(tag => {
-      // We don't want to store these in the library cache because holy shit.
+    getTags(file, tag => {
       delete tag.image
       delete tag.version
 

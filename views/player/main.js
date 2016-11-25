@@ -57,3 +57,10 @@ ipcRenderer.on('toggle', (e, a) => {
     else audio.pause()
   }
 })
+
+ipcRenderer.on('info', (e, track) => {
+  if(state.track.location === track.location) {
+    if(track.image) track.image.data = track.image.data.toString('base64')
+    setState({track})
+  }
+})

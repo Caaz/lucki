@@ -38,20 +38,28 @@ main {
 .controls { display:flex; }
 #now-playing {
   display:flex;
-  flex-direction:column;
   background-color: darken(@color_base,@darken_amount);
   border:1px solid lighten(@color_base,@lighten_amount);
-  justify-content:space-around;
   padding: 0.3em;
   margin: 0 0.5em;
   flex-grow:1;
-  white-space: nowrap;
   overflow: hidden;
-  * { font-family:sans-serif; }
-  .small{
-    opacity: 0.5;
-    font-weight: 100;
-    font-size: 14px;
+  #album-art > img {
+    height:2em;
+    width:2em;
+    margin-right:0.3em;
+  }
+  #track-info {
+    display:flex;
+    flex-direction:column;
+    justify-content:space-around;
+    white-space: nowrap;
+    * { font-family:sans-serif; }
+    .small{
+      opacity: 0.5;
+      font-weight: 100;
+      font-size: 14px;
+    }
   }
 }
 #playhead {

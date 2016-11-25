@@ -30,8 +30,14 @@ ipcRenderer.on('library', (event, library) => {
   })
 })
 ipcRenderer.on('player-state', (event, state) => {
+  if((!playerState) || (state.track.image && playerState.track.image && playerState.track.image.data !== state.track.image.data)) {
+    // console.log(state.track.image)
+    $('#album-art').html('<img src="data:' + state.track.image.mime + ';base64,' + state.track.image.data + '">')
+  } else if (!state.track.image) {
+    $('#album-art').empty()
+  }
   if((!playerState) || (state.libraryKey !== playerState.libraryKey)) {
-    $('#now-playing').html(sprintf(config.NOW_PLAYING_FORMAT, {key: state.libraryKey, track: state.track}))
+    $('#track-info').html(sprintf(config.NOW_PLAYING_FORMAT, {key: state.libraryKey, track: state.track}))
     $('.playing').removeClass('playing')
     $('[data-library-key="' + state.libraryKey + '"]').addClass('playing')
   }
