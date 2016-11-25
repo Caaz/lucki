@@ -42,8 +42,9 @@ ipcRenderer.on('play', (e, args) => {
     const track = ipcRenderer.sendSync('library', ['info', args[0]])
     if(track) {
       setState({libraryKey: args[0], track})
-      audio.src = track.location
-      echo('Playing track: ' + track.location)
+      const file = track.location.replace(/\?/g, '%3F')
+      audio.src = file
+      echo('Playing track: ' + file)
     }
   }
   audio.play()
