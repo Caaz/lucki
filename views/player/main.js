@@ -44,7 +44,8 @@ ipcRenderer.on('play', (e, args) => {
       setState({libraryKey: args[0], track})
       const file = track.location.replace(/\?/g, '%3F')
       audio.src = file
-      echo('Playing track: ' + file)
+      echo('Playing track:')
+      echo(track)
     }
   }
   audio.play()

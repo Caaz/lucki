@@ -55,6 +55,10 @@ function parseFiles(files, out) {
     // console.log("Reading "+file)
     const data = fs.readFileSync(file)
     ID3.parse(data).then(tag => {
+      // We don't want to store these in the library cache because holy shit.
+      delete tag.image
+      delete tag.version
+
       tag.location = file
       if(tag.title === '') {
         const fparts = file.split('/')
