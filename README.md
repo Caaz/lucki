@@ -23,3 +23,14 @@ Builds the app for macOS, Linux, and Windows, using [electron-packager](https://
 
 ## License
 MIT © [Daniel Caaz](https://caaz.me)
+
+## Collaborators
+- Gentry Rolofson
+  - UI and Style Changes
+- Michael Barlett
+  - Fancy Logo
+- Daniel Caaz
+  - Everything else
+
+### Misc
+We couldn't have made this possible without those who created Electron, NodeJS, and those who handle ID3 libraries so credit to those creators as well.
