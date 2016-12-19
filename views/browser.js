@@ -1,13 +1,21 @@
 const {ipcRenderer} = require('electron')
 const $ = require('jquery')
-// const tablesorter = require('tablesorter')
 const {sprintf} = require('sprintf-js')
-const _ = require('tablesorter')
-// const _ = require('../../node_modules/tablesorter/dist/js/jquery.tablesorter.min.js')
-const config = require('./config.js')
+require('tablesorter')
+
+const config = {
+  TRACK_FORMAT:
+    '<tr data-selectable=true data-library-key="%(key)s">' +
+      '<td>%(track.title)s</td>' +
+      '<td>%(track.artist)s</td>' +
+      '<td>%(track.album)s</td>' +
+    '</tr>',
+  NOW_PLAYING_FORMAT:
+    '<span>%(track.title)s</span>' +
+    '<span class="small">%(track.artist)s - %(track.album)s</span>'
+}
 
 let $currentPlaylist
-// let $allTracks
 let playerState
 let searchID
 
@@ -88,48 +96,46 @@ function select($item) {
   else if(bottomAdjust > 0) $content[0].scrollTop += bottomAdjust
 }
 
-module.exports = {
-  ready() {
-    $currentPlaylist = $('#track-list')
-    ipcRenderer.send('library', ['get'])
-    const $document = $(document)
+$(() => {
+  $currentPlaylist = $('#track-list')
+  ipcRenderer.send('library', ['get'])
+  const $document = $(document)
 
-    $document.keydown(e => {
-      if(e.target.tagName === 'INPUT') {
-        if(searchID) clearTimeout(searchID)
-        searchID = setTimeout(search, 500)
-      } else {
-        let prevent = true
-        if(e.key === 'ArrowRight') next()
-        else if(e.key === 'ArrowLeft') previous()
-        else if(e.key === 'ArrowUp') select($('.selected').prev())
-        else if(e.key === 'ArrowDown') select($('.selected').next())
-        else if(e.key === ' ') {
-          ipcRenderer.send('player', ['toggle', 'play'])
-          console.log('Sending toggle play')
-        }
-        else if(e.key === 'Enter') play($('.selected'))
-        else prevent = false
-        if(prevent) e.preventDefault()
+  $document.keydown(e => {
+    if(e.target.tagName === 'INPUT') {
+      if(searchID) clearTimeout(searchID)
+      searchID = setTimeout(search, 500)
+    } else {
+      let prevent = true
+      if(e.key === 'ArrowRight') next()
+      else if(e.key === 'ArrowLeft') previous()
+      else if(e.key === 'ArrowUp') select($('.selected').prev())
+      else if(e.key === 'ArrowDown') select($('.selected').next())
+      else if(e.key === ' ') {
+        ipcRenderer.send('player', ['toggle', 'play'])
+        console.log('Sending toggle play')
+      }
+      else if(e.key === 'Enter') play($('.selected'))
+      else prevent = false
+      if(prevent) e.preventDefault()
+    }
+  })
+  $document.click(e => {
+    [e.target, e.target.parentNode].forEach(target => {
+      if(target.dataset.selectable) select($(target))
+      if(target.id) {
+        if(target.id === 'control-previous-track') previous()
+        else if(target.id === 'control-toggle-play') ipcRenderer.send('player', ['toggle', 'play'])
+        else if(target.id === 'control-toggle-shuffle') $(target).toggleClass('enabled')
+        else if(target.id === 'control-toggle-repeat') $(target).toggleClass('enabled')
+        else if(target.id === 'control-next-track') next()
+        else if(target.id === 'control-search') search()
       }
     })
-    $document.click(e => {
-      [e.target, e.target.parentNode].forEach(target => {
-        if(target.dataset.selectable) select($(target))
-        if(target.id) {
-          if(target.id === 'control-previous-track') previous()
-          else if(target.id === 'control-toggle-play') ipcRenderer.send('player', ['toggle', 'play'])
-          else if(target.id === 'control-toggle-shuffle') $(target).toggleClass('enabled')
-          else if(target.id === 'control-toggle-repeat') $(target).toggleClass('enabled')
-          else if(target.id === 'control-next-track') next()
-          else if(target.id === 'control-search') search()
-        }
-      })
+  })
+  $document.dblclick(e => {
+    [e.target, e.target.parentNode].forEach(target => {
+      if(target.dataset.libraryKey) ipcRenderer.send('player', ['play', target.dataset.libraryKey])
     })
-    $document.dblclick(e => {
-      [e.target, e.target.parentNode].forEach(target => {
-        if(target.dataset.libraryKey) ipcRenderer.send('player', ['play', target.dataset.libraryKey])
-      })
-    })
-  }
-}
+  })
+})

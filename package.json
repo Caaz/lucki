@@ -1,7 +1,7 @@
 {
   "name": "lucki",
   "productName": "Lucki Media",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "A media player",
   "license": "MIT",
   "repository": "Caaz/lucki",
@@ -30,6 +30,7 @@
     "electron"
   ],
   "dependencies": {
+    "carlin": "git+https://git@github.com/Caaz/carlin.git",
     "electron-debug": "^1.0.0",
     "font-awesome": "^4.7.0",
     "glob": "^7.1.1",

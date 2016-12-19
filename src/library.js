@@ -35,22 +35,25 @@ ipcMain.on('library', (event, args) => {
 
 function load(out) {
   if(fs.existsSync(cache)) {
-    console.time('Load Library Cache')
+    console.log('Loading Library Cache')
+    console.time('Loaded Library Cache')
     const data = fs.readFileSync(cache)
     library = JSON.parse(data)
-    console.timeEnd('Load Library Cache')
+    console.timeEnd('Loaded Library Cache')
     out.send('library', library)
     return true
   }
   return false
 }
 function save() {
-  console.time('Save Library')
+  console.log('Saving Library')
+  console.time('Saved Library')
   fs.writeFileSync(cache, JSON.stringify(library))
-  console.timeEnd('Save Library')
+  console.timeEnd('Saved Library')
 }
 function update(out) {
-  console.time('Update Library')
+  console.log('Updating Library')
+  console.time('Updated Library')
   library = {}
   glob(process.env.HOME + '/Music/**/*.mp3', (err, files) => {
     if(err) console.log(err)
@@ -76,7 +79,7 @@ function parseFiles(files, out) {
       parseFiles(files, out)
     })
   } else {
-    console.timeEnd('Update Library')
+    console.timeEnd('Updated Library')
     out.send('library', library)
     save(out)
   }
