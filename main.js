@@ -31,7 +31,7 @@ app.on('ready', () => {
   const style = theme + 'main.less'
   const content = fs.readFileSync(style).toString()
   less.render(content, {paths: [theme]}).then(output => {
-    fs.writeFileSync(global.appData + '/tmp/style.css', output.css)
+    fs.writeFileSync(global.appRoot + '/tmp/theme.css', output.css)
     browser.open()
   })
 })
