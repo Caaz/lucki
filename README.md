@@ -27,7 +27,7 @@ MIT © [Daniel Caaz](https://caaz.me)
 ## Collaborators
 - Gentry Rolofson
   - UI and Style Changes
-- Michael Barlett
+- Michael Bartlett
   - Fancy Logo
 - Daniel Caaz
   - Everything else
