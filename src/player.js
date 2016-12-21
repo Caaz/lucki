@@ -10,7 +10,8 @@ module.exports = {
       skipTaskbar: true,
       parent
     })
-    win.loadURL('file://' + global.appRoot + '/views/player/layout.html')
+    win.loadURL('file://' + global.appRoot + '/views/player.html')
+    console.log('Hiding Player window')
     win.hide()
 
     ipcMain.on('player', (event, args) => {

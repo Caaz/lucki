@@ -44,22 +44,22 @@ main {
   margin: 0 0.5em;
   flex-grow:1;
   overflow: hidden;
-  #album-art > img {
-    height:2em;
-    width:2em;
-    margin-right:0.3em;
-  }
-  #track-info {
-    display:flex;
-    flex-direction:column;
-    justify-content:space-around;
-    white-space: nowrap;
-    * { font-family:sans-serif; }
-    .small{
-      opacity: 0.5;
-      font-weight: 100;
-      font-size: 14px;
-    }
+}
+#album-art > img {
+  max-height:2em;
+  max-width:2em;
+  margin-right:0.3em;
+}
+#track-info {
+  display:flex;
+  flex-direction:column;
+  justify-content:space-around;
+  white-space: nowrap;
+  * { font-family:sans-serif; }
+  .small{
+    opacity: 0.5;
+    font-weight: 100;
+    font-size: 14px;
   }
 }
 #playhead {

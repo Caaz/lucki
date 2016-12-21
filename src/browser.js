@@ -10,7 +10,7 @@ function open() {
     autoHideMenuBar: true
   })
   player.open(win)
-  win.loadURL('file://' + global.appRoot + '/views/render.html?view=browser')
+  win.loadURL('file://' + global.views.browser)
   // The length of this pains me.
   win.setMenu(Menu.buildFromTemplate([
     {

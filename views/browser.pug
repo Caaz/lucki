@@ -1,0 +1,29 @@
+doctype html
+html
+  head
+    title Lucki Media Player
+    link(rel='stylesheet' href= appRoot + '/views/reset.css')
+    link(rel='stylesheet' href= appRoot + '/node_modules/font-awesome/css/font-awesome.min.css')
+    link(rel='stylesheet' href= appData + '/tmp/style.css')
+    script(src= appRoot + '/views/browser.js')
+  body
+    header
+      div.controls
+        i.button.fa.fa-step-backward.fa-lg#control-previous-track
+        i.button.fa.fa-play.fa-lg#control-toggle-play
+        i.button.fa.fa-step-forward.fa-lg#control-next-track
+        i.button.fa.fa-random.fa-lg#control-toggle-shuffle
+        i.button.fa.fa-repeat.fa-lg#control-toggle-repeat
+      #now-playing
+        #album-art
+        #track-info
+      #search
+        input(type='text' placeholder='Search')
+        i.button.fa.fa-search#control-search
+    #playhead: span
+    main: div: table
+      thead: tr
+        th Title
+        th Artist
+        th Album
+      tbody#track-list
