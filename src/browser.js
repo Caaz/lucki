@@ -7,7 +7,8 @@ function open() {
   win = new BrowserWindow({
     width: 800,
     height: 600,
-    autoHideMenuBar: true
+    autoHideMenuBar: true,
+    icon: 'assets/icon-small.png'
   })
   player.open(win)
   win.loadURL('file://' + global.views.browser)
