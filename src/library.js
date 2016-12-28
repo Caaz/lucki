@@ -3,7 +3,7 @@ const {ipcMain} = require('electron')
 const glob = require('glob')
 const ID3 = require('id3-parser')
 
-const cache = process.env.HOME + '/.lucki/library_cache_new.json'
+const cache = global.appData + '/library_cache.json'
 
 let library = false
 
@@ -76,8 +76,8 @@ function parseFiles(files, out) {
         title.pop()
         tag.title = title.join('.')
       }
-      if(tag.artist !== null) tag.artist = ''
-      if(tag.album !== null) tag.album = ''
+      if(tag.artist == null) tag.artist = ''
+      if(tag.album == null) tag.album = ''
       if (!(!tag.title && !tag.artist && !tag.album)) {
         library[hash(file)] = tag
       }
