@@ -50,7 +50,7 @@ function open() {
   }
 
   // Pass notification-action and player-state to the view.
-  const passthrough = ['notification', 'player-state']
+  const passthrough = ['player-state']
   for(const i in passthrough) {
     ipcMain.on(passthrough[i], (event, args) => {
       if(isOpen()) win.webContents.send(passthrough[i], args)
