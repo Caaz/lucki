@@ -76,8 +76,8 @@ function parseFiles(files, out) {
         title.pop()
         tag.title = title.join('.')
       }
-      if(tag.artist == null) tag.artist = ''
-      if(tag.album == null) tag.album = ''
+      if(tag.artist === null) tag.artist = ''
+      if(tag.album === null) tag.album = ''
       if (!(!tag.title && !tag.artist && !tag.album)) {
         library[hash(file)] = tag
       }

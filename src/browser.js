@@ -1,4 +1,4 @@
-const {BrowserWindow, Menu, ipcMain} = require('electron')
+const {BrowserWindow, Menu, ipcMain, globalShortcut} = require('electron')
 const library = require('./library')
 const player = require('./player')
 
@@ -8,7 +8,7 @@ function open() {
     width: 800,
     height: 600,
     autoHideMenuBar: true,
-    icon: 'assets/icon-small.png'
+    icon: 'assets/icon.png'
   })
   player.open(win)
   win.loadURL('file://' + global.views.browser)
@@ -36,6 +36,23 @@ function open() {
       ]
     }
   ]))
+
+  // 'MediaNextTrack, MediaPreviousTrack, MediaStop and MediaPlayPause'
+
+  // Listen for media keys
+  globalShortcut.register('MediaNextTrack', () => {
+    win.webContents.send('next')
+  })
+  globalShortcut.register('MediaPreviousTrack', () => {
+    win.webContents.send('previous')
+  })
+  globalShortcut.register('MediaPlayPause', () => {
+    win.webContents.send('playToggle')
+  })
+  globalShortcut.register('MediaStop', () => {
+    win.webContents.send('stop')
+  })
+  // Simplify this.
 
   ipcMain.on('player-state', (event, args) => {
     if(isOpen()) win.webContents.send('player-state', args)

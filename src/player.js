@@ -19,7 +19,6 @@ module.exports = {
       win.webContents.send(command, args)
     })
 
-    // Erase self when closing window.
     win.on('closed', () => {
       win = null
     })

@@ -58,6 +58,18 @@ ipcRenderer.on('player-state', (event, state) => {
   $('#playhead > span').css({width: ((state.currentTime / state.duration) * 100) + '%'})
   $('#control-toggle-play').toggleClass('fa-play', state.paused).toggleClass('fa-pause', !state.paused)
 })
+ipcRenderer.on('next', next)
+ipcRenderer.on('previous', next)
+ipcRenderer.on('playToggle', playToggle)
+ipcRenderer.on('stop', stop)
+
+function stop() {
+  // This should do something else, but for now simply always pausing is fine.
+  if(!playerState.paused) ipcRenderer.send('player', ['toggle', 'play'])
+}
+function playToggle() {
+  ipcRenderer.send('player', ['toggle', 'play'])
+}
 function play(obj) {
   let key
   if(typeof obj === 'string') key = obj
@@ -107,10 +119,7 @@ $(() => {
       else if(e.key === 'ArrowLeft') previous()
       else if(e.key === 'ArrowUp') select($('.selected').prev())
       else if(e.key === 'ArrowDown') select($('.selected').next())
-      else if(e.key === ' ') {
-        ipcRenderer.send('player', ['toggle', 'play'])
-        console.log('Sending toggle play')
-      }
+      else if(e.key === ' ') playToggle()
       else if(e.key === 'Enter') play($('.selected'))
       else prevent = false
       if(prevent) e.preventDefault()
