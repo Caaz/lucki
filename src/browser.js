@@ -36,27 +36,27 @@ function open() {
       ]
     }
   ]))
-
-  // 'MediaNextTrack, MediaPreviousTrack, MediaStop and MediaPlayPause'
-
+  const mediaKeys = [
+    ['MediaNextTrack', 'next'],
+    ['MediaPreviousTrack', 'previous'],
+    ['MediaPlayPause', 'playToggle'],
+    ['MediaStop', 'stop']
+  ]
   // Listen for media keys
-  globalShortcut.register('MediaNextTrack', () => {
-    win.webContents.send('next')
-  })
-  globalShortcut.register('MediaPreviousTrack', () => {
-    win.webContents.send('previous')
-  })
-  globalShortcut.register('MediaPlayPause', () => {
-    win.webContents.send('playToggle')
-  })
-  globalShortcut.register('MediaStop', () => {
-    win.webContents.send('stop')
-  })
-  // Simplify this.
+  for(const i in mediaKeys) {
+    globalShortcut.register(mediaKeys[i][0], () => {
+      win.webContents.send(mediaKeys[i][1])
+    })
+  }
 
-  ipcMain.on('player-state', (event, args) => {
-    if(isOpen()) win.webContents.send('player-state', args)
-  })
+  // Pass notification-action and player-state to the view.
+  const passthrough = ['notification', 'player-state']
+  for(const i in passthrough) {
+    ipcMain.on(passthrough[i], (event, args) => {
+      if(isOpen()) win.webContents.send(passthrough[i], args)
+    })
+  }
+
   // win.webContents.openDevTools()
   // Erase self when closing window.
   win.on('closed', () => {

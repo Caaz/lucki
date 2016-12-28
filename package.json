@@ -32,6 +32,7 @@
   "dependencies": {
     "carlin": "git+https://git@github.com/Caaz/carlin.git",
     "electron-debug": "^1.0.0",
+    "electron-notifications": "^0.1.4",
     "font-awesome": "^4.7.0",
     "glob": "^7.1.1",
     "id3-parser": "^1.0.3",
@@ -55,9 +56,10 @@
     "esnext": true,
     "rules": {
       "camelcase": 0,
+      "no-loop-func": 0,
       "no-unused-vars": 1,
       "max-statements-per-line": 1,
-      "guard-for-in": 1,
+      "guard-for-in": 0,
       "keyword-spacing": 0,
       "no-fallthrough": 0,
       "brace-style": 0,

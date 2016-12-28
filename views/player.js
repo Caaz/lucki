@@ -2,6 +2,7 @@ const {ipcRenderer} = require('electron')
 
 let audio
 let state
+let notification
 // let continousUpdate = false
 
 function echo(obj) {
@@ -46,6 +47,27 @@ ipcRenderer.on('play', (e, args) => {
       audio.src = file
       echo('Playing track:')
       echo(track)
+      if(notification) notification.close()
+      try {
+        notification = new Notification(track.title, {
+          body: track.artist + ' - ' + track.album,
+          // image: '../assets/icon.png',
+          icon: '../assets/icon.png',
+          silent: true,
+          tag: 'nowPlaying'
+          // actions: [
+          //   {action: 'like', title: 'Pewke'}
+          // ]
+        })
+        notification.onerror = err => {
+          echo(err)
+        }
+        notification.onclick = () => {
+          notification.close()
+        }
+      } catch(err) {
+        echo('Notification Error: ' + err)
+      }
     }
   }
   audio.play()
