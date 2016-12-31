@@ -14,12 +14,16 @@ html
         i.button.fa.fa-step-forward.fa-lg#control-next-track
         i.button.fa.fa-random.fa-lg#control-toggle-shuffle
         i.button.fa.fa-repeat.fa-lg#control-toggle-repeat
+        i.button.fa.fa-volume-up.fa-lg#control-toggle-volume
       #now-playing
         #album-art
         #track-info
       #search
         input(type='text' placeholder='Search')
         i.button.fa.fa-search#control-search
+    #volume
+      h2 Volume
+      .slider
     #playhead
     main: div: table
       thead: tr

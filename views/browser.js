@@ -19,7 +19,9 @@ require('jquery-ui/ui/widget')
 // require('jquery-ui/ui/unique-id')
 // require('jquery-ui/ui/version')
 require('jquery-ui/ui/widgets/mouse')
+// require('jquery-ui/ui/widgets/button')
 require('jquery-ui/ui/widgets/slider')
+// require('jquery-ui/ui/widgets/dialog')
 require('tablesorter')
 // But don't call me shirley
 
@@ -39,7 +41,7 @@ let $currentPlaylist
 let $table
 let playerState
 let searchID
-let disablePlayheadUpdates = false;
+let disableSliderUpdates = false
 
 ipcRenderer.on('library', (event, library) => {
   let newLibrary = ''
@@ -64,10 +66,10 @@ ipcRenderer.on('player-state', (event, state) => {
   }
   if(state.ended && state.trigger === 'pause') next()
   playerState = state
-  const percentage = (state.currentTime / state.duration) * 100
-  // console.log('timeupdate: ' + percentage)
-  if(!disablePlayheadUpdates) $('#playhead').slider('value', percentage)
-  // $('#playhead > span').css({width: ((state.currentTime / state.duration) * 100) + '%'})
+  if(!disableSliderUpdates) {
+    $('#playhead').slider('value', (state.currentTime / state.duration) * 100)
+    $('#volume .slider').slider('value', state.volume * 100)
+  }
   $('#control-toggle-play').toggleClass('fa-play', state.paused).toggleClass('fa-pause', !state.paused)
 })
 ipcRenderer.on('next', next)
@@ -121,16 +123,28 @@ $(() => {
   $table = $currentPlaylist.parent()
   ipcRenderer.send('library', ['get'])
   const $document = $(document)
+  $('#volume').hide()
+  $('#volume > .slider').slider({
+    value: 100,
+    step: 0.001,
+    start() {
+      $('#volume .slider').slider('value', 0)
+      disableSliderUpdates = true
+    },
+    stop(e, ui) {
+      ipcRenderer.send('player', ['volume', ui.value / 100])
+      disableSliderUpdates = false
+      $('#volume').hide()
+    }
+  })
   $('#playhead').slider({
     step: 0.001,
     start() {
-      disablePlayheadUpdates = true
+      disableSliderUpdates = true
     },
     stop(e, ui) {
-      //
-      // console.log(ui)
       ipcRenderer.send('player', ['position', ui.value / 100])
-      disablePlayheadUpdates = false
+      disableSliderUpdates = false
     }
   })
   $table.tablesorter({
@@ -170,6 +184,17 @@ $(() => {
         else if(target.id === 'control-toggle-play') ipcRenderer.send('player', ['toggle', 'play'])
         else if(target.id === 'control-toggle-shuffle') $(target).toggleClass('enabled')
         else if(target.id === 'control-toggle-repeat') $(target).toggleClass('enabled')
+        else if(target.id === 'control-toggle-volume') {
+          disableSliderUpdates = true
+          if(playerState && playerState.volume) {
+            console.log('setting value: ' + playerState.volume)
+            $('#volume .slider')
+              // Fuck you, jQuery UI.
+              .slider('value', 0)
+              .slider('value', playerState.volume * 100)
+          }
+          $('#volume').show()
+        }
         else if(target.id === 'control-next-track') next()
         else if(target.id === 'control-search') search()
       }

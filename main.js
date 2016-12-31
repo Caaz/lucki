@@ -33,6 +33,8 @@ app.on('ready', () => {
   less.render(content, {paths: [theme]}).then(output => {
     fs.writeFileSync(global.appRoot + '/tmp/theme.css', output.css)
     browser.open()
+  }, err => {
+    console.error(err)
   })
 })
 app.on('activate', () => {
