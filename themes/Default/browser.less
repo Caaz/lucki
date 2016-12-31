@@ -74,14 +74,8 @@ main {
   span {
     position:absolute;
     display:block;
-    // overflow-y:hidden;
-    // overflow-x:visible;
-    // Apparently the width of this reaaaally matters.
-    width:@playHeight;
-    // height:@playHeight;
-    transition:left 200ms linear;
+    width:@playHeight; // If you change this, things will break.
     &::after {
-      transition:height 200ms;
       content:'';
       display:block;
       height:@playHeight;
@@ -91,12 +85,6 @@ main {
       pointer-events: none;
     }
   }
-  // &:hover {
-  //   height:@playHeight*2;
-  //   span::after{
-  //     height:@playHeight*2;
-  //   }
-  // }
 }
 #search {
   display:flex;
