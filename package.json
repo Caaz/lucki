@@ -35,6 +35,7 @@
     "electron-notifications": "^0.1.4",
     "font-awesome": "^4.7.0",
     "glob": "^7.1.1",
+    "httpdispatcher": "^2.0.1",
     "id3-parser": "^1.0.3",
     "jquery": "^3.1.1",
     "jquery-ui": "^1.12.1",

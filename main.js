@@ -11,6 +11,9 @@ mkdirp(global.appRoot + '/tmp/', err => {
   if(err) console.error(err)
 })
 
+// Start webserver. This should probably be under config or something.
+// require('./src/webserver')
+
 // Set up views.
 carlin.settings({outDir: global.appRoot + '/tmp/', pugOptions: {
   appRoot: global.appRoot,
@@ -18,9 +21,11 @@ carlin.settings({outDir: global.appRoot + '/tmp/', pugOptions: {
 }})
 console.time('Compiling Views')
 carlin.compile(global.appRoot + '/views/browser.pug')
+carlin.compile(global.appRoot + '/views/webserver.pug')
 console.timeEnd('Compiling Views')
 global.views = {
-  browser: carlin.get('browser')
+  browser: carlin.get('browser'),
+  webserver: carlin.get('webserver')
 }
 
 // Main browser window.

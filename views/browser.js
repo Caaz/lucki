@@ -46,7 +46,11 @@ let disableSliderUpdates = false
 ipcRenderer.on('library', (event, library) => {
   let newLibrary = ''
   for(const key in library) {
-    if(library[key]) newLibrary += sprintf(config.TRACK_FORMAT, {key, track: library[key]})
+    if(library[key]) {
+      const track = {title: '', album: '', artist: ''}
+      Object.assign(track, library[key])
+      newLibrary += sprintf(config.TRACK_FORMAT, {key, track})
+    }
   }
   const $newLibrary = $(newLibrary)
   $currentPlaylist.html($newLibrary).trigger('addRows', [$newLibrary, true])

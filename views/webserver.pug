@@ -1,11 +1,11 @@
 doctype html
 html
   head
-    title Lucki Media Player
-    //- link(rel='stylesheet' href= appRoot + '/views/reset.css')
-    link(rel='stylesheet' href= appRoot + '/node_modules/font-awesome/css/font-awesome.min.css')
-    link(rel='stylesheet' href= appRoot + '/tmp/theme.css')
-    script(src= appRoot + '/views/browser.js')
+    title Lucki Web Control
+    //- link(rel='stylesheet' href= '/views/reset.css')
+    link(rel='stylesheet' href= '/node_modules/font-awesome/css/font-awesome.min.css')
+    link(rel='stylesheet' href= '/tmp/theme.css')
+    script(src='/webserver.js')
   body
     header
       div.controls
@@ -18,14 +18,14 @@ html
       #now-playing
         #album-art
         #track-info
-      #search
+      //- #search
         input(type='text' placeholder='Search')
         i.button.fa.fa-search#control-search
     #volume
       h2 Volume
       .slider
     #playhead
-    main: div: table
+    //- main: div: table
       thead: tr
         th Title
         th Artist
