@@ -32,7 +32,14 @@ document.addEventListener('DOMContentLoaded', () => {
   })
   ipcRenderer.on('pause', audio.pause)
 })
-
+ipcRenderer.on('position', (e, args) => {
+  echo('Setting position: ' + args[0])
+  audio.currentTime = audio.duration * args[0]
+})
+ipcRenderer.on('volume', (e, args) => {
+  echo('Setting volume: ' + args[0])
+  audio.volume = args[0]
+})
 ipcRenderer.on('play', (e, args) => {
   if(args.length > 0) {
     const track = ipcRenderer.sendSync('library', ['info', args[0]])

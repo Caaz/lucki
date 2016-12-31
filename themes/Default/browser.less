@@ -3,6 +3,9 @@
   -webkit-user-select: none;
   font-family:sans-serif;
   cursor:default;
+  *:focus {
+    outline:none;
+  }
 }
 body, html {
   background-color: @color_base;
@@ -63,15 +66,37 @@ main {
   }
 }
 #playhead {
-  @playHeight: .2em;
-  background-color: darken(@color_base, @darken_amount);
+  @playHeight: .5em;
+  background:linear-gradient(90deg, darken(@color_accent, @darken_amount*3), @color_accent 50%, lighten(@color_accent, @lighten_amount*4));
+  flex-shrink:0;
+  height:@playHeight;
+  transition:height 200ms;
   span {
+    position:absolute;
     display:block;
-    width:100%;
-    -webkit-transition: width 500ms;
-    height:@playHeight;
-    background:linear-gradient(90deg, darken(@color_accent, @darken_amount*3), @color_accent 50%, lighten(@color_accent, @lighten_amount*4));
+    // overflow-y:hidden;
+    // overflow-x:visible;
+    // Apparently the width of this reaaaally matters.
+    width:@playHeight;
+    // height:@playHeight;
+    transition:left 200ms linear;
+    &::after {
+      transition:height 200ms;
+      content:'';
+      display:block;
+      height:@playHeight;
+      width:100vw;
+      background-color:darken(@color_base, @darken_amount);
+      z-index:-1;
+      pointer-events: none;
+    }
   }
+  // &:hover {
+  //   height:@playHeight*2;
+  //   span::after{
+  //     height:@playHeight*2;
+  //   }
+  // }
 }
 #search {
   display:flex;

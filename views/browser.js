@@ -1,7 +1,27 @@
 const {ipcRenderer} = require('electron')
-const $ = require('jquery')
+const $ = window.$ = window.jQuery = require('jquery')
 const {sprintf} = require('sprintf-js')
+
+// Surely there's a better way.
+require('jquery-ui/ui/widget')
+// require('jquery-ui/ui/data')
+// require('jquery-ui/ui/disable-selection')
+// // require('jquery-ui/ui/focusable')
+// require('jquery-ui/ui/form')
+// // require('jquery-ui/ui/ie')
+// require('jquery-ui/ui/keycode')
+// require('jquery-ui/ui/labels')
+// require('jquery-ui/ui/plugin')
+// require('jquery-ui/ui/safe-active-element')
+// require('jquery-ui/ui/safe-blur')
+// require('jquery-ui/ui/scroll-parent')
+// require('jquery-ui/ui/tabbable')
+// require('jquery-ui/ui/unique-id')
+// require('jquery-ui/ui/version')
+require('jquery-ui/ui/widgets/mouse')
+require('jquery-ui/ui/widgets/slider')
 require('tablesorter')
+// But don't call me shirley
 
 const config = {
   TRACK_FORMAT:
@@ -19,6 +39,7 @@ let $currentPlaylist
 let $table
 let playerState
 let searchID
+let disablePlayheadUpdates = false;
 
 ipcRenderer.on('library', (event, library) => {
   let newLibrary = ''
@@ -43,7 +64,10 @@ ipcRenderer.on('player-state', (event, state) => {
   }
   if(state.ended && state.trigger === 'pause') next()
   playerState = state
-  $('#playhead > span').css({width: ((state.currentTime / state.duration) * 100) + '%'})
+  const percentage = (state.currentTime / state.duration) * 100
+  // console.log('timeupdate: ' + percentage)
+  if(!disablePlayheadUpdates) $('#playhead').slider('value', percentage)
+  // $('#playhead > span').css({width: ((state.currentTime / state.duration) * 100) + '%'})
   $('#control-toggle-play').toggleClass('fa-play', state.paused).toggleClass('fa-pause', !state.paused)
 })
 ipcRenderer.on('next', next)
@@ -97,15 +121,27 @@ $(() => {
   $table = $currentPlaylist.parent()
   ipcRenderer.send('library', ['get'])
   const $document = $(document)
+  $('#playhead').slider({
+    step: 0.001,
+    start() {
+      disablePlayheadUpdates = true
+    },
+    stop(e, ui) {
+      //
+      // console.log(ui)
+      ipcRenderer.send('player', ['position', ui.value / 100])
+      disablePlayheadUpdates = false
+    }
+  })
   $table.tablesorter({
     // debug: true,
-    widgets: ['saveSort', 'resizable', 'stickyHeaders', 'filter', 'zebra'],
+    widgets: ['saveSort', 'resizable', 'filter', 'zebra'],
     widgetOptions: {
       resizable: true,
       resizable_throttle: true,
-      stickyHeaders_attachTo: 'main > div',
-      stickyHeaders_yScroll: 'main > div',
-      stickyHeaders_filteredToTop: true,
+      // stickyHeaders_attachTo: 'main > div',
+      // stickyHeaders_yScroll: 'main > div',
+      // stickyHeaders_filteredToTop: true,
       filter_columnFilters: false,
       filter_ignoreCase: true
     }
