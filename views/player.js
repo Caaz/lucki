@@ -19,11 +19,6 @@ function update() {
   state.ended = audio.ended
   ipcRenderer.send('player-state', state)
 }
-function setState(obj) {
-  for(const key in obj) {
-    if(obj[key]) state[key] = obj[key]
-  }
-}
 
 document.addEventListener('DOMContentLoaded', () => {
   state = {}
@@ -31,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const updateTriggers = ['playing', 'pause', 'timeupdate']
   updateTriggers.forEach(trigger => {
     audio.addEventListener(trigger, () => {
-      setState({trigger})
+      Object.assign(state, {trigger})
       update()
     })
   })
@@ -42,7 +37,7 @@ ipcRenderer.on('play', (e, args) => {
   if(args.length > 0) {
     const track = ipcRenderer.sendSync('library', ['info', args[0]])
     if(track) {
-      setState({libraryKey: args[0], track})
+      Object.assign(state, {libraryKey: args[0], track})
       const file = track.location.replace(/\?/g, '%3F')
       audio.src = file
       echo('Playing track:')
@@ -83,6 +78,6 @@ ipcRenderer.on('toggle', (e, a) => {
 ipcRenderer.on('info', (e, track) => {
   if(state.track.location === track.location) {
     if(track.image) track.image.data = track.image.data.toString('base64')
-    setState({track})
+    Object.assign(state, {track})
   }
 })

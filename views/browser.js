@@ -16,6 +16,7 @@ const config = {
 }
 
 let $currentPlaylist
+let $table
 let playerState
 let searchID
 
@@ -24,21 +25,8 @@ ipcRenderer.on('library', (event, library) => {
   for(const key in library) {
     if(library[key]) newLibrary += sprintf(config.TRACK_FORMAT, {key, track: library[key]})
   }
-  $currentPlaylist.html(newLibrary)
-  const $table = $currentPlaylist.parent()
-  $table.tablesorter({
-    // debug: true,
-    widgets: ['saveSort', 'resizable', 'stickyHeaders', 'filter', 'zebra'],
-    widgetOptions: {
-      resizable: true,
-      resizable_throttle: true,
-      stickyHeaders_attachTo: 'main > div',
-      stickyHeaders_yScroll: 'main > div',
-      stickyHeaders_filteredToTop: true,
-      filter_columnFilters: false,
-      filter_ignoreCase: true
-    }
-  })
+  const $newLibrary = $(newLibrary)
+  $currentPlaylist.html($newLibrary).trigger('addRows', [$newLibrary, true])
 })
 ipcRenderer.on('player-state', (event, state) => {
   try {
@@ -106,9 +94,22 @@ function select($item) {
 
 $(() => {
   $currentPlaylist = $('#track-list')
+  $table = $currentPlaylist.parent()
   ipcRenderer.send('library', ['get'])
   const $document = $(document)
-
+  $table.tablesorter({
+    // debug: true,
+    widgets: ['saveSort', 'resizable', 'stickyHeaders', 'filter', 'zebra'],
+    widgetOptions: {
+      resizable: true,
+      resizable_throttle: true,
+      stickyHeaders_attachTo: 'main > div',
+      stickyHeaders_yScroll: 'main > div',
+      stickyHeaders_filteredToTop: true,
+      filter_columnFilters: false,
+      filter_ignoreCase: true
+    }
+  })
   $document.keydown(e => {
     if(e.target.tagName === 'INPUT') {
       if(searchID) clearTimeout(searchID)
