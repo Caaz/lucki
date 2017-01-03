@@ -12,7 +12,7 @@ mkdirp(global.appRoot + '/tmp/', err => {
 })
 
 // Start webserver. This should probably be under config or something.
-// require('./src/webserver')
+require('./src/webserver')
 
 // Set up views.
 carlin.settings({outDir: global.appRoot + '/tmp/', pugOptions: {

@@ -3,9 +3,11 @@ html
   head
     title Lucki Web Control
     //- link(rel='stylesheet' href= '/views/reset.css')
-    link(rel='stylesheet' href= '/node_modules/font-awesome/css/font-awesome.min.css')
-    link(rel='stylesheet' href= '/tmp/theme.css')
-    script(src='/webserver.js')
+    link(rel='stylesheet' href= '/root/node_modules/font-awesome/css/font-awesome.min.css')
+    link(rel='stylesheet' href= '/root/tmp/theme.css')
+    script(src='/root/node_modules/jquery/dist/jquery.js')
+    //- /*script(src='/root/node_modules/jquery-ui/dist/jquery.js')*/
+    script(src='/root/views/webserver.js')
   body
     header
       div.controls
@@ -18,14 +20,14 @@ html
       #now-playing
         #album-art
         #track-info
-      //- #search
+      #search
         input(type='text' placeholder='Search')
         i.button.fa.fa-search#control-search
     #volume
       h2 Volume
       .slider
     #playhead
-    //- main: div: table
+    main: div: table
       thead: tr
         th Title
         th Artist

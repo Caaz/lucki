@@ -21,15 +21,18 @@ ipcMain.on('library', (event, args) => {
       }
       break
     case 'get':
-      if((library) && (output.send('library', library))) break
-      else if(load(output)) break
+      get(output)
+      break
     case 'update':
       update(output)
       break
     default: console.out('Unexpected library command: ' + command)
   }
 })
-
+function get(out) {
+  if(library) out.send('library', library)
+  else load(out)
+}
 function load(out) {
   if(fs.existsSync(cache)) {
     console.log('Loading Library Cache')
@@ -103,5 +106,6 @@ function hash(str) {
 }
 
 module.exports = {
-  update
+  update,
+  get
 }
