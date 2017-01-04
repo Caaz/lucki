@@ -43,7 +43,9 @@ ipcRenderer.on('player-state', (event, state) => {
     }
   } catch(err) {}
   if((!playerState) || (state.libraryKey !== playerState.libraryKey)) {
-    // $('#track-info').html(sprintf(config.NOW_PLAYING_FORMAT, {key: state.libraryKey, track: state.track}))
+    $('#track-artist').text(state.track.artist)
+    $('#track-album').text(state.track.album)
+    $('#track-title').text(state.track.title)
     $('.playing').removeClass('playing')
     $('[data-library-key="' + state.libraryKey + '"]').addClass('playing')
   }
@@ -135,7 +137,7 @@ $(() => {
     widgetOptions: {
       resizable: true,
       resizable_addLastColumn: true,
-      stickyHeaders_offset: '55px',
+      stickyHeaders_offset: '66px',
       stickyHeaders_filteredToTop: true,
       filter_columnFilters: false,
       filter_ignoreCase: true

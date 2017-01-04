@@ -8,30 +8,31 @@ html
     link(rel= 'stylesheet' href = appRoot + '/tmp/theme.css')
     script(src= appRoot + '/views/browser.js')
   body
-    header.navbar.navbar-default
-      form#controls.navbar-form.navbar-left(role= 'controls', style= 'margin:0; padding:10px')
-        .btn-group
-          button#previous-track.btn.btn-default.fa.fa-lg.fa-step-backward(type='button')
-          button#toggle-play.btn.btn-default.fa.fa-lg.fa-play(type='button')
-          button#next-track.btn.btn-default.fa.fa-lg.fa-step-forward(type='button')
-          button#toggle-shuffle.btn.btn-default.fa.fa-lg.fa-random(type='button')
-          button#toggle-repeat.btn.btn-default.fa.fa-lg.fa-repeat(type='button')
-          button#toggle-volume.btn.btn-default.fa.fa-lg.fa-volume-up(type='button')
-      #now-playing.navbar-left.media
-        .media-left
-          img#album-art.media-object
-        .media-body
-          #track-title.media-heading.text-primary Some track
-          span.text-muted
-            span#track-artist Artist
-            span#track-seperator
-            span#track-album Album
-      form.navbar-form.navbar-right.hidden-xs(role= 'search')
-        .input-group
-          input.form-control(type= 'text', placeholder='Search')
-          .input-group-btn
-            button#search.btn.btn-default.fa.fa-search(type='button')
-    #playhead
+    header
+      .navbar.navbar-default
+        form#controls.navbar-form.navbar-left(role= 'controls', style= 'margin:0; padding:10px')
+          .btn-group
+            button#previous-track.btn.btn-default.fa.fa-lg.fa-step-backward(type='button')
+            button#toggle-play.btn.btn-default.fa.fa-lg.fa-play(type='button')
+            button#next-track.btn.btn-default.fa.fa-lg.fa-step-forward(type='button')
+            button#toggle-shuffle.btn.btn-default.fa.fa-lg.fa-random(type='button')
+            button#toggle-repeat.btn.btn-default.fa.fa-lg.fa-repeat(type='button')
+            button#toggle-volume.btn.btn-default.fa.fa-lg.fa-volume-up(type='button')
+        #now-playing.navbar-left.media
+          .media-left
+            img#album-art.media-object
+          .media-body
+            #track-title.media-heading.text-primary Some track
+            span.text-muted
+              span#track-artist Artist
+              span#track-seperator
+              span#track-album Album
+        form.navbar-form.navbar-right.hidden-xs(role= 'search')
+          .input-group
+            input.form-control(type= 'text', placeholder='Search')
+            .input-group-btn
+              button#search.btn.btn-default.fa.fa-search(type='button')
+      #playhead
     main: div: table.table.table-hover.table-condensed
       thead: tr
         th #
