@@ -9,11 +9,27 @@ html
     script(src= appRoot + '/views/browser.js')
   body
     //- Modals
-    #volume-modal.modal.fade(tabindex='-1',role='dialog',aria-labelledby='toggle-volume')
+    #settings-modal.modal.fade(tabindex= '-1', role= 'dialog', aria-label= 'settings')
+      .modal-dialog.modal-lg
+        .modal-content
+          .modal-header
+            button.close(type= 'button', data-dismiss= 'modal', aria-label= 'Close')
+            h4.modal-title Lucki Settings
+          .modal-body
+            form
+              .form-group
+                label(for='settings-library-directory') Library Directory
+                .input-group
+                  input#settings-library-directory.form-control(type= 'text', placeholder= 'Directory')
+                  .input-group-btn: button#find-library-directory.btn.btn-default(type= 'button'): .fa.fa-fw.fa-folder
+              .checkbox: label
+                input#settings-subdirectories(type= 'checkbox')
+                | Search Subdirectories
+    #volume-modal.modal.fade(tabindex= '-1', role= 'dialog', aria-labelledby= 'toggle-volume')
       .modal-dialog.modal-sm(role='document')
         .modal-content
           .modal-header
-            button.close(type='button', data-dismiss='modal',aria-label='Close')
+            button.close(type= 'button', data-dismiss= 'modal', aria-label= 'Close')
             h4.modal-title Volume
           .modal-body
             #volume.slider

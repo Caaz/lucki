@@ -1,4 +1,5 @@
-const {ipcRenderer} = require('electron')
+const electron = require('electron')
+const settings = require('electron-settings')
 const {sprintf} = require('sprintf-js')
 const $ = window.$ = window.jQuery = require('jquery')
 require('tablesorter')
@@ -7,6 +8,9 @@ require('jquery-ui/ui/widget')
 require('jquery-ui/ui/widgets/mouse')
 require('jquery-ui/ui/widgets/slider')
 
+const {ipcRenderer} = electron
+const {dialog} = electron.remote
+
 let $currentPlaylist
 let $table
 let playerState
@@ -14,6 +18,10 @@ let searchID
 let disableSliderUpdates = false
 const nil_track = {track: '', title: '', album: '', artist: '', genre: '', year: '', location: ''}
 
+settings.observe('library', () => {
+  // Should probably let the library decide when to update but I've not thought of a good way to handle that.
+  ipcRenderer.send('library', ['update'])
+})
 ipcRenderer.on('library', (event, library) => {
   let newLibrary = ''
   for(const key in library) {
@@ -32,7 +40,11 @@ ipcRenderer.on('library', (event, library) => {
     }
   }
   const $newLibrary = $(newLibrary)
-  $currentPlaylist.html($newLibrary).trigger('addRows', [$newLibrary, true])
+  $currentPlaylist
+    .empty()
+    .trigger('update')
+    .html($newLibrary)
+    .trigger('addRows', [$newLibrary, true])
 })
 ipcRenderer.on('player-state', (event, state) => {
   try {
@@ -61,6 +73,14 @@ ipcRenderer.on('next', next)
 ipcRenderer.on('previous', next)
 ipcRenderer.on('playToggle', playToggle)
 ipcRenderer.on('stop', stop)
+ipcRenderer.on('open-settings', () => {
+  const mySettings = {
+    library: settings.getSync('library')
+  }
+  $('#settings-library-directory').val(mySettings.library.directory)
+  $('#settings-subdirectories')[0].checked = mySettings.library.subdirectories
+  $('#settings-modal').modal('show')
+})
 
 function stop() {
   // This should do something else, but for now simply always pausing is fine.
@@ -108,10 +128,16 @@ $(() => {
   $table = $currentPlaylist.parent()
   ipcRenderer.send('library', ['get'])
   const $document = $(document)
+  $('#settings-modal').on('hidden.bs.modal', () => {
+    //
+    settings.set('library', {
+      directory: $('#settings-library-directory').val(),
+      subdirectories: $('#settings-subdirectories')[0].checked
+    })
+  })
   $('#album-art').hide()
-  // $('#volume').hide()
   $('#volume').slider({
-    value: 100,
+    value: settings.getSync('player.volume'),
     step: 0.001,
     start() {
       $('#volume').slider('value', 0)
@@ -122,6 +148,7 @@ $(() => {
     },
     stop(e, ui) {
       ipcRenderer.send('player', ['volume', ui.value / 100])
+      settings.setSync('player.volume', ui.value / 100)
       disableSliderUpdates = false
     }
   })
@@ -173,6 +200,8 @@ $(() => {
         else if(target.id === 'toggle-play') ipcRenderer.send('player', ['toggle', 'play'])
         else if(target.id === 'toggle-shuffle') $(target).toggleClass('enabled')
         else if(target.id === 'toggle-repeat') $(target).toggleClass('enabled')
+        else if(target.id === 'next-track') next()
+        else if(target.id === 'search') search()
         else if(target.id === 'toggle-volume') {
           if(playerState && playerState.volume) {
             console.log('setting value: ' + playerState.volume)
@@ -181,8 +210,10 @@ $(() => {
               .slider('value', playerState.volume * 100)
           }
         }
-        else if(target.id === 'next-track') next()
-        else if(target.id === 'search') search()
+        else if(target.id === 'find-library-directory') {
+          const path = dialog.showOpenDialog({properties: ['openDirectory']})[0]
+          $('#settings-library-directory').val(path)
+        }
       }
     })
   })

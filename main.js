@@ -4,12 +4,23 @@ const {app, ipcMain} = require('electron')
 const mkdirp = require('mkdirp')
 const carlin = require('carlin')
 const less = require('less')
+const settings = require('electron-settings')
 
 global.appRoot = path.resolve(__dirname)
 global.appData = app.getPath('userData')
 mkdirp(global.appRoot + '/tmp/', err => {
   if(err) console.error(err)
 })
+settings.defaults({
+  library: {
+    directory: process.env.HOME + '/Music',
+    subdirectories: true
+  },
+  player: {
+    volume: 1
+  }
+})
+settings.applyDefaults()
 
 // Start webserver. This should probably be under config or something.
 // require('./src/webserver')

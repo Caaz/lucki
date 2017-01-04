@@ -40,6 +40,13 @@ function open() {
             playerWindow.show()
             // if(focusedWindow) focusedWindow.webContents.toggleDevTools()
           }
+        },
+        {
+          label: 'Settings',
+          accelerator: process.platform === 'darwin' ? 'Command+,' : 'Ctrl+,',
+          click(item, focusedWindow) {
+            if(focusedWindow) focusedWindow.webContents.send('open-settings')
+          }
         }
       ]
     }

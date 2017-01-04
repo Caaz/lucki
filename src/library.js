@@ -2,6 +2,7 @@ const fs = require('fs')
 const {ipcMain} = require('electron')
 const glob = require('glob')
 const ID3 = require('id3-parser')
+const settings = require('electron-settings')
 
 const cache = global.appData + '/library_cache.json'
 
@@ -55,9 +56,13 @@ function update(out) {
   console.log('Updating Library')
   console.time('Updated Library')
   library = {}
-  glob(process.env.HOME + '/Music/**/*.mp3', (err, files) => {
-    if(err) console.log(err)
-    else parseFiles(files, out)
+
+  settings.get('library').then(librarySettings => {
+    const globber = (librarySettings.subdirectories) ? '/**/*.mp3' : '/*.mp3'
+    glob(librarySettings.directory + globber, (err, files) => {
+      if(err) console.log(err)
+      else parseFiles(files, out)
+    })
   })
 }
 function getTags(file, callback) {
@@ -71,19 +76,7 @@ function parseFiles(files, out) {
     getTags(file, tag => {
       delete tag.image
       delete tag.version
-
       tag.location = file
-      // if(tag.title === '') {
-      //   const fparts = file.split('/')
-      //   const title = fparts[fparts.length - 1].split('.')
-      //   title.pop()
-      //   tag.title = title.join('.')
-      // }
-      // if (!(!tag.title && !tag.artist && !tag.album)) {
-      //   library[hash(file)] = tag
-      // }
-
-      // Just assume the player can handle this shit. No hand holding.
       library[hash(file)] = tag
       parseFiles(files, out)
     })

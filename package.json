@@ -34,6 +34,7 @@
     "carlin": "git+https://git@github.com/Caaz/carlin.git",
     "electron-debug": "^1.0.0",
     "electron-notifications": "^0.1.4",
+    "electron-settings": "^2.2.2",
     "font-awesome": "^4.7.0",
     "glob": "^7.1.1",
     "httpdispatcher": "^2.0.1",

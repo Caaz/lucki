@@ -1,4 +1,5 @@
 const {ipcRenderer} = require('electron')
+const settings = require('electron-settings')
 
 let audio
 let state
@@ -23,6 +24,10 @@ function update() {
 document.addEventListener('DOMContentLoaded', () => {
   state = {}
   audio = document.getElementsByTagName('AUDIO')[0]
+  settings.get('player').then(playerSettings => {
+    console.log('got volume ' + playerSettings.volume)
+    audio.volume = playerSettings.volume
+  })
   const updateTriggers = ['playing', 'pause', 'timeupdate']
   updateTriggers.forEach(trigger => {
     audio.addEventListener(trigger, () => {
