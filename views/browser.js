@@ -67,7 +67,7 @@ ipcRenderer.on('player-state', (event, state) => {
     $('#playhead').slider('value', (state.currentTime / state.duration) * 100)
     $('#volume .slider').slider('value', state.volume * 100)
   }
-  $('#control-toggle-play').toggleClass('fa-play', state.paused).toggleClass('fa-pause', !state.paused)
+  $('.fa-play, .fa-pause').toggleClass('fa-play', state.paused).toggleClass('fa-pause', !state.paused)
 })
 ipcRenderer.on('next', next)
 ipcRenderer.on('previous', next)
@@ -169,6 +169,7 @@ $(() => {
     widgets: ['saveSort', 'resizable', 'filter', 'zebra', 'stickyHeaders'],
     widgetOptions: {
       resizable: true,
+      resizable_throttle: true,
       resizable_addLastColumn: true,
       stickyHeaders_offset: '60px',
       stickyHeaders_filteredToTop: true,
