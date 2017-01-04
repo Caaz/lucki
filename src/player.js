@@ -7,6 +7,10 @@ module.exports = {
     win = new BrowserWindow({
       parent,
       resizable: true,
+      minimizable: true,
+      maximizable: true,
+      fullscreenable: true,
+      backgroundColor: '#00000044',
       autoHideMenuBar: true,
       skipTaskbar: true
     })
