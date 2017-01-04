@@ -8,6 +8,15 @@ html
     link(rel= 'stylesheet' href = appRoot + '/tmp/theme.css')
     script(src= appRoot + '/views/browser.js')
   body
+    //- Modals
+    #volume-modal.modal.fade(tabindex='-1',role='dialog',aria-labelledby='toggle-volume')
+      .modal-dialog.modal-sm(role='document')
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal',aria-label='Close')
+            h4.modal-title Volume
+          .modal-body
+            #volume.slider
     header
       .navbar.navbar-default
         form#controls.navbar-form.navbar-left(role= 'controls', style= 'margin:0; padding:10px')
@@ -17,7 +26,7 @@ html
             button#next-track.btn.btn-default(type='button'): .fa.fa-fw.fa-step-forward
             button#toggle-shuffle.btn.btn-default(type='button'): .fa.fa-fw.fa-random
             button#toggle-repeat.btn.btn-default(type='button'): .fa.fa-fw.fa-repeat
-            button#toggle-volume.btn.btn-default(type='button'): .fa.fa-fw.fa-volume-up
+            button#toggle-volume.btn.btn-default.dropdown-toggle(type='button', data-toggle='modal', data-target='#volume-modal'): .fa.fa-fw.fa-volume-up
         #now-playing.navbar-left.media
           .media-left
             img#album-art.media-object
@@ -32,7 +41,7 @@ html
             input.form-control(type= 'text', placeholder='Search')
             .input-group-btn
               button#search.btn.btn-default.fa.fa-search(type='button')
-      #playhead
+      #playhead.slider
     main: div: table.table.table-hover.table-condensed
       thead: tr
         th #

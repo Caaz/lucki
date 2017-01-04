@@ -77,8 +77,8 @@ function play(obj) {
   if(key) ipcRenderer.send('player', ['play', key])
 }
 function next() {
-  if($('#control-toggle-repeat').hasClass('enabled')) play(playerState.libraryKey)
-  else if($('#control-toggle-shuffle').hasClass('enabled')) {
+  if($('#toggle-repeat').hasClass('enabled')) play(playerState.libraryKey)
+  else if($('#toggle-shuffle').hasClass('enabled')) {
     const $tracks = $currentPlaylist.children()
     play($tracks[Math.floor(Math.random() * $tracks.length)])
   }
@@ -110,19 +110,24 @@ $(() => {
   const $document = $(document)
   $('#album-art').hide()
   // $('#volume').hide()
-  // $('#volume > .slider').slider({
-  //   value: 100,
-  //   step: 0.001,
-  //   start() {
-  //     $('#volume .slider').slider('value', 0)
-  //     disableSliderUpdates = true
-  //   },
-  //   stop(e, ui) {
-  //     ipcRenderer.send('player', ['volume', ui.value / 100])
-  //     disableSliderUpdates = false
-  //     $('#volume').hide()
-  //   }
-  // })
+  $('#volume').slider({
+    value: 100,
+    step: 0.001,
+    start() {
+      $('#volume').slider('value', 0)
+      disableSliderUpdates = true
+    },
+    slide(e, ui) {
+      ipcRenderer.send('player', ['volume', ui.value / 100])
+    },
+    stop(e, ui) {
+      ipcRenderer.send('player', ['volume', ui.value / 100])
+      disableSliderUpdates = false
+    }
+  })
+  $('#volume-modal').on('hidden.bs.modal', () => {
+    disableSliderUpdates = false
+  })
   $('#playhead').slider({
     step: 0.001,
     start() {
@@ -168,17 +173,14 @@ $(() => {
         else if(target.id === 'toggle-play') ipcRenderer.send('player', ['toggle', 'play'])
         else if(target.id === 'toggle-shuffle') $(target).toggleClass('enabled')
         else if(target.id === 'toggle-repeat') $(target).toggleClass('enabled')
-        // else if(target.id === 'toggle-volume') {
-        //   disableSliderUpdates = true
-        //   if(playerState && playerState.volume) {
-        //     console.log('setting value: ' + playerState.volume)
-        //     $('#volume .slider')
-        //       // Fuck you, jQuery UI.
-        //       .slider('value', 0)
-        //       .slider('value', playerState.volume * 100)
-        //   }
-        //   $('#volume').show()
-        // }
+        else if(target.id === 'toggle-volume') {
+          if(playerState && playerState.volume) {
+            console.log('setting value: ' + playerState.volume)
+            $('#volume')
+              .slider('value', 0)
+              .slider('value', playerState.volume * 100)
+          }
+        }
         else if(target.id === 'next-track') next()
         else if(target.id === 'search') search()
       }

@@ -1,9 +1,8 @@
 //
-#playhead {
+.slider {
   background-color:@brand-primary;
-  > span {
-    background-color:@body-bg;
-  }
+  > span { background-color:@body-bg; }
+  &, * { cursor:pointer; }
 }
 
 .playing td {
@@ -15,12 +14,19 @@
   border: 1px solid @body-bg-light;
   margin:0 10px;
 }
+#track-seperator {
+  &::before{ content: ' - '; }
+}
 #controls {
-  button:not(:last-child) { border-right:none!important; }
-  button:not(:first-child) { border-left:none!important; }
-  button:hover {
-    color:@brand-primary;
-    cursor:pointer;
-    * { cursor:pointer; }
+  button {
+    &:not(:last-child) { border-right:none!important; }
+    &:not(:first-child) { border-left:none!important; }
+    &.enabled { color:@brand-primary; * {text-decoration:underline; } }
+    &.disabled { color:@gray-darker!important; }
+    &:hover {
+      color:@brand-primary;
+      &, * { cursor:pointer; }
+    }
+    &:active { color:@brand-primary; }
   }
 }
