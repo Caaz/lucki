@@ -23,6 +23,12 @@ module.exports = {
     win.on('closed', () => {
       win = null
     })
+    // Hide the window on close!
+    win.on('close', e => {
+      win.hide()
+      e.preventDefault()
+    })
+    return win
   },
   isOpen() {
     const isOpen = (typeof win !== 'undefined')

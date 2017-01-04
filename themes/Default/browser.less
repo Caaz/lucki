@@ -16,10 +16,11 @@
   margin:0 10px;
 }
 #controls {
-  button:not(:last-child) {
-    border-right:none!important;
-  }
-  button:not(:first-child) {
-    border-left:none!important;
+  button:not(:last-child) { border-right:none!important; }
+  button:not(:first-child) { border-left:none!important; }
+  button:hover {
+    color:@brand-primary;
+    cursor:pointer;
+    * { cursor:pointer; }
   }
 }
