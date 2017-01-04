@@ -5,11 +5,10 @@ let win
 module.exports = {
   open(parent) {
     win = new BrowserWindow({
-      // width: 640,
-      // height: 480,
+      parent,
+      resizable: true,
       autoHideMenuBar: true,
-      skipTaskbar: true,
-      parent
+      skipTaskbar: true
     })
     win.loadURL('file://' + global.appRoot + '/views/player.html')
     // console.log('Hiding Player window')
