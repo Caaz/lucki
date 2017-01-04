@@ -6,8 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.appendChild(canvas)
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
+  document.onresize = () => {
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+  }
   const ctx = canvas.getContext('2d')
-  ctx.globalCompositeOperation = 'lighten'
+  // ctx.globalCompositeOperation = 'source-over'
 
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
   const analyser = audioCtx.createAnalyser()
@@ -22,18 +26,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const dataArray = new Uint8Array(bufferLength)
 
   const visualizers = {
-    spectrum() {
+    spectrum(timestamp) {
       analyser.getByteFrequencyData(dataArray)
       // ctx.clearRect(0, 0, canvas.width, canvas.height)
-      ctx.globalCompositeOperation = 'source-over'
+      // ctx.globalCompositeOperation = 'source-over'
       ctx.fillStyle = 'rgba(0, 0, 0, .1)'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
-      ctx.globalCompositeOperation = 'lighten'
+      // ctx.globalCompositeOperation = 'lighten'
       const barWidth = ((canvas.width - bufferLength) / bufferLength)
       for(let i = 0; i < bufferLength; i++) {
         const barHeight = canvas.height * dataArray[i] / 255
 
-        const dicks = (i / bufferLength) * 360
+        let dicks = (i / bufferLength) * 360
+        dicks = (dicks + (timestamp / 20)) % 360
         ctx.fillStyle = 'hsl(' + dicks + ', 100%,50%)'
         ctx.fillRect((barWidth * i) + i, canvas.height, barWidth, -barHeight)
       }
