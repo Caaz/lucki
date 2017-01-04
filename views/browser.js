@@ -1,62 +1,19 @@
-// const {ipcRenderer} = require('electron')
-// const $ = require('jquery')
-
 const {ipcRenderer} = require('electron')
+const {sprintf} = require('sprintf-js')
 const $ = window.$ = window.jQuery = require('jquery')
 require('tablesorter')
 require('bootstrap')
-const {sprintf} = require('sprintf-js')
-
-// Surely there's a better way.
 require('jquery-ui/ui/widget')
-// require('jquery-ui/ui/data')
-// require('jquery-ui/ui/disable-selection')
-// // require('jquery-ui/ui/focusable')
-// require('jquery-ui/ui/form')
-// // require('jquery-ui/ui/ie')
-// require('jquery-ui/ui/keycode')
-// require('jquery-ui/ui/labels')
-// require('jquery-ui/ui/plugin')
-// require('jquery-ui/ui/safe-active-element')
-// require('jquery-ui/ui/safe-blur')
-// require('jquery-ui/ui/scroll-parent')
-// require('jquery-ui/ui/tabbable')
-// require('jquery-ui/ui/unique-id')
-// require('jquery-ui/ui/version')
 require('jquery-ui/ui/widgets/mouse')
-// require('jquery-ui/ui/widgets/button')
 require('jquery-ui/ui/widgets/slider')
-// require('jquery-ui/ui/widgets/dialog')
-// But don't call me shirley
-
-// const config = {
-//   TRACK_FORMAT: {
-//     'keys' : ['title', 'artist', 'album', 'genre', 'year'],
-//     'format':
-//       '<tr data-selectable=true data-library-key="%(key)s">' +
-//         '<td>%(track.title)s</td>' +
-//         '<td>%(track.artist)s</td>' +
-//         '<td>%(track.album)s</td>' +
-//       '</tr>'
-//   }
-//   // NOW_PLAYING_FORMAT:
-//   //   '<span>%(track.title)s</span>' +
-//   //   '<span class="small">%(track.artist)s - %(track.album)s</span>'
-// }
 
 let $currentPlaylist
 let $table
 let playerState
 let searchID
 let disableSliderUpdates = false
-const nil_track = {
-  title: '',
-  album: '',
-  artist: '',
-  genre: '',
-  year: '',
-  location: ''
-}
+const nil_track = {track: '', title: '', album: '', artist: '', genre: '', year: '', location: ''}
+
 ipcRenderer.on('library', (event, library) => {
   let newLibrary = ''
   for(const key in library) {
@@ -64,6 +21,7 @@ ipcRenderer.on('library', (event, library) => {
       const track = Object.assign({}, nil_track)
       Object.assign(track, library[key])
       newLibrary += sprintf('<tr data-selectable=true data-library-key="%(key)s">' +
+        '<td>%(track.track)s</td>' +
         '<td>%(track.title)s</td>' +
         '<td>%(track.artist)s</td>' +
         '<td>%(track.album)s</td>' +
@@ -85,7 +43,7 @@ ipcRenderer.on('player-state', (event, state) => {
     }
   } catch(err) {}
   if((!playerState) || (state.libraryKey !== playerState.libraryKey)) {
-    $('#track-info').html(sprintf(config.NOW_PLAYING_FORMAT, {key: state.libraryKey, track: state.track}))
+    // $('#track-info').html(sprintf(config.NOW_PLAYING_FORMAT, {key: state.libraryKey, track: state.track}))
     $('.playing').removeClass('playing')
     $('[data-library-key="' + state.libraryKey + '"]').addClass('playing')
   }
@@ -148,20 +106,20 @@ $(() => {
   $table = $currentPlaylist.parent()
   ipcRenderer.send('library', ['get'])
   const $document = $(document)
-  $('#volume').hide()
-  $('#volume > .slider').slider({
-    value: 100,
-    step: 0.001,
-    start() {
-      $('#volume .slider').slider('value', 0)
-      disableSliderUpdates = true
-    },
-    stop(e, ui) {
-      ipcRenderer.send('player', ['volume', ui.value / 100])
-      disableSliderUpdates = false
-      $('#volume').hide()
-    }
-  })
+  // $('#volume').hide()
+  // $('#volume > .slider').slider({
+  //   value: 100,
+  //   step: 0.001,
+  //   start() {
+  //     $('#volume .slider').slider('value', 0)
+  //     disableSliderUpdates = true
+  //   },
+  //   stop(e, ui) {
+  //     ipcRenderer.send('player', ['volume', ui.value / 100])
+  //     disableSliderUpdates = false
+  //     $('#volume').hide()
+  //   }
+  // })
   $('#playhead').slider({
     step: 0.001,
     start() {
@@ -203,23 +161,23 @@ $(() => {
     [e.target, e.target.parentNode].forEach(target => {
       if(target.dataset.selectable) select($(target))
       if(target.id) {
-        if(target.id === 'control-previous-track') previous()
-        else if(target.id === 'control-toggle-play') ipcRenderer.send('player', ['toggle', 'play'])
-        else if(target.id === 'control-toggle-shuffle') $(target).toggleClass('enabled')
-        else if(target.id === 'control-toggle-repeat') $(target).toggleClass('enabled')
-        else if(target.id === 'control-toggle-volume') {
-          disableSliderUpdates = true
-          if(playerState && playerState.volume) {
-            console.log('setting value: ' + playerState.volume)
-            $('#volume .slider')
-              // Fuck you, jQuery UI.
-              .slider('value', 0)
-              .slider('value', playerState.volume * 100)
-          }
-          $('#volume').show()
-        }
-        else if(target.id === 'control-next-track') next()
-        else if(target.id === 'control-search') search()
+        if(target.id === 'previous-track') previous()
+        else if(target.id === 'toggle-play') ipcRenderer.send('player', ['toggle', 'play'])
+        else if(target.id === 'toggle-shuffle') $(target).toggleClass('enabled')
+        else if(target.id === 'toggle-repeat') $(target).toggleClass('enabled')
+        // else if(target.id === 'toggle-volume') {
+        //   disableSliderUpdates = true
+        //   if(playerState && playerState.volume) {
+        //     console.log('setting value: ' + playerState.volume)
+        //     $('#volume .slider')
+        //       // Fuck you, jQuery UI.
+        //       .slider('value', 0)
+        //       .slider('value', playerState.volume * 100)
+        //   }
+        //   $('#volume').show()
+        // }
+        else if(target.id === 'next-track') next()
+        else if(target.id === 'search') search()
       }
     })
   })

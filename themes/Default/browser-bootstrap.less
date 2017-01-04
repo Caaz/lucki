@@ -26,12 +26,8 @@ header {
   border-top-width:0!important;
   display:flex;
   width:100vw;
-  form {
-    border:none!important;
-  }
-  #controls {
-    flex-shrink:0;
-  }
+  form { border:none!important; }
+  * { flex-shrink:0; }
   #now-playing {
     flex-grow:1;
     // background-color:red;
@@ -39,7 +35,6 @@ header {
     align-items:center;
     padding:0 10px;
   }
-  #search { flex-shrink:0; }
 }
 main > div {
   // position:relative;
