@@ -10,18 +10,25 @@ header form { display:inline-block; margin:0!important; padding:10px!important; 
   margin:0;
   .media-body { width:auto; }
 }
-
-// Okay. Let's get fancy.
 body {
   display:flex;
   flex-direction:column;
   * { flex-shrink:0; }
-  main { flex-grow:1; }
+  main {
+    padding-top:55px;
+    flex-grow:1;
+  }
 }
 header {
+  position:fixed!important;
+  top:0; left:0;
+  width:100vw;
   border-top-width:0!important;
   display:flex;
   width:100vw;
+  form {
+    border:none!important;
+  }
   #controls {
     flex-shrink:0;
   }
@@ -33,4 +40,25 @@ header {
     padding:0 10px;
   }
   #search { flex-shrink:0; }
+}
+main > div {
+  // position:relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100vw;
+}
+table {
+  border:none!important;
+  // min-width: 100vw;
+  width: auto;
+  table-layout: fixed;
+  td, tr {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 100px!important;
+    white-space: nowrap;
+  }
+}
+.tablesorter-sticky-visible {
+  background-color:white;
 }
