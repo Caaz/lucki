@@ -1,0 +1,36 @@
+#album-art {
+  width:3em;
+  height:3em;
+}
+// Various bootstrap fixes.
+header form { display:inline-block; margin:0!important; padding:10px!important; }
+.navbar li { display:inline-block; }
+.navbar-left { float: left !important; }
+.navbar .media {
+  margin:0;
+  .media-body { width:auto; }
+}
+
+// Okay. Let's get fancy.
+body {
+  display:flex;
+  flex-direction:column;
+  * { flex-shrink:0; }
+  main { flex-grow:1; }
+}
+header {
+  border-top-width:0!important;
+  display:flex;
+  width:100vw;
+  #controls {
+    flex-shrink:0;
+  }
+  #now-playing {
+    flex-grow:1;
+    // background-color:red;
+    display:flex;
+    align-items:center;
+    padding:0 10px;
+  }
+  #search { flex-shrink:0; }
+}

@@ -1,31 +1,38 @@
 doctype html
 html
+  //- Bootstrap makes me want to die.
+  //- Overall it'll probably allow a cleaner experience. I just keep telling myself that.
   head
-    title Lucki Media Player
-    //- link(rel='stylesheet' href= appRoot + '/views/reset.css')
-    link(rel='stylesheet' href= appRoot + '/node_modules/font-awesome/css/font-awesome.min.css')
-    link(rel='stylesheet' href= appRoot + '/tmp/theme.css')
+    title Lucki
+    link(rel= 'stylesheet' href = appRoot + '/node_modules/font-awesome/css/font-awesome.min.css')
+    link(rel= 'stylesheet' href = appRoot + '/tmp/theme.css')
     script(src= appRoot + '/views/browser.js')
   body
-    header
-      div.controls
-        i.button.fa.fa-step-backward.fa-lg#control-previous-track
-        i.button.fa.fa-play.fa-lg#control-toggle-play
-        i.button.fa.fa-step-forward.fa-lg#control-next-track
-        i.button.fa.fa-random.fa-lg#control-toggle-shuffle
-        i.button.fa.fa-repeat.fa-lg#control-toggle-repeat
-        i.button.fa.fa-volume-up.fa-lg#control-toggle-volume
-      #now-playing
-        #album-art
-        #track-info
-      #search
-        input(type='text' placeholder='Search')
-        i.button.fa.fa-search#control-search
-    #volume
-      h2 Volume
-      .slider
+    header.navbar.navbar-default
+      form#controls.navbar-form.navbar-left(role= 'controls', style= 'margin:0; padding:10px')
+        .btn-group
+          button.btn.btn-default.fa.fa-lg.fa-step-backward(type='button')
+          button.btn.btn-default.fa.fa-lg.fa-play(type='button')
+          button.btn.btn-default.fa.fa-lg.fa-step-forward(type='button')
+          button.btn.btn-default.fa.fa-lg.fa-random(type='button')
+          button.btn.btn-default.fa.fa-lg.fa-repeat(type='button')
+          button.btn.btn-default.fa.fa-lg.fa-volume-up(type='button')
+      #now-playing.navbar-left.media
+        .media-left
+          img#album-art.media-object
+        .media-body
+          #track-title.media-heading.text-primary Some track
+          span.text-muted
+            span#track-artist Artist
+            span#track-seperator
+            span#track-album Album
+      form#search.navbar-form.navbar-right.hidden-xs(role= 'search')
+        .input-group
+          input.form-control(type= 'text', placeholder='Search')
+          .input-group-btn
+            button.btn.btn-default.fa.fa-search(type='button')
     #playhead
-    main: div: table
+    main: div: table.table.table-hover.table-condensed.table-responsive
       thead: tr
         th Title
         th Artist

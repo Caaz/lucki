@@ -30,6 +30,7 @@
     "electron"
   ],
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "carlin": "git+https://git@github.com/Caaz/carlin.git",
     "electron-debug": "^1.0.0",
     "electron-notifications": "^0.1.4",
