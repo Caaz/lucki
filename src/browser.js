@@ -69,6 +69,7 @@ function open() {
   // Erase self when closing window.
   win.on('closed', () => {
     win = null
+    playerWindow.destroy()
   })
 }
 

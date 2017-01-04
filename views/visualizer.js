@@ -8,9 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
   canvas.height = window.innerHeight
   const ctx = canvas.getContext('2d')
   ctx.globalCompositeOperation = 'lighten'
-  document.body.style.overflow = 'hidden'
-  document.body.style.margin = '0'
-  // document.body.style.background = 'black'
 
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
   const analyser = audioCtx.createAnalyser()

@@ -5,7 +5,7 @@ let win
 module.exports = {
   open(parent) {
     win = new BrowserWindow({
-      parent,
+      // parent,
       resizable: true,
       minimizable: true,
       maximizable: true,
