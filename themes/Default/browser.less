@@ -2,6 +2,24 @@
 #playhead {
   background-color:@brand-primary;
   > span {
-    background-color:white;
+    background-color:@body-bg;
+  }
+}
+
+.playing td {
+  font-weight:bold;
+  color:@brand-primary;
+}
+#now-playing{
+  background-color:@body-bg-dark;
+  border: 1px solid @body-bg-light;
+  margin:0 10px;
+}
+#controls {
+  button:not(:last-child) {
+    border-right:none!important;
+  }
+  button:not(:first-child) {
+    border-left:none!important;
   }
 }

@@ -12,12 +12,12 @@ html
       .navbar.navbar-default
         form#controls.navbar-form.navbar-left(role= 'controls', style= 'margin:0; padding:10px')
           .btn-group
-            button#previous-track.btn.btn-default.fa.fa-lg.fa-step-backward(type='button')
-            button#toggle-play.btn.btn-default.fa.fa-lg.fa-play(type='button')
-            button#next-track.btn.btn-default.fa.fa-lg.fa-step-forward(type='button')
-            button#toggle-shuffle.btn.btn-default.fa.fa-lg.fa-random(type='button')
-            button#toggle-repeat.btn.btn-default.fa.fa-lg.fa-repeat(type='button')
-            button#toggle-volume.btn.btn-default.fa.fa-lg.fa-volume-up(type='button')
+            button#previous-track.btn.btn-default(type='button'): .fa.fa-fw.fa-step-backward
+            button#toggle-play.btn.btn-default(type='button'): .fa.fa-fw.fa-play
+            button#next-track.btn.btn-default(type='button'): .fa.fa-fw.fa-step-forward
+            button#toggle-shuffle.btn.btn-default(type='button'): .fa.fa-fw.fa-random
+            button#toggle-repeat.btn.btn-default(type='button'): .fa.fa-fw.fa-repeat
+            button#toggle-volume.btn.btn-default(type='button'): .fa.fa-fw.fa-volume-up
         #now-playing.navbar-left.media
           .media-left
             img#album-art.media-object

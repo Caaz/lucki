@@ -138,7 +138,7 @@ $(() => {
     widgetOptions: {
       resizable: true,
       resizable_addLastColumn: true,
-      stickyHeaders_offset: '66px',
+      stickyHeaders_offset: '60px',
       stickyHeaders_filteredToTop: true,
       filter_columnFilters: false,
       filter_ignoreCase: true
