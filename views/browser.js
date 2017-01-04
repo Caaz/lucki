@@ -37,9 +37,9 @@ ipcRenderer.on('library', (event, library) => {
 ipcRenderer.on('player-state', (event, state) => {
   try {
     if((!playerState) || (playerState.track.image.data !== state.track.image.data)) {
-      $('#album-art').html('<img src="data:' + state.track.image.mime + ';base64,' + state.track.image.data + '">')
+      $('#album-art').html('<img src="data:' + state.track.image.mime + ';base64,' + state.track.image.data + '">').show()
     } else if (!state.track.image) {
-      $('#album-art').empty()
+      $('#album-art').hide()
     }
   } catch(err) {}
   if((!playerState) || (state.libraryKey !== playerState.libraryKey)) {
@@ -108,6 +108,7 @@ $(() => {
   $table = $currentPlaylist.parent()
   ipcRenderer.send('library', ['get'])
   const $document = $(document)
+  $('#album-art').hide()
   // $('#volume').hide()
   // $('#volume > .slider').slider({
   //   value: 100,
