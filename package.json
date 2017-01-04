@@ -30,6 +30,7 @@
     "electron"
   ],
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "carlin": "git+https://git@github.com/Caaz/carlin.git",
     "electron-debug": "^1.0.0",
     "electron-notifications": "^0.1.4",
@@ -43,7 +44,7 @@
     "mkdirp": "^0.5.1",
     "pug": "^2.0.0-beta6",
     "sprintf-js": "^1.0.3",
-    "tablesorter": "^2.27.8"
+    "tablesorter": "^2.28.3"
   },
   "devDependencies": {
     "devtron": "^1.1.0",

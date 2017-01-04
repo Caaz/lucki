@@ -73,17 +73,18 @@ function parseFiles(files, out) {
       delete tag.version
 
       tag.location = file
-      if(tag.title === '') {
-        const fparts = file.split('/')
-        const title = fparts[fparts.length - 1].split('.')
-        title.pop()
-        tag.title = title.join('.')
-      }
-      if(tag.artist === null) tag.artist = ''
-      if(tag.album === null) tag.album = ''
-      if (!(!tag.title && !tag.artist && !tag.album)) {
-        library[hash(file)] = tag
-      }
+      // if(tag.title === '') {
+      //   const fparts = file.split('/')
+      //   const title = fparts[fparts.length - 1].split('.')
+      //   title.pop()
+      //   tag.title = title.join('.')
+      // }
+      // if (!(!tag.title && !tag.artist && !tag.album)) {
+      //   library[hash(file)] = tag
+      // }
+
+      // Just assume the player can handle this shit. No hand holding.
+      library[hash(file)] = tag
       parseFiles(files, out)
     })
   } else {

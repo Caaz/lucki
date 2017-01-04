@@ -10,7 +10,7 @@ function open() {
     autoHideMenuBar: true,
     icon: 'assets/icon.png'
   })
-  player.open(win)
+  const playerWindow = player.open(win)
   win.loadURL('file://' + global.views.browser)
   // The length of this pains me.
   win.setMenu(Menu.buildFromTemplate([
@@ -31,6 +31,14 @@ function open() {
           accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
           click(item, focusedWindow) {
             if(focusedWindow) focusedWindow.webContents.toggleDevTools()
+          }
+        },
+        {
+          label: 'Show Visualizer',
+          accelerator: process.platform === 'darwin' ? 'Alt+Command+v' : 'Ctrl+Shift+v',
+          click(item, focusedWindow) {
+            playerWindow.show()
+            // if(focusedWindow) focusedWindow.webContents.toggleDevTools()
           }
         }
       ]

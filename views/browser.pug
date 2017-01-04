@@ -1,33 +1,54 @@
 doctype html
 html
+  //- Bootstrap makes me want to die.
+  //- Overall it'll probably allow a cleaner experience. I just keep telling myself that.
   head
-    title Lucki Media Player
-    //- link(rel='stylesheet' href= appRoot + '/views/reset.css')
-    link(rel='stylesheet' href= appRoot + '/node_modules/font-awesome/css/font-awesome.min.css')
-    link(rel='stylesheet' href= appRoot + '/tmp/theme.css')
+    title Lucki
+    link(rel= 'stylesheet' href = appRoot + '/node_modules/font-awesome/css/font-awesome.min.css')
+    link(rel= 'stylesheet' href = appRoot + '/tmp/theme.css')
     script(src= appRoot + '/views/browser.js')
   body
+    //- Modals
+    #volume-modal.modal.fade(tabindex='-1',role='dialog',aria-labelledby='toggle-volume')
+      .modal-dialog.modal-sm(role='document')
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal',aria-label='Close')
+            h4.modal-title Volume
+          .modal-body
+            #volume.slider
     header
-      div.controls
-        i.button.fa.fa-step-backward.fa-lg#control-previous-track
-        i.button.fa.fa-play.fa-lg#control-toggle-play
-        i.button.fa.fa-step-forward.fa-lg#control-next-track
-        i.button.fa.fa-random.fa-lg#control-toggle-shuffle
-        i.button.fa.fa-repeat.fa-lg#control-toggle-repeat
-        i.button.fa.fa-volume-up.fa-lg#control-toggle-volume
-      #now-playing
-        #album-art
-        #track-info
-      #search
-        input(type='text' placeholder='Search')
-        i.button.fa.fa-search#control-search
-    #volume
-      h2 Volume
-      .slider
-    #playhead
-    main: div: table
+      .navbar.navbar-default
+        form#controls.navbar-form.navbar-left(role= 'controls', style= 'margin:0; padding:10px')
+          .btn-group
+            button#previous-track.btn.btn-default(type='button'): .fa.fa-fw.fa-step-backward
+            button#toggle-play.btn.btn-default(type='button'): .fa.fa-fw.fa-play
+            button#next-track.btn.btn-default(type='button'): .fa.fa-fw.fa-step-forward
+            button#toggle-shuffle.btn.btn-default(type='button'): .fa.fa-fw.fa-random
+            button#toggle-repeat.btn.btn-default(type='button'): .fa.fa-fw.fa-repeat
+            button#toggle-volume.btn.btn-default.dropdown-toggle(type='button', data-toggle='modal', data-target='#volume-modal'): .fa.fa-fw.fa-volume-up
+        #now-playing.navbar-left.media
+          .media-left
+            img#album-art.media-object
+          .media-body
+            #track-title.media-heading.text-primary
+            span.text-muted
+              span#track-artist
+              span#track-seperator
+              span#track-album
+        form.navbar-form.navbar-right.hidden-xs(role= 'search')
+          .input-group
+            input.form-control(type= 'text', placeholder='Search')
+            .input-group-btn
+              button#search.btn.btn-default.fa.fa-search(type='button')
+      #playhead.slider
+    main: div: table.table.table-hover.table-condensed
       thead: tr
+        th #
         th Title
         th Artist
         th Album
+        th Year
+        th Genre
+        th Location
       tbody#track-list

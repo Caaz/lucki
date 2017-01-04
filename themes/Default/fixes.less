@@ -1,0 +1,95 @@
+* {
+  -webkit-user-select: none;
+  cursor:default;
+  *:focus {
+    outline:none;
+  }
+}
+
+#album-art {
+  width:3em;
+  height:3em;
+}
+// Various bootstrap fixes.
+header form { display:inline-block; margin:0!important; padding:10px!important; }
+.navbar li { display:inline-block; }
+.navbar-left { float: left !important; }
+.navbar .media {
+  margin:0;
+  .media-body { width:auto; }
+}
+body {
+  display:flex;
+  flex-direction:column;
+  * { flex-shrink:0; }
+  main {
+    padding-top:59px;
+    flex-grow:1;
+  }
+}
+header {
+  position:fixed!important;
+  top:0; left:0;
+  width:100vw;
+  height:60px;
+  .navbar {
+    height:50px;
+    border-width:0!important;
+    border-radius:0!important;
+    display:flex;
+    max-width:100vw;
+    margin-bottom:0;
+    align-items: center;
+    padding:0 20px;
+    // padding:20px;
+    // padding:0;
+    > * { flex-shrink:0; padding: 0!important; }
+  }
+  form { border:none!important; }
+  #now-playing {
+    min-height:3em;
+    flex-grow:1;
+    flex-shrink:1;
+    display:flex;
+    align-items:center;
+    // padding:0 10px;
+    .media-body {
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+  .navbar-right {
+    margin-right:10px!important;
+  }
+}
+main > div {
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100vw;
+}
+table {
+  border:none!important;
+  width: auto;
+  table-layout: fixed;
+  td, tr {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 100px!important;
+    white-space: nowrap;
+  }
+}
+.tablesorter-sticky-visible { background-color:@body-bg; }
+.slider {
+  overflow:hidden;
+  position:relative;
+  flex-shrink:0;
+  height:10px;
+  span {
+    position:absolute;
+    display:block;
+    width:100%;
+    height:10px;
+    pointer-events: none;
+  }
+  &, * { cursor:pointer; }
+}

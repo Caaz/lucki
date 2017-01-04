@@ -5,13 +5,13 @@ let win
 module.exports = {
   open(parent) {
     win = new BrowserWindow({
-      width: 0,
-      height: 0,
-      skipTaskbar: true,
-      parent
+      parent,
+      resizable: true,
+      autoHideMenuBar: true,
+      skipTaskbar: true
     })
     win.loadURL('file://' + global.appRoot + '/views/player.html')
-    console.log('Hiding Player window')
+    // console.log('Hiding Player window')
     win.hide()
 
     ipcMain.on('player', (event, args) => {
@@ -22,6 +22,12 @@ module.exports = {
     win.on('closed', () => {
       win = null
     })
+    // Hide the window on close!
+    win.on('close', e => {
+      win.hide()
+      e.preventDefault()
+    })
+    return win
   },
   isOpen() {
     const isOpen = (typeof win !== 'undefined')
