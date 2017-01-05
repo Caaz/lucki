@@ -12,7 +12,8 @@ module.exports = {
       fullscreenable: true,
       backgroundColor: '#00000044',
       autoHideMenuBar: true,
-      skipTaskbar: true
+      skipTaskbar: false,
+      icon: 'assets/icon.png'
     })
     win.loadURL('file://' + global.appRoot + '/views/player.html')
     // console.log('Hiding Player window')

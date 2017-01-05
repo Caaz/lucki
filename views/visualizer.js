@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     ////////////////////////////////
   }
-  visualizers.spectrum()
+  visualizers.oscilliscope()
 })
 
 
