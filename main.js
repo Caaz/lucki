@@ -14,10 +14,10 @@ mkdirp(global.appRoot + '/tmp/', err => {
 settings.defaults({
   library: {
     directory: process.env.HOME + '/Music',
-    subdirectories: true
+    subdirectories: true    
   },
   player: {
-    volume: 1
+    volume: 0.5
   }
 })
 settings.applyDefaults()

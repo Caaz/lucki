@@ -4,15 +4,19 @@ let win
 
 module.exports = {
   open(parent) {
+    //parent.BrowserWindow.x = 0;
+
     win = new BrowserWindow({
-      // parent,
+      //parent: parent,
+      height: 600,
+      width: 600,
       resizable: true,
       minimizable: true,
       maximizable: true,
       fullscreenable: true,
       backgroundColor: '#00000044',
       autoHideMenuBar: true,
-      skipTaskbar: false,
+      //skipTaskbar: false,
       icon: 'assets/icon.png'
     })
     win.loadURL('file://' + global.appRoot + '/views/player.html')
