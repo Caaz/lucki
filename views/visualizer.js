@@ -6,10 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.appendChild(canvas)
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
-  document.onresize = () => {
+  document.body.setAttribute('onresize', 'windowUpdate()');
+  windowUpdate = () => {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
   }
+
   const ctx = canvas.getContext('2d')
   // ctx.globalCompositeOperation = 'source-over'
 
@@ -20,33 +22,55 @@ document.addEventListener('DOMContentLoaded', () => {
   source.connect(analyser)
   analyser.connect(audioCtx.destination)
 
-  analyser.fftSize = 64
-
-  const bufferLength = analyser.frequencyBinCount
-  const dataArray = new Uint8Array(bufferLength)
-
   const visualizers = {
     spectrum(timestamp) {
+      analyser.fftSize = 256
+      const bufferLength = analyser.frequencyBinCount
+      const dataArray = new Uint8Array(bufferLength)
       analyser.getByteFrequencyData(dataArray)
-      // ctx.clearRect(0, 0, canvas.width, canvas.height)
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
       // ctx.globalCompositeOperation = 'source-over'
-      ctx.fillStyle = 'rgba(0, 0, 0, .1)'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      //ctx.fillStyle = 'rgba(0, 0, 0, .1)'
+      //ctx.fillRect(0, 0, canvas.width, canvas.height)
       // ctx.globalCompositeOperation = 'lighten'
-      const barWidth = ((canvas.width - bufferLength) / bufferLength)
-      for(let i = 0; i < bufferLength; i++) {
-        const barHeight = canvas.height * dataArray[i] / 255
-
-        let dicks = (i / bufferLength) * 360
+      let width = parseInt(bufferLength*5/6);
+      let barWidth = ((canvas.width - width) / width)
+      for(let i = 0; i<bufferLength; i++) {
+        let barHeight = canvas.height * dataArray[i] / 256;
+        let dicks = (i / bufferLength) * 360;
         dicks = (dicks + (timestamp / 20)) % 360
-        ctx.fillStyle = 'hsl(' + dicks + ', 100%,50%)'
-        ctx.fillRect((barWidth * i) + i, canvas.height, barWidth, -barHeight)
+        ctx.fillStyle = 'hsl(' + dicks + ', 100%,50%)';
+        ctx.fillRect((barWidth * i) + i+1, canvas.height, barWidth, -barHeight);
       }
       requestAnimationFrame(visualizers.spectrum)
+    },
+
+
+    oscilliscope(timestamp) {
+      analyser.fftSize = 2048
+      const bufferLength = analyser.frequencyBinCount
+      const dataArray = new Uint8Array(bufferLength)
+      analyser.getByteTimeDomainData(dataArray);
+      ctx.lineWidth = 2;
+      var sliceWidth = canvas.width/(bufferLength-1);
+
+      ctx.fillStyle = 'rgb(200, 200, 200)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = 'rgb(0, 0, 0)';
+      ctx.beginPath();
+
+      for(var i = 0; i < bufferLength; i++) ctx.lineTo(sliceWidth*i, dataArray[i] * canvas.height / 256.0);
+
+      ctx.stroke();
+      requestAnimationFrame(visualizers.oscilliscope)
     }
+    ////////////////////////////////
   }
   visualizers.spectrum()
 })
+
+
 
 // I want this later but for now it's causing xo issues.
 // function oscilliscope() {

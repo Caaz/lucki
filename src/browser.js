@@ -35,7 +35,7 @@ function open() {
         },
         {
           label: 'Show Visualizer',
-          accelerator: process.platform === 'darwin' ? 'Alt+Command+v' : 'Ctrl+Shift+v',
+          accelerator: process.platform === 'darwin' ? 'Alt+Command+v' : 'Shift+V',
           click(item, focusedWindow) {
             playerWindow.show()
             // if(focusedWindow) focusedWindow.webContents.toggleDevTools()
