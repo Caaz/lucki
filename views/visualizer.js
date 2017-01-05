@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.appendChild(canvas)
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
-  document.body.setAttribute('onresize', 'windowUpdate()');
+  document.body.setAttribute('onresize', 'windowUpdate()')
   windowUpdate = () => {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
@@ -33,59 +33,55 @@ document.addEventListener('DOMContentLoaded', () => {
       // ctx.fillStyle = 'rgba(0, 0, 0, .1)'
       // ctx.fillRect(0, 0, canvas.width, canvas.height)
       // ctx.globalCompositeOperation = 'lighten'
-      let width = parseInt(bufferLength*5/6);
+      let width = parseInt(bufferLength * 5 / 6)
       let barWidth = ((canvas.width - width) / width)
-      for(let i = 0; i<bufferLength; i++) {
-        let barHeight = canvas.height * dataArray[i] / 256;
-        let dicks = (i / bufferLength) * 360;
+      for(let i = 0; i < bufferLength; i++) {
+        let barHeight = canvas.height * dataArray[i] / 256
+        let dicks = (i / bufferLength) * 360
         dicks = (dicks + (timestamp / 20)) % 360
-        ctx.fillStyle = 'hsl(' + dicks + ', 100%,50%)';
-        ctx.fillRect((barWidth * i) + i+1, canvas.height, barWidth, -barHeight);
+        ctx.fillStyle = 'hsl(' + dicks + ', 100%,50%)'
+        ctx.fillRect((barWidth * i) + i + 1, canvas.height, barWidth, -barHeight)
       }
       requestAnimationFrame(visualizers.spectrum)
     },
 
-
-    //Colorized like default theme, probably should read in color from preferences or .css
+    // Colorized like default theme, probably should read in color from preferences or .css
     oscilliscope(timestamp) {
-      analyser.fftSize = 2048*4
+      analyser.fftSize = 2048 * 4
       const bufferLength = analyser.frequencyBinCount
       const dataArray = new Uint8Array(bufferLength)
-      analyser.getByteTimeDomainData(dataArray);
-      ctx.lineWidth = 1;
-      let dim = Math.min(canvas.width,canvas.height)
-      var sliceWidth = dim/(bufferLength-1);
+      analyser.getByteTimeDomainData(dataArray)
+      let dim = Math.min(canvas.width, canvas.height)
+      ctx.lineWidth = 1 / 600 * dim
+      var sliceWidth = dim / (bufferLength - 1)
 
-      ctx.fillStyle = 'rgb(34, 34, 34)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'rgb(34, 34, 34)'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
 
+      ctx.beginPath()
+      // ctx.moveTo(0,-canvas.height/2);
+      ctx.save()
+      ctx.translate((canvas.width - dim) / 2, -canvas.height / 2)
+      ctx.fillStyle = 'rgb(45, 45, 45)'
+      ctx.arc(dim / 2, canvas.height, dim / 2, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.closePath()
+      ctx.beginPath()
+      ctx.moveTo(0, canvas.height)
+      for(var i = 0; i < bufferLength; i++) ctx.lineTo(sliceWidth * i, Math.pow(dataArray[i] / 128, 6 / 5) * canvas.height)
+      ctx.restore()
+      ctx.translate(canvas.width / 2, canvas.height / 2)
+      ctx.rotate(1 * Math.PI / 180)
+      ctx.translate(-canvas.width / 2, -canvas.height / 2)
+      ctx.strokeStyle = 'rgb(0, 255, 187)'
 
-      ctx.beginPath();
-      //ctx.moveTo(0,-canvas.height/2);
-      ctx.save();
-      ctx.translate((canvas.width-dim)/2, -canvas.height/2);
-      ctx.fillStyle = 'rgb(45, 45, 45)';
-      ctx.arc(dim/2,canvas.height, dim/2, 0, Math.PI*2);
-      ctx.fill();
-      ctx.closePath();
-      ctx.beginPath();
-      ctx.moveTo(0,canvas.height);
-      for(var i = 0; i < bufferLength; i++) ctx.lineTo(sliceWidth*i, Math.pow(dataArray[i]/128,6/5) * canvas.height);
-      ctx.restore();
-      ctx.translate(canvas.width/2, canvas.height/2);
-      ctx.rotate(1*Math.PI/180);
-      ctx.translate(-canvas.width/2, -canvas.height/2);
-      ctx.strokeStyle = 'rgb(0, 255, 187)';
-
-      ctx.stroke();
+      ctx.stroke()
       requestAnimationFrame(visualizers.oscilliscope)
     }
-    ////////////////////////////////
+    // //////////////////////////////
   }
   visualizers.oscilliscope()
 })
-
-
 
 // I want this later but for now it's causing xo issues.
 // function oscilliscope() {
