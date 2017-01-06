@@ -18,6 +18,10 @@ settings.defaults({
   },
   player: {
     volume: 0.5
+  },
+  visualizer: {
+    openOnLaunch: false,
+    isChild: false
   }
 })
 settings.applyDefaults()
