@@ -12,16 +12,12 @@ html
   body#visualizer
     audio
     #settings-modal.modal.fade(tabindex= '-1', role= 'dialog', aria-label= 'settings')
-      .modal-dialog.modal-lg: .modal-content
-        .modal-header
-          button.close(type= 'button', data-dismiss= 'modal', aria-label= 'Close')
-          h4.modal-title Visualizer Settings
-        .modal-body: form
-          .form-group
-            label(for='settings-visualizer') Visualizer
-            select#settings-visualizer-selected.form-control
-              option(value='spectrum') Spectrum
-              option(value='oscilliscope') oscilliscope
-          .checkbox: label
-            input#settings-visualizer-openOnLaunch(type= 'checkbox')
-            | Open on Launch
+      .modal-dialog.modal-lg: .modal-content: .modal-body: form
+        .form-group
+          label(for='settings-visualizer') Visualizer
+          select#settings-visualizer-selected.form-control
+            option(value='spectrum') Spectrum
+            option(value='oscilliscope') oscilliscope
+        .checkbox: label
+          input#settings-visualizer-openOnLaunch(type= 'checkbox')
+          | Open on Launch
