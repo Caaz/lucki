@@ -19,7 +19,7 @@ module.exports = {
       //  skipTaskbar: false,
       icon: 'assets/icon.png'
     })
-    win.loadURL('file://' + global.appRoot + '/views/player.html')
+    win.loadURL('file://' + global.views.player)
     // console.log('Hiding Player window')
     win.hide()
 
