@@ -1,25 +1,36 @@
-const {BrowserWindow, ipcMain} = require('electron')
+const {BrowserWindow, ipcMain, Menu} = require('electron')
 
 let win
 
 module.exports = {
-  open(parent) {
+  open() {
     //  parent.BrowserWindow.x = 0;
 
     win = new BrowserWindow({
-      //  parent: parent,
-      height: 600,
-      width: 600,
       resizable: true,
       minimizable: true,
       maximizable: true,
       fullscreenable: true,
-      backgroundColor: '#00000044',
       autoHideMenuBar: true,
-      //  skipTaskbar: false,
       icon: 'assets/icon.png'
     })
     win.loadURL('file://' + global.views.player)
+    win.setMenu(Menu.buildFromTemplate([
+      {
+        label: 'View',
+        submenu: [
+          {role: 'togglefullscreen'},
+          {role: 'toggledevtools'},
+          {
+            label: 'Show Settings',
+            accelerator: process.platform === 'darwin' ? 'Command+,' : 'Ctrl+,',
+            click(item, focusedWindow) {
+              if(focusedWindow) focusedWindow.webContents.send('open-settings')
+            }
+          }
+        ]
+      }
+    ]))
     // console.log('Hiding Player window')
     win.hide()
 

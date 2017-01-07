@@ -20,8 +20,10 @@ settings.defaults({
     volume: 0.5
   },
   visualizer: {
-    openOnLaunch: false,
-    isChild: false
+    selected: 'oscillator',
+    openOnLaunch: false
+    // I don't think a child is ever really needed or wanted.
+    // isChild: false
   }
 })
 settings.applyDefaults()

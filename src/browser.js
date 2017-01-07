@@ -26,23 +26,15 @@ function open() {
     {
       label: 'View',
       submenu: [
-        {
-          label: 'Toggle Developer Tools',
-          accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
-          click(item, focusedWindow) {
-            if(focusedWindow) focusedWindow.webContents.toggleDevTools()
-          }
-        },
+        {role: 'togglefullscreen'},
+        {role: 'toggledevtools'},
         {
           label: 'Show Visualizer',
           accelerator: process.platform === 'darwin' ? 'Alt+Command+v' : 'Alt+V',
-          click(item, focusedWindow) {
-            playerWindow.show()
-            // if(focusedWindow) focusedWindow.webContents.toggleDevTools()
-          }
+          click() { playerWindow.show() }
         },
         {
-          label: 'Settings',
+          label: 'Show Settings',
           accelerator: process.platform === 'darwin' ? 'Command+,' : 'Ctrl+,',
           click(item, focusedWindow) {
             if(focusedWindow) focusedWindow.webContents.send('open-settings')
