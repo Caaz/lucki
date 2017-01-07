@@ -1,13 +1,23 @@
 const {BrowserWindow, Menu, ipcMain, globalShortcut} = require('electron')
+const electronSettings = require('electron-settings')
 const library = require('./library')
 const player = require('./player')
 
 let win
+
+electronSettings.observe('browser.hideMenu', e => {
+  console.log('Toggled!')
+  if(isOpen()) {
+    win.setAutoHideMenuBar(e.newValue)
+    win.setMenuBarVisibility(!e.newValue)
+  }
+})
+
 function open() {
   win = new BrowserWindow({
     width: 800,
     height: 600,
-    autoHideMenuBar: true,
+    autoHideMenuBar: electronSettings.getSync('browser.hideMenu'),
     icon: 'assets/icon.png'
   })
   const playerWindow = player.open(win)

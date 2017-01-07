@@ -75,11 +75,10 @@ ipcRenderer.on('previous', next)
 ipcRenderer.on('playToggle', playToggle)
 ipcRenderer.on('stop', stop)
 ipcRenderer.on('open-settings', () => {
-  const mySettings = {
-    library: settings.getSync('library')
-  }
+  const mySettings = settings.getSync()
   $('#settings-library-directory').val(mySettings.library.directory)
   $('#settings-subdirectories')[0].checked = mySettings.library.subdirectories
+  $('#settings-hide-menu')[0].checked = mySettings.browser.hideMenu
   $('#settings-modal').modal('show')
 })
 
@@ -132,8 +131,10 @@ $(() => {
   ipcRenderer.send('library', ['get'])
   const $document = $(document)
   $('#settings-modal').on('hidden.bs.modal', () => {
-    //
-    settings.set('library', {
+    settings.setSync('browser', {
+      hideMenu: $('#settings-hide-menu')[0].checked
+    })
+    settings.setSync('library', {
       directory: $('#settings-library-directory').val(),
       subdirectories: $('#settings-subdirectories')[0].checked
     })

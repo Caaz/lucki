@@ -53,7 +53,7 @@ MIT © [Daniel Caaz](https://caaz.me)
     - [ ] Delete file
       - [ ] *(obscure)* Keyboard shortcut to also do this quickly
     - [ ] Show in file explorer
-  - [ ] Toggle table columns
+  - [x] Toggle table columns
   - [ ] Remove leading zeros from track #
   - [ ] Track duration and current time in now playing
   - [ ] Track duration as a column
