@@ -7,7 +7,7 @@ module.exports = {
     //  parent.BrowserWindow.x = 0;
 
     win = new BrowserWindow({
-      //  parent: parent,
+      // parent: parent,
       height: 600,
       width: 600,
       resizable: true,
