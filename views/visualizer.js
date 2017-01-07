@@ -33,10 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
       // ctx.fillStyle = 'rgba(0, 0, 0, .1)'
       // ctx.fillRect(0, 0, canvas.width, canvas.height)
       // ctx.globalCompositeOperation = 'lighten'
-      let width = parseInt(bufferLength * 5 / 6)
-      let barWidth = ((canvas.width - width) / width)
+      const width = parseInt(bufferLength * 5 / 6, 10)
+      const barWidth = ((canvas.width - width) / width)
       for(let i = 0; i < bufferLength; i++) {
-        let barHeight = canvas.height * dataArray[i] / 256
+        const barHeight = canvas.height * dataArray[i] / 256
         let dicks = (i / bufferLength) * 360
         dicks = (dicks + (timestamp / 20)) % 360
         ctx.fillStyle = 'hsl(' + dicks + ', 100%,50%)'
@@ -46,14 +46,15 @@ document.addEventListener('DOMContentLoaded', () => {
     },
 
     // Colorized like default theme, probably should read in color from preferences or .css
-    oscilliscope(timestamp) {
+    oscilliscope() {
       analyser.fftSize = 2048 * 4
       const bufferLength = analyser.frequencyBinCount
       const dataArray = new Uint8Array(bufferLength)
       analyser.getByteTimeDomainData(dataArray)
-      let dim = Math.min(canvas.width, canvas.height)
+      const dim = Math.min(canvas.width, canvas.height)
       ctx.lineWidth = 1 / 600 * dim
-      var sliceWidth = dim / (bufferLength - 1)
+      let sliceWidth = dim
+      sliceWidth /= (bufferLength - 1)
 
       ctx.fillStyle = 'rgb(34, 34, 34)'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -67,12 +68,21 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.fill()
       ctx.closePath()
       ctx.beginPath()
-      ctx.moveTo(0, canvas.height)
-      for(var i = 0; i < bufferLength; i++) ctx.lineTo(sliceWidth * i, Math.pow(dataArray[i] / 128, 6 / 5) * canvas.height)
+      ctx.moveTo((canvas.width - dim) / 2, -canvas.height / 2)
+      let _max = 0
+      for (let i = 0; i < bufferLength; i++) {
+        // if (dataArray[i] / 256 > _max) _max = dataArray[i] / 256
+        dataArray[i] *= canvas.height / (256)
+        // dataArray[i] -= canvas.height / 2
+        // ctx.lineTo(sliceWidth * i, dataArray[i])
+        ctx.lineTo(canvas.width, canvas.height / 2)
+      }
+      // for (let i = 0; i < bufferLength; i++) ctx.lineTo(sliceWidth * i, (dataArray[i] / 256) * (2 / _max) * dim + canvas.height)
+      // for (let i = 0; i < bufferLength; i++) console.log(dataArray[i])//
       ctx.restore()
-      ctx.translate(canvas.width / 2, canvas.height / 2)
-      ctx.rotate(1 * Math.PI / 180)
-      ctx.translate(-canvas.width / 2, -canvas.height / 2)
+      // ctx.translate(canvas.width / 2, canvas.height / 2)
+      // ctx.rotate(1 * Number(Math.PI) / 180)
+      // ctx.translate(-canvas.width / 2, -canvas.height / 2)
       ctx.strokeStyle = 'rgb(0, 255, 187)'
 
       ctx.stroke()
