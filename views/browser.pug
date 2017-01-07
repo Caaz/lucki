@@ -9,30 +9,26 @@ html
     script(src= appRoot + '/views/browser.js')
   body#browser
     //- Modals
-    #settings-modal.modal.fade(tabindex= '-1', role= 'dialog', aria-label= 'settings')
-      .modal-dialog.modal-lg
-        .modal-content
-          .modal-header
-            button.close(type= 'button', data-dismiss= 'modal', aria-label= 'Close')
-            h4.modal-title Lucki Settings
-          .modal-body
-            form
-              .form-group
-                label(for='settings-library-directory') Library Directory
-                .input-group
-                  input#settings-library-directory.form-control(type= 'text', placeholder= 'Directory')
-                  .input-group-btn: button#find-library-directory.btn.btn-default(type= 'button'): .fa.fa-fw.fa-folder
-              .checkbox: label
-                input#settings-subdirectories(type= 'checkbox')
-                | Search Subdirectories
-    #volume-modal.modal.fade(tabindex= '-1', role= 'dialog', aria-labelledby= 'toggle-volume')
-      .modal-dialog.modal-sm(role='document')
-        .modal-content
-          .modal-header
-            button.close(type= 'button', data-dismiss= 'modal', aria-label= 'Close')
-            h4.modal-title Volume
-          .modal-body
-            #volume.slider
+    #settings-modal.modal.fade(tabindex= '-1', role= 'dialog', aria-label= 'settings'): .modal-dialog.modal-lg
+      .modal-content
+        .modal-header
+          button.close(type= 'button', data-dismiss= 'modal', aria-label= 'Close')
+          h4.modal-title Lucki Settings
+        .modal-body: form
+          .form-group
+            label(for='settings-library-directory') Library Directory
+            .input-group
+              input#settings-library-directory.form-control(type= 'text', placeholder= 'Directory')
+              .input-group-btn: button#find-library-directory.btn.btn-default(type= 'button'): .fa.fa-fw.fa-folder
+          .checkbox: label
+            input#settings-subdirectories(type= 'checkbox')
+            | Search Subdirectories
+    #volume-modal.modal.fade(tabindex= '-1', role= 'dialog', aria-labelledby= 'toggle-volume'): .modal-dialog.modal-sm(role='document'): .modal-content
+      .modal-header
+        button.close(type= 'button', data-dismiss= 'modal', aria-label= 'Close')
+        h4.modal-title Volume
+      .modal-body
+        #volume.slider
     header
       .navbar.navbar-default
         form#controls.navbar-form.navbar-left(role= 'controls', style= 'margin:0; padding:10px')
@@ -44,19 +40,16 @@ html
             button#toggle-repeat.btn.btn-default(type='button'): .fa.fa-fw.fa-repeat
             button#toggle-volume.btn.btn-default.dropdown-toggle(type='button', data-toggle='modal', data-target='#volume-modal'): .fa.fa-fw.fa-volume-up
         #now-playing.navbar-left.media
-          .media-left
-            img#album-art.media-object
+          .media-left: img#album-art.media-object
           .media-body
             #track-title.media-heading.text-primary
             span.text-muted
               span#track-artist
               span#track-seperator
               span#track-album
-        form.navbar-form.navbar-right.hidden-xs(role= 'search')
-          .input-group
-            input.form-control(type= 'text', placeholder='Search')
-            .input-group-btn
-              button#search.btn.btn-default.fa.fa-search(type='button')
+        form.navbar-form.navbar-right.hidden-xs(role= 'search'): .input-group
+          input.form-control(type= 'text', placeholder='Search')
+          .input-group-btn: button#search.btn.btn-default.fa.fa-search(type='button')
       #playhead.slider
     main: div: table.table.table-hover.table-condensed
       thead: tr
