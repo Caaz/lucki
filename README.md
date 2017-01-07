@@ -31,7 +31,6 @@ MIT © [Daniel Caaz](https://caaz.me)
 
 ## Known bugs
 
-  - Search is currently broken
   - Previous Track doesn't actually go to your previous track
   - Shuffle is actually random
 

@@ -3,6 +3,7 @@ const settings = require('electron-settings')
 const {sprintf} = require('sprintf-js')
 const $ = window.$ = window.jQuery = require('jquery')
 require('tablesorter')
+require('tablesorter/dist/js/widgets/widget-columnSelector.min.js')
 require('bootstrap')
 require('jquery-ui/ui/widget')
 require('jquery-ui/ui/widgets/mouse')
@@ -168,8 +169,9 @@ $(() => {
     }
   })
   $table.tablesorter({
-    widgets: ['saveSort', 'resizable', 'filter', 'zebra', 'stickyHeaders'],
+    widgets: ['saveSort', 'resizable', 'filter', 'zebra', 'stickyHeaders', 'columnSelector'],
     widgetOptions: {
+      // columnSelector_container: $('#column-selection'),
       resizable: true,
       resizable_throttle: true,
       resizable_addLastColumn: true,
@@ -178,6 +180,13 @@ $(() => {
       filter_columnFilters: false,
       filter_ignoreCase: true
     }
+  })
+  $.tablesorter.columnSelector.attachTo($table, '#column-selection')
+  $('#hide-columns')
+  .popover({
+    placement: 'right',
+    html: true,
+    content: $('#column-selection')
   })
   $document.keydown(e => {
     if(e.target.tagName === 'INPUT') {

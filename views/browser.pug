@@ -23,6 +23,9 @@ html
           .checkbox: label
             input#settings-subdirectories(type= 'checkbox')
             | Search Subdirectories
+          .form-group
+            button#hide-columns.btn.btn-default(type='button') Hide Columns
+            .hidden: #column-selection
     #volume-modal.modal.fade(tabindex= '-1', role= 'dialog', aria-labelledby= 'toggle-volume'): .modal-dialog.modal-sm(role='document'): .modal-content
       .modal-header
         button.close(type= 'button', data-dismiss= 'modal', aria-label= 'Close')
