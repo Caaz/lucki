@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    title Visualizer
+    link(rel= 'stylesheet' href = appRoot + '/node_modules/font-awesome/css/font-awesome.min.css')
+    link(rel= 'stylesheet' href = appRoot + '/tmp/theme.css')
+    script.
+      const appRoot = '#{appRoot}'
+      require(appRoot + '/views/player')
+      require(appRoot + '/views/settings')
+      require(appRoot + '/views/visualizer')
+  body#visualizer
+    audio
+    #settings-modal.modal.fade(tabindex= '-1', role= 'dialog', aria-label= 'settings')
+      .modal-dialog.modal-lg: .modal-content
+        .modal-header
+          button.close(type= 'button', data-dismiss= 'modal', aria-label= 'Close')
+          h4.modal-title Visualizer Settings
+        .modal-body: form
+          .form-group
+            label(for='settings-visualizer') Visualizer
+            select#settings-visualizer-selected.form-control
+              option(value='spectrum') Spectrum
+              option(value='oscillator') Oscillator
+          .checkbox: label
+            input#settings-visualizer-openOnLaunch(type= 'checkbox')
+            | Open on Launch

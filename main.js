@@ -16,8 +16,10 @@ settings.defaults({
     volume: 0.5
   },
   visualizer: {
-    openOnLaunch: false,
-    isChild: false
+    selected: 'oscillator',
+    openOnLaunch: false
+    // I don't think a child is ever really needed or wanted.
+    // isChild: false
   }
 })
 settings.applyDefaults()
@@ -32,11 +34,11 @@ carlin.settings({outDir: global.appRoot + '/tmp/', pugOptions: {
 }})
 console.time('Compiling Views')
 carlin.compile(global.appRoot + '/views/browser.pug')
-carlin.compile(global.appRoot + '/views/webserver.pug')
+carlin.compile(global.appRoot + '/views/player.pug')
 console.timeEnd('Compiling Views')
 global.views = {
   browser: carlin.get('browser'),
-  webserver: carlin.get('webserver')
+  player: carlin.get('player')
 }
 
 // Main browser window.
