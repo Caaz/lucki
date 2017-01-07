@@ -16,7 +16,7 @@ settings.defaults({
     volume: 0.5
   },
   visualizer: {
-    selected: 'oscillator',
+    selected: 'oscilliscope',
     openOnLaunch: false
     // I don't think a child is ever really needed or wanted.
     // isChild: false

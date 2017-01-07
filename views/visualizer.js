@@ -1,24 +1,29 @@
+const electronSettings = require('electron-settings')
+
+let selected
+electronSettings.observe('visualizer.selected', e => {
+  selected = e.newValue
+  console.log('Selected visualizer: ' + selected)
+})
+
 document.addEventListener('DOMContentLoaded', () => {
-  // this is our audio tag, which plays all the music. You'll probably need it.
+  selected = electronSettings.getSync('visualizer.selected')
+  console.log('Selected visualizer: ' + selected)
   const audio = document.getElementsByTagName('AUDIO')[0]
-  // Do some visualizer shit here, I guess.
   const canvas = document.createElement('canvas')
   document.body.appendChild(canvas)
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
-  document.body.setAttribute('onresize', 'windowUpdate()')
-  windowUpdate = () => {
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
-  }
+  // document.body.setAttribute('onresize', 'windowUpdate()')
+  // function windowUpdate() {
+  //   canvas.width = window.innerWidth
+  //   canvas.height = window.innerHeight
+  // }
 
   const ctx = canvas.getContext('2d')
-  // ctx.globalCompositeOperation = 'source-over'
-
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
   const analyser = audioCtx.createAnalyser()
   const source = audioCtx.createMediaElementSource(audio)
-
   source.connect(analyser)
   analyser.connect(audioCtx.destination)
 
@@ -42,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillStyle = 'hsl(' + dicks + ', 100%,50%)'
         ctx.fillRect((barWidth * i) + i + 1, canvas.height, barWidth, -barHeight)
       }
-      requestAnimationFrame(visualizers.spectrum)
+      nextFrame()
     },
 
     // Colorized like default theme, probably should read in color from preferences or .css
@@ -69,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.closePath()
       ctx.beginPath()
       ctx.moveTo((canvas.width - dim) / 2, -canvas.height / 2)
-      let _max = 0
+      // const _max = 0
       for (let i = 0; i < bufferLength; i++) {
         // if (dataArray[i] / 256 > _max) _max = dataArray[i] / 256
         dataArray[i] *= canvas.height / (256)
@@ -86,11 +91,14 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.strokeStyle = 'rgb(0, 255, 187)'
 
       ctx.stroke()
-      requestAnimationFrame(visualizers.oscilliscope)
+      nextFrame()
     }
     // //////////////////////////////
   }
-  visualizers.oscilliscope()
+  function nextFrame() {
+    requestAnimationFrame(visualizers[selected])
+  }
+  nextFrame()
 })
 
 // I want this later but for now it's causing xo issues.
