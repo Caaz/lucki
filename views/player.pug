@@ -5,7 +5,7 @@ html
     link(rel= 'stylesheet' href = appRoot + '/node_modules/font-awesome/css/font-awesome.min.css')
     link(rel= 'stylesheet' href = appRoot + '/tmp/theme.css')
     script.
-      const appRoot = '#{appRoot}'
+      const appRoot = '#{appRoot.replace(/\\/, "\\\\")}'
       require(appRoot + '/views/player')
       require(appRoot + '/views/settings')
       require(appRoot + '/views/visualizer')
