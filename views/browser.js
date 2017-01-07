@@ -110,7 +110,9 @@ function previous() {
   else play($currentPlaylist.children()[0])
 }
 function search() {
-  $('main > div > table').trigger('search', [['', '', '', $('#search input').val()]])
+  const col = [] // Dynamic bullshit!
+  col[$table.find('thead tr').children().length] = $('#search-input').val()
+  $table.trigger('search', [col])
 }
 function select($item) {
   if($item.length === 0) return

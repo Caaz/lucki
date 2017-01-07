@@ -47,8 +47,8 @@ html
               span#track-artist
               span#track-seperator
               span#track-album
-        form.navbar-form.navbar-right.hidden-xs(role= 'search'): .input-group
-          input.form-control(type= 'text', placeholder='Search')
+        .navbar-form.navbar-right.hidden-xs(role= 'search'): .input-group
+          input#search-input.form-control(type= 'search', placeholder= 'Search', data-column= '1')
           .input-group-btn: button#search.btn.btn-default.fa.fa-search(type='button')
       #playhead.slider
     main: div: table.table.table-hover.table-condensed
