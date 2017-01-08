@@ -3,7 +3,8 @@ const electronSettings = require('electron-settings')
 const vRoot = global.appRoot + '/src/view/visualizer/'
 const visualizers = {
   spectrum: require(vRoot + 'spectrum'),
-  caaz: require(vRoot + 'caaz')
+  caaz: require(vRoot + 'caaz'),
+  oscilliscope: require(vRoot + 'oscilliscope')
 }
 let analyser
 let selected
@@ -120,20 +121,20 @@ document.addEventListener('DOMContentLoaded', () => {
 //     ctx.strokeStyle = 'rgb(0, 0, 0)'
 //     ctx.beginPath()
 //
-//     let sliceWidth = canvas.width * 1.0 / bufferLength
-//     let x = 0
-//
-//     for(let i = 0; i < bufferLength; i++) {
-//
-//       let v = dataArray[i] / 128.0
-//       let y = v * canvas.height/2
-//
-//       if(i === 0) ctx.moveTo(x, y)
-//       else ctx.lineTo(x, y)
-//       x += sliceWidth
-//     }
-//     ctx.lineTo(canvas.width, canvas.height/2)
-//     ctx.stroke()
+    // let sliceWidth = canvas.width * 1.0 / bufferLength
+    // let x = 0
+    //
+    // for(let i = 0; i < bufferLength; i++) {
+    //
+    //   let v = dataArray[i] / 128.0
+    //   let y = v * canvas.height/2
+    //
+    //   if(i === 0) ctx.moveTo(x, y)
+    //   else ctx.lineTo(x, y)
+    //   x += sliceWidth
+    // }
+    // ctx.lineTo(canvas.width, canvas.height/2)
+    // ctx.stroke()
 //   }
 //   draw()
 // }
