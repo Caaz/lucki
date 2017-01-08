@@ -3,7 +3,7 @@ const electronSettings = require('electron-settings')
 const vRoot = global.appRoot + '/src/view/visualizer/'
 const visualizers = {
   spectrum: require(vRoot + 'spectrum'),
-  spectrum: require(vRoot + 'caaz')
+  caaz: require(vRoot + 'caaz')
 }
 
 let selected

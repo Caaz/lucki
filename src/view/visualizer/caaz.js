@@ -4,7 +4,12 @@ module.exports = {
     const bufferLength = analyser.frequencyBinCount
     const dataArray = new Uint8Array(bufferLength)
     analyser.getByteFrequencyData(dataArray)
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+    // const frame = ctx.getImageData(0, 0, canvas.width, canvas.height)
+    ctx.drawImage(canvas, 0, -1, canvas.width, canvas.height)
+    // ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.fillStyle = 'rgba(0,0,0,0.05)'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
     const width = parseInt(bufferLength * 5 / 6, 10)
     const scaledWidth = ((canvas.width - width) / width)
     ctx.beginPath()
@@ -13,8 +18,12 @@ module.exports = {
       const height = canvas.height * dataArray[i] / 256
       ctx.lineTo((scaledWidth * i), canvas.height - 1 - height)
     }
-    ctx.strokeStyle = '#0fb'
-    ctx.lineWidth = 2
-    ctx.stroke()
+    ctx.lineTo(canvas.width, canvas.height)
+    // ctx.strokeStyle = '#0fb'
+    ctx.fillStyle = '#0fb'
+    // ctx.fillStyle = '#2d2d2d'
+    // ctx.lineWidth = 10
+    // ctx.stroke()
+    ctx.fill()
   }
 }
