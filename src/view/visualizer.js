@@ -10,7 +10,7 @@ let selected
 function select(vis) {
   selected = vis
   console.log('Selected visualizer: ' + selected)
-  if(visualizers[selected].init !== null) visualizers[selected].init({analyser})
+  if(visualizers[selected].init) visualizers[selected].init({analyser})
 }
 electronSettings.observe('visualizer.selected', e => {
   select(e.newValue)
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
   source.connect(analyser)
   analyser.connect(audioCtx.destination)
   function draw(timestamp) {
-    console.log('drawing ' + selected)
+    // console.log('drawing ' + selected)
     visualizers[selected].draw(timestamp, {canvas, ctx, analyser})
     requestAnimationFrame(draw)
   }
