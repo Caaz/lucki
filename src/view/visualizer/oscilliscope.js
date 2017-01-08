@@ -8,12 +8,13 @@ module.exports = {
   },
   draw(timestamp, {analyser, canvas, audio, ctx}) {
     analyser.getByteTimeDomainData(data)
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.lineWidth = 1
-    // ctx.drawImage(canvas, 0, -10, canvas.width, canvas.height - 10)
+    // ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.lineWidth = 3
+    ctx.drawImage(canvas, 0, -2, canvas.width, canvas.height - 2)
+    // ctx.drawImage(canvas, 0, 1, canvas.width, canvas.height + 1)
     // ctx.globalCompositeOperation = 'multiply'
-    // ctx.fillStyle = '#aaa'
-    // ctx.fillRect(0, 0, canvas.width, canvas.height)
+    ctx.fillStyle = 'rgba(45,45,45,0.025)'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
     // ctx.globalCompositeOperation = 'source-over'
     ctx.save()
     ctx.translate(0, canvas.height / 2)
@@ -28,7 +29,8 @@ module.exports = {
       const y1 = data[i] / 128.0 * amplitude - amplitude
       const y2 = data[i + 1] / 128.0 * amplitude - amplitude
       ctx.beginPath()
-      ctx.strokeStyle = 'hsl(' + (360 + timestamp / 60) * (1 - y1 / amplitude) + ', 100%, 50%)'
+      // ctx.strokeStyle = 'hsl(' + (360 * (i / bufferLength)) + ', 100%, ' + (50 + (y1 < 0 ? 1 : -1) * 50 * Math.pow(Math.abs(y1 / amplitude), 1 / 1)) + '%)'
+      ctx.strokeStyle = 'hsl(150, 100%, ' + (50 + (y1 < 0 ? 1 : -1) * 50 * Math.pow(Math.abs(y1 / amplitude), 1 / 2)) + '%)'
       ctx.moveTo(x, y1)
       x += sliceWidth
       ctx.lineTo(x, y2)
@@ -38,5 +40,8 @@ module.exports = {
     // ctx.lineTo(canvas.width, 0)
     // ctx.stroke()
     ctx.restore()
+    ctx.translate(canvas.width / 2, canvas.height / 2)
+    ctx.rotate(Math.PI / Math.pow(1440, 2))
+    ctx.translate(-canvas.width / 2, -canvas.height / 2)
   }
 }
