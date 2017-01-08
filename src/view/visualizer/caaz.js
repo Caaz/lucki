@@ -29,6 +29,6 @@ module.exports = {
     ctx.fillStyle = '#0fb'
     spectrum(canvas, ctx, scaledWidth, 0)
     ctx.fillStyle = '#2d2d2d'
-    spectrum(canvas, ctx, scaledWidth, 20)
+    spectrum(canvas, ctx, scaledWidth, canvas.height / 10)
   }
 }
