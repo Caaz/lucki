@@ -75,6 +75,10 @@ MIT © [Daniel Caaz](https://caaz.me)
   - [ ] When sorting by artist, ignore 'The '
   - [ ] When sorting by album, group by artist.
   - [ ] Group everything else by letter
+- *Visualizer*
+  - [ ] Modulate each visualizer to separate files
+  - [ ] Per-visual settings (context menu)
+  - [ ] Read in colors from user theme
 - *Misc*
   - [ ] Add an Equalizer
   - [ ] Save window dimensions

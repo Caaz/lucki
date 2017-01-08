@@ -21,6 +21,7 @@ module.exports = {
         submenu: [
           {role: 'togglefullscreen'},
           {role: 'toggledevtools'},
+          {role: 'reload'},
           {
             label: 'Show Settings',
             accelerator: process.platform === 'darwin' ? 'Command+,' : 'Ctrl+,',
