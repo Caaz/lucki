@@ -1,7 +1,9 @@
 const electronSettings = require('electron-settings')
 
+const vRoot = global.appRoot + '/src/view/visualizer/'
 const visualizers = {
-  spectrum: require(global.appRoot + '/src/view/visualizer/spectrum')
+  spectrum: require(vRoot + 'spectrum'),
+  spectrum: require(vRoot + 'caaz')
 }
 
 let selected
