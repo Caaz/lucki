@@ -1,4 +1,5 @@
 const {BrowserWindow, ipcMain, Menu} = require('electron')
+const electronSettings = require('electron-settings')
 
 let win
 
@@ -12,6 +13,7 @@ module.exports = {
       maximizable: true,
       fullscreenable: true,
       autoHideMenuBar: true,
+      show: electronSettings.getSync('visualizer.openOnLaunch'),
       icon: 'assets/icon.png'
     })
     win.loadURL('file://' + global.views.player)
@@ -33,7 +35,7 @@ module.exports = {
       }
     ]))
     // console.log('Hiding Player window')
-    win.hide()
+    // win.hide()
 
     ipcMain.on('player', (event, args) => {
       const command = args.shift()
