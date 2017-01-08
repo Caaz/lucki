@@ -1,4 +1,4 @@
-const {ipcRenderer} = require('electron')
+const ipcRenderer = require('electron').ipcRenderer
 const settings = require('electron-settings')
 
 let audio

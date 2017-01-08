@@ -6,9 +6,9 @@ html
     link(rel= 'stylesheet' href = appRoot + '/tmp/theme.css')
     script.
       global.appRoot = '#{appRoot.replace(/\\/g, "\\\\")}'
-    script(src= appRoot + '/src/view/player.js')
-    script(src= appRoot + '/src/view/settings.js')
-    script(src= appRoot + '/src/view/visualizer.js')
+      require(global.appRoot + '/src/view/player.js')
+      require(global.appRoot + '/src/view/visualizer.js')
+      require(global.appRoot + '/src/view/settings.js')
   body#visualizer
     audio
     #settings-modal.modal.fade(tabindex= '-1', role= 'dialog', aria-label= 'settings')

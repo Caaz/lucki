@@ -1,16 +1,13 @@
-const electron = require('electron')
-const electronSettings = require('electron-settings')
+const ipcRenderer = require('electron').ipcRenderer
+const eSettings = require('electron-settings')
 const $ = window.$ = window.jQuery = require('jquery')
 require('bootstrap')
 
-const {ipcRenderer} = electron
-
-// let settings = { }
 // The intent of this file is to be included in both visualizer and browser.
 // This must be made slightly more modular.
 
 ipcRenderer.on('open-settings', () => {
-  const settings = electronSettings.getSync()
+  const settings = eSettings.getSync()
   console.log(settings)
   $('#settings-visualizer-selected').val(settings.visualizer.selected)
   $('#settings-visualizer-openOnLaunch')[0].checked = settings.visualizer.openOnLaunch
@@ -18,7 +15,7 @@ ipcRenderer.on('open-settings', () => {
 })
 $(() => {
   $('#settings-modal').on('hidden.bs.modal', () => {
-    const settings = electronSettings.getSync()
+    const settings = eSettings.getSync()
 
     // Visualizer
     const options = ['selected', 'openOnLaunch']
@@ -34,6 +31,6 @@ $(() => {
         }
       }
     }
-    electronSettings.set('visualizer', settings.visualizer)
+    eSettings.set('visualizer', settings.visualizer)
   })
 })
