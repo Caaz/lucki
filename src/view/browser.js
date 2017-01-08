@@ -118,11 +118,10 @@ function select($item) {
   if($item.length === 0) return
   $('tr.selected').removeClass('selected')
   $item.addClass('selected')
-  const $content = $('main > div')
-  const topAdjust = $item.offset().top - $content.offset().top
-  const bottomAdjust = topAdjust + $item.height() - $content.height()
-  if(topAdjust < 0) $content[0].scrollTop += topAdjust
-  else if(bottomAdjust > 0) $content[0].scrollTop += bottomAdjust
+  const topAdjust = $item.offset().top - $('tbody').offset().top - $('body')[0].scrollTop
+  const bottomAdjust = topAdjust + $item.height() - $(window).height() + $('tbody').offset().top
+  if(topAdjust < 0) $('body')[0].scrollTop += topAdjust
+  else if(bottomAdjust > 0) $('body')[0].scrollTop += bottomAdjust
 }
 
 $(() => {
@@ -215,6 +214,7 @@ $(() => {
         else if(target.id === 'toggle-repeat') $(target).toggleClass('enabled')
         else if(target.id === 'next-track') next()
         else if(target.id === 'search') search()
+        else if(target.id === 'now-playing') select($('[data-library-key="' + playerState.libraryKey + '"]'))
         else if(target.id === 'toggle-volume') {
           if(playerState && playerState.volume) {
             console.log('setting value: ' + playerState.volume)

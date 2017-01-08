@@ -12,7 +12,9 @@ button:focus {
   > span { background-color:@body-bg; }
   &, * { cursor:pointer; }
 }
-
+.selected {
+  background-color:@body-bg-light;
+}
 .playing td {
   font-weight:bold;
   color:@brand-primary;
@@ -21,6 +23,9 @@ button:focus {
   background-color:@body-bg-dark;
   border: 1px solid @body-bg-light;
   margin:0 10px;
+  * {
+    pointer-events: none;
+  }
 }
 #track-seperator {
   &::before{ content: ' - '; }
