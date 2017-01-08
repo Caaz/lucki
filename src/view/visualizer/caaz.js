@@ -37,7 +37,7 @@ module.exports = {
     const scaledWidth = ((canvas.width - width) / width)
     //
     ctx.globalCompositeOperation = 'source-over'
-    ctx.fillStyle = '#0fb'
+    ctx.fillStyle = 'hsl(' + timestamp / 60 + ',100%,50%)'
     spectrum(canvas, ctx, scaledWidth, 1)
     // ctx.fillStyle = '#2d2d2d'
     ctx.fillStyle = '#000'
