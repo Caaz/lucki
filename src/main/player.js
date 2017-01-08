@@ -6,7 +6,6 @@ let win
 module.exports = {
   open() {
     //  parent.BrowserWindow.x = 0;
-
     win = new BrowserWindow({
       resizable: true,
       minimizable: true,
@@ -16,6 +15,10 @@ module.exports = {
       show: electronSettings.getSync('visualizer.openOnLaunch'),
       icon: 'assets/icon.png'
     })
+    const position = electronSettings.getSync('visualizer.position')
+    const bounds = electronSettings.getSync('visualizer.bounds')
+    if(position) win.setPosition(position[0], position[1])
+    if(bounds) win.setBounds(bounds)
     win.loadURL('file://' + global.views.player)
     win.setMenu(Menu.buildFromTemplate([
       {
@@ -47,6 +50,8 @@ module.exports = {
     })
     // Hide the window on close!
     win.on('close', e => {
+      electronSettings.setSync('visualizer.position', win.getPosition())
+      electronSettings.setSync('visualizer.bounds', win.getBounds())
       win.hide()
       e.preventDefault()
     })

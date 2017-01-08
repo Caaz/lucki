@@ -20,6 +20,10 @@ function open() {
     autoHideMenuBar: electronSettings.getSync('browser.hideMenu'),
     icon: 'assets/icon.png'
   })
+  const position = electronSettings.getSync('browser.position')
+  const bounds = electronSettings.getSync('browser.bounds')
+  if(position) win.setPosition(position[0], position[1])
+  if(bounds) win.setBounds(bounds)
   const playerWindow = player.open(win)
   win.loadURL('file://' + global.views.browser)
   // The length of this pains me.
@@ -78,7 +82,12 @@ function open() {
   // Erase self when closing window.
   win.on('closed', () => {
     win = null
+    playerWindow.close()
     playerWindow.destroy()
+  })
+  win.on('close', () => {
+    electronSettings.setSync('browser.position', win.getPosition())
+    electronSettings.setSync('browser.bounds', win.getBounds())
   })
 }
 
