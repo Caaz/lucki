@@ -46,6 +46,8 @@ MIT © [Daniel Caaz](https://caaz.me)
   - [ ] Repeat Playlist/One toggle
   - [ ] Shuffle/Random toggle
   - [ ] Stop control
+  - [ ] Letter input will scroll to first entry beginning with that letter of the sort
+    - *i.e. sorted by artist, hit "r", taken to first artist that begins with "r"
 - *Library browser*
   - [ ] Add a context menu
     - [ ] Show file properties
@@ -65,6 +67,7 @@ MIT © [Daniel Caaz](https://caaz.me)
     - [ ] Suggested from now playing
   - [ ] Custom playlists
     - [ ] Drag tracks into playlist
+  - [ ] Favorites and Favorites playlist. Perhaps a heart icon next to song title?
 - *Desktop Integration*
   - [ ] Set Lucki as preferred default application to open media files
   - [ ] Show notifications properly on OSX, right now it has two icons
@@ -76,7 +79,7 @@ MIT © [Daniel Caaz](https://caaz.me)
   - [ ] When sorting by album, group by artist.
   - [ ] Group everything else by letter
 - *Visualizer*
-  - [ ] Modulate each visualizer to separate files
+  - [x] Modulate each visualizer to separate files
   - [ ] Per-visual settings (context menu)
   - [ ] Read in colors from user theme
 - *Misc*

@@ -64,6 +64,7 @@
       "no-loop-func": 0,
       "no-unused-vars": 1,
       "max-statements-per-line": 1,
+      "no-mixed-operators": 0,
       "guard-for-in": 0,
       "keyword-spacing": 0,
       "no-fallthrough": 0,
