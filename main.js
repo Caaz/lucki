@@ -27,14 +27,12 @@ settings.defaults({
 })
 settings.applyDefaults()
 
-// Start webserver. This should probably be under config or something.
-// require('./src/webserver')
-
 // Set up views.
 carlin.settings({outDir: global.appRoot + '/tmp/', pugOptions: {
   appRoot: global.appRoot,
   appData: global.appData
 }})
+
 console.time('Compiling Views')
 carlin.compile(global.appRoot + '/views/browser.pug')
 carlin.compile(global.appRoot + '/views/player.pug')
@@ -45,7 +43,7 @@ global.views = {
 }
 
 // Main browser window.
-const browser = require('./src/browser')
+const browser = require('./src/main/browser')
 
 app.on('ready', () => {
   const theme = global.appRoot + '/themes/Default/'

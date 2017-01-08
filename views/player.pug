@@ -5,10 +5,10 @@ html
     link(rel= 'stylesheet' href = appRoot + '/node_modules/font-awesome/css/font-awesome.min.css')
     link(rel= 'stylesheet' href = appRoot + '/tmp/theme.css')
     script.
-      const appRoot = '#{appRoot.replace(/\\/g, "\\\\")}'
-      require(appRoot + '/views/player')
-      require(appRoot + '/views/settings')
-      require(appRoot + '/views/visualizer')
+      global.appRoot = '#{appRoot.replace(/\\/g, "\\\\")}'
+    script(src= appRoot + '/src/view/player.js')
+    script(src= appRoot + '/src/view/settings.js')
+    script(src= appRoot + '/src/view/visualizer.js')
   body#visualizer
     audio
     #settings-modal.modal.fade(tabindex= '-1', role= 'dialog', aria-label= 'settings')
