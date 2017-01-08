@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
   source.connect(analyser)
   analyser.connect(audioCtx.destination)
   function draw(timestamp) {
-    visualizers[selected].draw(timestamp, {canvas, ctx, analyser})
+    visualizers[selected].draw(timestamp, {canvas, ctx, audio, analyser})
     requestAnimationFrame(draw)
   }
   select(electronSettings.getSync('visualizer.selected'))
