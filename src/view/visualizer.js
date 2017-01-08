@@ -1,18 +1,22 @@
 const electronSettings = require('electron-settings')
 
+const vRoot = global.appRoot + '/src/view/visualizer/'
 const visualizers = {
-  spectrum: require(global.appRoot + '/src/view/visualizer/spectrum')
+  spectrum: require(vRoot + 'spectrum'),
+  caaz: require(vRoot + 'caaz')
 }
-
+let analyser
 let selected
-electronSettings.observe('visualizer.selected', e => {
-  selected = e.newValue
+function select(vis) {
+  selected = vis
   console.log('Selected visualizer: ' + selected)
+  if(visualizers[selected].init !== null) visualizers[selected].init({analyser})
+}
+electronSettings.observe('visualizer.selected', e => {
+  select(e.newValue)
 })
 
 document.addEventListener('DOMContentLoaded', () => {
-  selected = electronSettings.getSync('visualizer.selected')
-  console.log('Selected visualizer: ' + selected)
   const audio = document.getElementsByTagName('AUDIO')[0]
   const canvas = document.createElement('canvas')
   document.body.appendChild(canvas)
@@ -25,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   const ctx = canvas.getContext('2d')
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
-  const analyser = audioCtx.createAnalyser()
+  analyser = audioCtx.createAnalyser()
   const source = audioCtx.createMediaElementSource(audio)
   source.connect(analyser)
   analyser.connect(audioCtx.destination)
@@ -34,7 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
     visualizers[selected].draw(timestamp, {canvas, ctx, analyser})
     requestAnimationFrame(draw)
   }
-  draw()
+  select(electronSettings.getSync('visualizer.selected'))
+  requestAnimationFrame(draw)
 
   // const visualizers = {
   //   spectrum(timestamp) {
