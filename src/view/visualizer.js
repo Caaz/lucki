@@ -30,7 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
   source.connect(analyser)
   analyser.connect(audioCtx.destination)
   function draw(timestamp) {
-    console.log('drawing ' + selected)
+    // fallback if selected doesn't exist. Just gotta make sure spectrum does.
+    if(visualizers[selected] === null) selected = 'spectrum'
     visualizers[selected].draw(timestamp, {canvas, ctx, analyser})
     requestAnimationFrame(draw)
   }
