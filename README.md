@@ -60,7 +60,7 @@ MIT © [Daniel Caaz](https://caaz.me)
   - [ ] Track duration and current time in now playing
   - [ ] Track duration as a column
   - [ ] File size of track as a column
-  - [ ] Clicking track info section at top of player scrolls to the track in current list/library
+  - [x] Clicking track info section at top of player scrolls to the track in current list/library
 - *Playlist*
   - [ ] Dynamic playlists
     - [ ] Recently Added
