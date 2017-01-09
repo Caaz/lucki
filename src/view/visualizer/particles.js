@@ -14,8 +14,8 @@ function initParticle(p, d, o) {
   const particle = this instanceof THREE.Sprite ? this : p
   const delay = d === undefined ? 0 : d
   const offset = o === undefined ? this.position.x : o
-  particle.position.set(offset, 0, 0)
-  particle.scale.x = particle.scale.y = Math.random() * 32 + 16
+  particle.position.set(offset, 0, Math.pow(data[particle.data.spec] / 256, 3) * 256 * ((Math.random() > 0.5) ? -1 : 1))
+  particle.scale.x = particle.scale.y = 32
   new TWEEN.Tween(particle)
     .delay(delay)
     .to({}, particleLife)
@@ -28,15 +28,11 @@ function initParticle(p, d, o) {
       y: data[particle.data.spec] / 256 * 400, // * Math.random() ,
       z: 0}, particleLife)
     .start()
-  new TWEEN.Tween(particle.scale)
-    .delay(delay)
-    .to({x: 0.01, y: 0.01}, particleLife)
-    .start()
 }
 module.exports = {
   init({canvas, analyser}) {
     // Analyser shit
-    analyser.fftSize = 32
+    analyser.fftSize = 64
     bufferLength = analyser.frequencyBinCount
     data = new Uint8Array(bufferLength)
 
@@ -49,8 +45,8 @@ module.exports = {
     const material = new THREE.SpriteMaterial({
       map: new THREE.CanvasTexture((() => {
         const canvas = document.createElement('canvas')
-        canvas.width = 16
-        canvas.height = 16
+        canvas.width = 8
+        canvas.height = 8
         const context = canvas.getContext('2d')
         const gradient = context.createRadialGradient(canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, canvas.width / 2)
         gradient.addColorStop(0, 'rgba(255,255,255,1)')
@@ -64,7 +60,7 @@ module.exports = {
       blending: THREE.AdditiveBlending
     })
     for(let x = 0; x < data.length; x++) {
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 10; i++) {
         const particle = new THREE.Sprite(material)
         particle.data = {
           spec: x
