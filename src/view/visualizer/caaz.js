@@ -1,5 +1,7 @@
 let bufferLength
 let data
+
+// Just when I thought this was fancy I went and learned transform was a thing. fuck everyone.
 function spectrum(canvas, ctx, width, scale) {
   const halfWidth = Math.floor(canvas.width / 2)
   const halfHeight = Math.floor(canvas.height / 2)
@@ -17,7 +19,7 @@ function spectrum(canvas, ctx, width, scale) {
 }
 module.exports = {
   init({analyser}) {
-    analyser.fftSize = 256
+    analyser.fftSize = 128
     bufferLength = analyser.frequencyBinCount
     data = new Uint8Array(bufferLength)
   },
