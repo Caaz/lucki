@@ -1,8 +1,16 @@
 const electronSettings = require('electron-settings')
 
 // Remember to add visualizers to views/player.pug
+// I should just do it automagically.
 const visualizers = {}
-const whitelist = ['spectrum', 'oscilliscope', 'caaz', 'twister', 'three']
+const whitelist = [
+  'spectrum',
+  'oscilliscope',
+  'caaz',
+  'twister',
+  'three',
+  'particles'
+]
 for(const i in whitelist) visualizers[whitelist[i]] = require(global.appRoot + '/src/view/visualizer/' + whitelist[i])
 
 let analyser
