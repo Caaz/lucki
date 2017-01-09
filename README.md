@@ -89,6 +89,7 @@ The package electron-packager handles the heavy lifting of exporting for other s
   - [x] Modulate each visualizer to separate files
   - [ ] Per-visual settings (context menu)
   - [ ] Read in colors from user theme
+  - [ ] Visualizer shuffle (specify time)
 - *Misc*
   - [ ] Add an Equalizer
   - [ ] Save window dimensions
