@@ -2,7 +2,7 @@ let bufferLength
 let data
 function spectrum(canvas, ctx, width, scale) {
   ctx.beginPath()
-  ctx.moveTo(0, canvas.height / 2)
+  ctx.moveTo(0, canvas.height / 2 + 1)
   for(let i = 0; i < bufferLength; i++) {
     const height = canvas.height / 2 * data[i] / 256
     ctx.lineTo((width * i), canvas.height / 2 - 1 - height * scale)
@@ -11,7 +11,7 @@ function spectrum(canvas, ctx, width, scale) {
   ctx.fill()
   // if I were really fancy I'd continue it backwards...
   ctx.beginPath()
-  ctx.moveTo(0, canvas.height / 2)
+  ctx.moveTo(0, canvas.height / 2 - 1)
   for(let i = 0; i < bufferLength; i++) {
     const height = -(canvas.height / 2 * data[i] / 256)
     ctx.lineTo((width * i), canvas.height / 2 - 1 - height * scale)
