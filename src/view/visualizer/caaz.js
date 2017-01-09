@@ -1,27 +1,25 @@
 let bufferLength
 let data
+
+// Just when I thought this was fancy I went and learned transform was a thing. fuck everyone.
 function spectrum(canvas, ctx, width, scale) {
+  const halfWidth = Math.floor(canvas.width / 2)
+  const halfHeight = Math.floor(canvas.height / 2)
   ctx.beginPath()
-  ctx.moveTo(0, canvas.height / 2)
-  for(let i = 0; i < bufferLength; i++) {
-    const height = canvas.height / 2 * data[i] / 256
-    ctx.lineTo((width * i), canvas.height / 2 - 1 - height * scale)
+  for(let horizontal = 1; horizontal > -2; horizontal -= 2) {
+    for(let vertical = 1; vertical > -2; vertical -= 2) {
+      ctx.moveTo(halfWidth, halfHeight)
+      for(let i = 0; i < bufferLength; i++) {
+        const height = (halfHeight * data[i] / 256) * vertical
+        ctx.lineTo(halfWidth + (width / 2 * i) * horizontal, halfHeight - height * scale)
+      }
+    }
   }
-  ctx.lineTo(canvas.width, canvas.height / 2)
-  ctx.fill()
-  // if I were really fancy I'd continue it backwards...
-  ctx.beginPath()
-  ctx.moveTo(0, canvas.height / 2)
-  for(let i = 0; i < bufferLength; i++) {
-    const height = -(canvas.height / 2 * data[i] / 256)
-    ctx.lineTo((width * i), canvas.height / 2 - 1 - height * scale)
-  }
-  ctx.lineTo(canvas.width, canvas.height / 2)
   ctx.fill()
 }
 module.exports = {
   init({analyser}) {
-    analyser.fftSize = 256
+    analyser.fftSize = 128
     bufferLength = analyser.frequencyBinCount
     data = new Uint8Array(bufferLength)
   },
@@ -39,7 +37,6 @@ module.exports = {
     ctx.globalCompositeOperation = 'source-over'
     ctx.fillStyle = 'hsl(' + timestamp / 60 + ',100%,50%)'
     spectrum(canvas, ctx, scaledWidth, 1)
-    // ctx.fillStyle = '#2d2d2d'
     ctx.fillStyle = '#000'
     spectrum(canvas, ctx, scaledWidth, 0.6)
   }

@@ -1,11 +1,10 @@
 const electronSettings = require('electron-settings')
 
-const vRoot = global.appRoot + '/src/view/visualizer/'
-const visualizers = {
-  spectrum: require(vRoot + 'spectrum'),
-  oscilliscope: require(vRoot + 'oscilliscope'),
-  caaz: require(vRoot + 'caaz')
-}
+// Remember to add visualizers to views/player.pug
+const visualizers = {}
+const whitelist = ['spectrum', 'oscilliscope', 'caaz', 'twister']
+for(const i in whitelist) visualizers[whitelist[i]] = require(global.appRoot + '/src/view/visualizer/' + whitelist[i])
+
 let analyser
 let selected
 const canvas = document.createElement('canvas')
