@@ -1,16 +1,20 @@
 let bufferLength
 let data
+let ctx
+let canvas
 module.exports = {
-  init({analyser, ctx, canvas}) {
-    analyser.fftSize = 2048
-    bufferLength = analyser.frequencyBinCount
+  init(initialize) {
+    initialize.analyser.fftSize = 2048
+    bufferLength = initialize.analyser.frequencyBinCount
     data = new Uint8Array(bufferLength)
+    canvas = initialize.canvas
+    ctx = canvas.getContext('2d')
     ctx.clearRect(0, 0, canvas.width, canvas.height)
   },
-  draw(timestamp, {analyser, canvas, audio, ctx}) {
+  draw(timestamp, {analyser, audio}) {
     analyser.getByteTimeDomainData(data)
     // ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.lineWidth = 1 + canvas.height/500
+    ctx.lineWidth = 1 + canvas.height / 500
     ctx.drawImage(canvas, 0, -2, canvas.width, canvas.height - 2)
     // ctx.drawImage(canvas, 0, 2, canvas.width, canvas.height + 4)
     // ctx.globalCompositeOperation = 'multiply'

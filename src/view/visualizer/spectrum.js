@@ -1,12 +1,17 @@
 let bufferLength
 let data
+let canvas
+let ctx
 module.exports = {
-  init({analyser}) {
-    analyser.fftSize = 256
-    bufferLength = analyser.frequencyBinCount
+  init(initialize) {
+    initialize.analyser.fftSize = 256
+    bufferLength = initialize.analyser.frequencyBinCount
     data = new Uint8Array(bufferLength)
+    canvas = initialize.canvas
+    ctx = canvas.getContext('2d')
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
   },
-  draw(timestamp, {analyser, canvas, ctx}) {
+  draw(timestamp, {analyser}) {
     analyser.getByteFrequencyData(data)
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     const width = parseInt(bufferLength * 5 / 6, 10)

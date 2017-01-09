@@ -1,6 +1,6 @@
 let bufferLength
 let data
-
+let canvas
 let ctx
 let amplitude
 let sliceWidth
@@ -15,12 +15,15 @@ function drawOsc() {
   ctx.stroke()
 }
 module.exports = {
-  init({analyser}) {
-    analyser.fftSize = 2048
-    bufferLength = analyser.frequencyBinCount
+  init(initialize) {
+    initialize.analyser.fftSize = 2048
+    bufferLength = initialize.analyser.frequencyBinCount
     data = new Uint8Array(bufferLength)
+    canvas = initialize.canvas
+    ctx = canvas.getContext('2d')
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
   },
-  draw(timestamp, {analyser, canvas, audio}) {
+  draw(timestamp, {analyser, audio}) {
     const halfWidth = Math.floor(canvas.width / 2)
     const halfHeight = Math.floor(canvas.height / 2)
     ctx = canvas.getContext('2d')
