@@ -2,27 +2,30 @@ const electronSettings = require('electron-settings')
 
 // Remember to add visualizers to views/player.pug
 const visualizers = {}
-const whitelist = ['spectrum', 'oscilliscope', 'caaz', 'twister']
+const whitelist = ['spectrum', 'oscilliscope', 'caaz', 'twister', 'three']
 for(const i in whitelist) visualizers[whitelist[i]] = require(global.appRoot + '/src/view/visualizer/' + whitelist[i])
 
 let analyser
 let selected
-const canvas = document.createElement('canvas')
-const ctx = canvas.getContext('2d')
+let canvas
+// const ctx = canvas.getContext('2d')
 function select(vis) {
   selected = vis
   console.log('Selected visualizer: ' + selected)
-  if(visualizers[selected].init) visualizers[selected].init({analyser, ctx, canvas})
+  const canvases = document.getElementsByTagName('canvas')
+  for(let i = canvases.length - 1; i >= 0; i--) canvases[i].parentNode.removeChild(canvases[i])
+  canvas = document.createElement('canvas')
+  document.body.appendChild(canvas)
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
+  console.log(canvas)
+  if(visualizers[selected].init) visualizers[selected].init({analyser, canvas})
 }
 electronSettings.observe('visualizer.selected', e => {
   select(e.newValue)
 })
-
 document.addEventListener('DOMContentLoaded', () => {
   const audio = document.getElementsByTagName('AUDIO')[0]
-  document.body.appendChild(canvas)
-  canvas.width = window.innerWidth
-  canvas.height = window.innerHeight
   document.body.setAttribute('onresize', 'windowUpdate()')
   window.windowUpdate = () => {
     canvas.width = window.innerWidth
@@ -34,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
   source.connect(analyser)
   analyser.connect(audioCtx.destination)
   function draw(timestamp) {
-    visualizers[selected].draw(timestamp, {canvas, ctx, audio, analyser})
+    visualizers[selected].draw(timestamp, {audio, analyser})
     requestAnimationFrame(draw)
   }
   select(electronSettings.getSync('visualizer.selected'))

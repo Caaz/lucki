@@ -13,7 +13,9 @@ module.exports = {
       fullscreenable: true,
       autoHideMenuBar: true,
       show: electronSettings.getSync('visualizer.openOnLaunch'),
-      icon: 'assets/icon.png'
+      icon: 'assets/icon.png',
+      webgl: true,
+      experimentalCanvasFeatures: true
     })
     const position = electronSettings.getSync('visualizer.position')
     const bounds = electronSettings.getSync('visualizer.bounds')
