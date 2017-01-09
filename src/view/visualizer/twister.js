@@ -21,7 +21,6 @@ module.exports = {
     data = new Uint8Array(bufferLength)
   },
   draw(timestamp, {analyser, canvas, audio}) {
-
     const halfWidth = Math.floor(canvas.width / 2)
     const halfHeight = Math.floor(canvas.height / 2)
     ctx = canvas.getContext('2d')

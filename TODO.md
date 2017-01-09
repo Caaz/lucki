@@ -51,6 +51,7 @@
   - [x] Modulate each visualizer to separate files
   - [ ] Per-visual settings (context menu)
   - [ ] Read in colors from user theme
+  - [ ] Ability to cast via chromecast
 - *Misc*
   - [ ] Add an Equalizer
   - [ ] Save window dimensions

@@ -10,7 +10,9 @@ function spectrum(canvas, ctx, width, scale) {
     for(let vertical = 1; vertical > -2; vertical -= 2) {
       ctx.moveTo(halfWidth, halfHeight)
       for(let i = 0; i < bufferLength; i++) {
-        const height = (halfHeight * data[i] / 256) * vertical
+        let rawHeight = data[i] / 256
+        rawHeight = Math.pow(rawHeight, 5)
+        const height = (halfHeight * rawHeight) * vertical
         ctx.lineTo(halfWidth + (width / 2 * i) * horizontal, halfHeight - height * scale)
       }
     }
@@ -19,14 +21,14 @@ function spectrum(canvas, ctx, width, scale) {
 }
 module.exports = {
   init({analyser}) {
-    analyser.fftSize = 128
+    analyser.fftSize = 512
     bufferLength = analyser.frequencyBinCount
     data = new Uint8Array(bufferLength)
   },
   draw(timestamp, {analyser, canvas, ctx}) {
     analyser.getByteFrequencyData(data)
     // draw previous frame
-    ctx.drawImage(canvas, 0, -10, canvas.width, canvas.height + 20)
+    ctx.drawImage(canvas, -10, 0, canvas.width + 20, canvas.height)
     // darken it
     ctx.globalCompositeOperation = 'multiply'
     ctx.fillStyle = '#EEE'
