@@ -1,17 +1,18 @@
 let bufferLength
 let data
 module.exports = {
-  init({analyser}) {
+  init({analyser, ctx, canvas}) {
     analyser.fftSize = 2048
     bufferLength = analyser.frequencyBinCount
     data = new Uint8Array(bufferLength)
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
   },
   draw(timestamp, {analyser, canvas, audio, ctx}) {
     analyser.getByteTimeDomainData(data)
     // ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.lineWidth = 3
+    ctx.lineWidth = 1 + canvas.height/500
     ctx.drawImage(canvas, 0, -2, canvas.width, canvas.height - 2)
-    // ctx.drawImage(canvas, 0, 1, canvas.width, canvas.height + 1)
+    // ctx.drawImage(canvas, 0, 2, canvas.width, canvas.height + 4)
     // ctx.globalCompositeOperation = 'multiply'
     ctx.fillStyle = 'rgba(45,45,45,0.025)'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -40,8 +41,8 @@ module.exports = {
     // ctx.lineTo(canvas.width, 0)
     // ctx.stroke()
     ctx.restore()
-    ctx.translate(canvas.width / 2, canvas.height / 2)
-    ctx.rotate(Math.PI / Math.pow(1440, 2))
-    ctx.translate(-canvas.width / 2, -canvas.height / 2)
+    // ctx.translate(canvas.width / 2, canvas.height / 2)
+    // ctx.rotate((Math.PI / (180.0 * Math.pow(2.0, 5))) * Math.cos(timestamp / 1440 - Math.PI * 3 / 32))
+    // ctx.translate(-canvas.width / 2, -canvas.height / 2)
   }
 }

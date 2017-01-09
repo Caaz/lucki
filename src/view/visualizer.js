@@ -7,10 +7,12 @@ for(const i in whitelist) visualizers[whitelist[i]] = require(global.appRoot + '
 
 let analyser
 let selected
+const canvas = document.createElement('canvas')
+const ctx = canvas.getContext('2d')
 function select(vis) {
   selected = vis
   console.log('Selected visualizer: ' + selected)
-  if(visualizers[selected].init) visualizers[selected].init({analyser})
+  if(visualizers[selected].init) visualizers[selected].init({analyser, ctx, canvas})
 }
 electronSettings.observe('visualizer.selected', e => {
   select(e.newValue)
@@ -18,7 +20,6 @@ electronSettings.observe('visualizer.selected', e => {
 
 document.addEventListener('DOMContentLoaded', () => {
   const audio = document.getElementsByTagName('AUDIO')[0]
-  const canvas = document.createElement('canvas')
   document.body.appendChild(canvas)
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
@@ -27,7 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
   }
-  const ctx = canvas.getContext('2d')
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
   analyser = audioCtx.createAnalyser()
   const source = audioCtx.createMediaElementSource(audio)
