@@ -87,6 +87,12 @@ ipcRenderer.on('toggle', (e, a) => {
   }
 })
 
+ipcRenderer.on('del', (e, track) => {
+  if(track.length > 0) {
+    ipcRenderer.sendSync('library', ['del', track])
+  }
+})
+
 ipcRenderer.on('info', (e, track) => {
   if(state.track.location === track.location) {
     if(track.image) track.image.data = track.image.data.toString('base64')

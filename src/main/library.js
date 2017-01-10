@@ -27,9 +27,25 @@ ipcMain.on('library', (event, args) => {
     case 'update':
       update(output)
       break
-    default: console.out('Unexpected library command: ' + command)
+    case 'del':
+      if(library[args[0]]) del(library[args[0]].location)
+      break
+    default: console.log('Unexpected library command: ' + command)
   }
 })
+function del(track) {
+  if(fs.existsSync(track)) console.log('track exists')
+  fs.exists(track, function (exists) {
+    if(exists) {
+      console.log('File exists. Deleting now ...')
+      console.log(track)
+      fs.unlinkSync(track)
+    } else {
+      console.log('File not found, so not deleting.')
+    }
+  })  
+  return true
+}
 function get(out) {
   if(library) out.send('library', library)
   else load(out)

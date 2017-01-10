@@ -29,13 +29,13 @@ module.exports = {
     // (-0.5 * Math.pow(audio.volume, 1 / 3) + 1)
     // (Math.log((1 - audio.volume) * (Math.E - 1) + 2))
 
-    const amplitude = (canvas.height / 5) * (Math.log((1 - audio.volume) * (Math.E - 1) + 2))
+    const amplitude = (canvas.height * 2 / 5) * (Math.log((1 - audio.volume) * (Math.E - 1) + 2))
     for(let i = 0; i < bufferLength; i++) {
       const y1 = data[i] / 128.0 * amplitude - amplitude
       const y2 = data[i + 1] / 128.0 * amplitude - amplitude
       ctx.beginPath()
       // ctx.strokeStyle = 'hsl(' + (360 * (i / bufferLength)) + ', 100%, ' + (50 + (y1 < 0 ? 1 : -1) * 50 * Math.pow(Math.abs(y1 / amplitude), 1 / 1)) + '%)'
-      ctx.strokeStyle = 'hsl(150, 100%, ' + (50 + (y1 < 0 ? 1 : -1) * 50 * Math.pow(Math.abs(y1 / amplitude), 1 / 2)) + '%)'
+      ctx.strokeStyle = 'hsl(150, 100%, ' + (50 + (y1 < 0 ? 1 : -1) * 50 * Math.pow(Math.abs(y1 / amplitude), 1 / 3)) + '%)'
       ctx.moveTo(x, y1)
       x += sliceWidth
       ctx.lineTo(x, y2)

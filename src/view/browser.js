@@ -70,10 +70,12 @@ ipcRenderer.on('player-state', (event, state) => {
   }
   $('.fa-play, .fa-pause').toggleClass('fa-play', state.paused).toggleClass('fa-pause', !state.paused)
 })
+
 ipcRenderer.on('next', next)
 ipcRenderer.on('previous', next)
 ipcRenderer.on('playToggle', playToggle)
 ipcRenderer.on('stop', stop)
+ipcRenderer.on('del', del)
 ipcRenderer.on('open-settings', () => {
   const mySettings = settings.getSync()
   $('#settings-library-directory').val(mySettings.library.directory)
@@ -82,6 +84,13 @@ ipcRenderer.on('open-settings', () => {
   $('#settings-modal').modal('show')
 })
 
+function del(obj) {
+  let key
+  if(typeof obj === 'string') key = obj
+  else if(obj.jquery) key = obj[0].dataset.libraryKey
+  else if(obj.dataset) key = obj.dataset.libraryKey
+  if(key) ipcRenderer.send('player', ['del', key])
+}
 function stop() {
   // This should do something else, but for now simply always pausing is fine.
   if(!playerState.paused) ipcRenderer.send('player', ['toggle', 'play'])
@@ -200,6 +209,7 @@ $(() => {
       else if(e.key === 'ArrowDown') select($('.selected').next())
       else if(e.key === ' ') playToggle()
       else if(e.key === 'Enter') play($('.selected'))
+      else if(e.key === 'Delete' && e.ctrlKey && e.shiftKey) del($('.selected'))
       else prevent = false
       if(prevent) e.preventDefault()
     }
