@@ -55,7 +55,7 @@ electronSettings.observe('visualizer.selected', e => {
 })
 
 $(() => {
-  const audio = $('audio')[0]
+  audio = $('audio')[0]
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
   analyser = audioCtx.createAnalyser()
   const source = audioCtx.createMediaElementSource(audio)
