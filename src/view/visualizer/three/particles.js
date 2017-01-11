@@ -1,6 +1,5 @@
 const THREE = window.THREE = require('three')
 const TWEEN = require('tween.js')
-const detector = require('three/examples/js/Detector')
 require('three/examples/js/GPUParticleSystem')
 
 const particleLife = 100
@@ -31,14 +30,13 @@ function initParticle(p, d, o) {
 }
 module.exports = {
   title: 'Shitty Particle System',
+  gl: true,
   init({canvas, analyser}) {
     // Analyser shit
     analyser.fftSize = 64
     bufferLength = analyser.frequencyBinCount
     data = new Uint8Array(bufferLength)
 
-    if(detector.webgl) console.log('We\'ve got webgl')
-    else console.log('No webgl here!')
     camera = new THREE.PerspectiveCamera(28, window.innerWidth / window.innerHeight, 1, 10000)
     camera.position.y = 1000
     scene = new THREE.Scene()

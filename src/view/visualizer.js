@@ -1,6 +1,8 @@
 const whitelist = require(global.appRoot + '/src/view/visualizer/whitelist.json')
 const electronSettings = require('electron-settings')
+const detector = require('three/examples/js/Detector')
 const $ = require('jquery')
+const {sprintf} = require('sprintf-js')
 
 const visualizers = {}
 for(const i in whitelist) visualizers[whitelist[i]] = require(global.appRoot + '/src/view/visualizer/' + whitelist[i])
@@ -10,7 +12,7 @@ let analyser
 let selected
 
 function select(vis) {
-  const selectText = 'Selected visualizer: ' + selected
+  const selectText = 'Selected visualizer: ' + vis
   console.time(selectText)
   try {
     if(selected !== null && visualizers[selected] && visualizers[selected].destroy) visualizers[selected].destroy()
@@ -68,11 +70,13 @@ $(() => {
       maximize($('canvas')[0])
     }, 100)
   })
+  const hasWebGL = detector.webgl
   const $dropdown = $('#settings-visualizer-selected')
   $.each(visualizers, (k, v) => {
     let title = k
     title = (v.title) ? v.title : title[0].toUpperCase() + title.substring(1)
-    $dropdown.append('<option value=\'' + k + '\'>' + title + '</option>')
+    if(hasWebGL || !v.gl) $dropdown.append(sprintf('<option value="%s">%s</option>', k, title))
+    else console.warn(sprintf('Visualizer %s (%s) requires WebGL. Check failed.', k, title))
   })
   select(electronSettings.getSync('visualizer.selected'))
   requestAnimationFrame(draw)
