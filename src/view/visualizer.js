@@ -1,53 +1,79 @@
+const whitelist = require(global.appRoot + '/src/view/visualizer/whitelist.json')
 const electronSettings = require('electron-settings')
+const $ = require('jquery')
 
-// Remember to add visualizers to views/player.pug
-// I should just do it automagically.
 const visualizers = {}
-const whitelist = [
-  'spectrum',
-  'oscilliscope',
-  'caaz',
-  'twister',
-  'three',
-  'particles'
-]
 for(const i in whitelist) visualizers[whitelist[i]] = require(global.appRoot + '/src/view/visualizer/' + whitelist[i])
 
+let audio
 let analyser
 let selected
-let canvas
-// const ctx = canvas.getContext('2d')
+
 function select(vis) {
+  const selectText = 'Selected visualizer: ' + selected
+  console.time(selectText)
+  try {
+    if(selected !== null && visualizers[selected] && visualizers[selected].destroy) visualizers[selected].destroy()
+  } catch(err) {
+    console.error('Visualizer destroy error: ' + err)
+  }
+  if(!visualizers[vis]) {
+    console.error('INVALID VISUALIZER', 'The visualizer selected (' + vis + ') was not on the whitelist. Stopped selecting.')
+    return false
+  }
   selected = vis
-  console.log('Selected visualizer: ' + selected)
-  const canvases = document.getElementsByTagName('canvas')
-  for(let i = canvases.length - 1; i >= 0; i--) canvases[i].parentNode.removeChild(canvases[i])
-  canvas = document.createElement('canvas')
-  document.body.appendChild(canvas)
-  canvas.width = window.innerWidth
-  canvas.height = window.innerHeight
-  console.log(canvas)
-  if(visualizers[selected].init) visualizers[selected].init({analyser, canvas})
+  $('canvas').remove()
+  const $canvas = $('<canvas>')
+  $('body').append($canvas)
+  maximize($('canvas')[0])
+  try {
+    if(visualizers[selected].init) visualizers[selected].init({analyser, canvas: $canvas[0]})
+  } catch(err) {
+    console.error('Visualizer init error: ' + err)
+  }
+  console.timeEnd(selectText)
 }
+function draw(timestamp) {
+  try {
+    visualizers[selected].draw(timestamp, {audio, analyser})
+  } catch(err) {
+    console.error('Visualizer draw error: ' + err)
+    setTimeout(() => {
+      requestAnimationFrame(draw)
+    }, 5000)
+    return false
+  }
+  requestAnimationFrame(draw)
+}
+function maximize(element) {
+  element.height = window.innerHeight
+  element.width = window.innerWidth
+}
+// Listeners
 electronSettings.observe('visualizer.selected', e => {
   select(e.newValue)
 })
-document.addEventListener('DOMContentLoaded', () => {
-  const audio = document.getElementsByTagName('AUDIO')[0]
-  document.body.setAttribute('onresize', 'windowUpdate()')
-  window.windowUpdate = () => {
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
-  }
+
+$(() => {
+  const audio = $('audio')[0]
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
   analyser = audioCtx.createAnalyser()
   const source = audioCtx.createMediaElementSource(audio)
-  source.connect(analyser)
   analyser.connect(audioCtx.destination)
-  function draw(timestamp) {
-    visualizers[selected].draw(timestamp, {audio, analyser})
-    requestAnimationFrame(draw)
-  }
+  source.connect(analyser)
+  let resizeDelayID
+  $(window).resize(() => {
+    if(resizeDelayID !== null) clearTimeout(resizeDelayID)
+    resizeDelayID = setTimeout(() => {
+      maximize($('canvas')[0])
+    }, 100)
+  })
+  const $dropdown = $('#settings-visualizer-selected')
+  $.each(visualizers, (k, v) => {
+    let title = k
+    title = (v.title) ? v.title : title[0].toUpperCase() + title.substring(1)
+    $dropdown.append('<option value=\'' + k + '\'>' + title + '</option>')
+  })
   select(electronSettings.getSync('visualizer.selected'))
   requestAnimationFrame(draw)
 })
