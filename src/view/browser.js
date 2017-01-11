@@ -89,7 +89,10 @@ function del(obj) {
   if(typeof obj === 'string') key = obj
   else if(obj.jquery) key = obj[0].dataset.libraryKey
   else if(obj.dataset) key = obj.dataset.libraryKey
-  if(key) ipcRenderer.send('player', ['del', key])
+  if(key) {
+    ipcRenderer.send('library', ['del', key])
+    $('[data-library-key=' + key + ']').remove()
+  }
 }
 function stop() {
   // This should do something else, but for now simply always pausing is fine.

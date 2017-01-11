@@ -87,11 +87,11 @@ ipcRenderer.on('toggle', (e, a) => {
   }
 })
 
-ipcRenderer.on('del', (e, track) => {
-  if(track.length > 0) {
-    ipcRenderer.sendSync('library', ['del', track])
-  }
-})
+// ipcRenderer.on('del', (e, track) => {
+//   if(track.length > 0) {
+//     ipcRenderer.sendSync('library', ['del', track])
+//   }
+// })
 
 ipcRenderer.on('info', (e, track) => {
   if(state.track.location === track.location) {
