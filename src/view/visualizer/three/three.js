@@ -11,6 +11,7 @@ let material
 let mesh
 
 module.exports = {
+  title: 'ThreeJS test cube',
   init({canvas}) {
     if(detector.webgl) console.log('We\'ve got webgl')
     else console.log('No webgl here!')

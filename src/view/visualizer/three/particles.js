@@ -30,6 +30,7 @@ function initParticle(p, d, o) {
     .start()
 }
 module.exports = {
+  title: 'Shitty Particle System',
   init({canvas, analyser}) {
     // Analyser shit
     analyser.fftSize = 64
