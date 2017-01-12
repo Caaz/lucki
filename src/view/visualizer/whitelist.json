@@ -6,5 +6,6 @@
   "three/three",
   "three/gpu-particles",
   "three/hobo-stove",
-  "three/blackhole"
+  "three/blackhole",
+  "three/3d-spectrum"
 ]

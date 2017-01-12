@@ -1,5 +1,4 @@
 const THREE = window.THREE = require('three')
-// const dat = require('three/examples/js/libs/dat.gui.min')
 require('three/examples/js/GPUParticleSystem')
 
 // Visualizer stuff
@@ -9,19 +8,19 @@ let data
 let camera
 let scene
 let renderer
-// let ui
 // Particle Options
 let clock
-// let options
 let spawnerOptions
 let particleSystem
 const trend = []
-// const lights = []
+const speeds = []
+
 module.exports = {
   title: 'Black Hole',
   gl: true,
   init({canvas, analyser}) {
     for(let i = 0; i < 10; i++) trend.push(0)
+    for(let i = 0; i < 10; i++) speeds.push(0)
     analyser.fftSize = 64
     bufferLength = analyser.frequencyBinCount
     data = new Uint8Array(bufferLength)
@@ -41,10 +40,6 @@ module.exports = {
       spawnRate: 10000,
       timeScale: 1
     }
-    // lights.push(new THREE.PointLight(0x2200aa, 1, 6))
-    // lights.push(new THREE.PointLight(0x2200aa, 1, 6))
-    // scene.add(lights[0])
-    // scene.add(lights[1])
     const sphere = new THREE.Mesh(
       new THREE.SphereGeometry(1, 20, 10),
       new THREE.MeshToonMaterial({
@@ -52,9 +47,7 @@ module.exports = {
         shininess: 1,
         specular: 0xffffff,
         reflectivity: 1
-        // wireframe: true
       }))
-    // sphere.set()
     sphere.position.set(0, 0, 0)
 
     scene.add(particleSystem)
@@ -108,7 +101,16 @@ module.exports = {
       }
       options.velocity.y = 0
       options.color = 0x2200aa
-      const speed = smoothed / 256 + -timestamp / 200
+      // Smooth Speed!
+      let speed = smoothed / 256 * -timestamp / 200
+      speeds.pop()
+      speeds.unshift(speed)
+      speed = 0
+      speeds.forEach(v => {
+        speed += v
+      })
+      speed /= speeds.length
+      //
       for(let i = 1; i < bufferLength; i++) {
         const strength = Math.pow(data[i] / 256, 2)
         options.lifetime = strength * 2
