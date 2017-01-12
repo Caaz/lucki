@@ -4,6 +4,6 @@
   "caaz",
   "twister",
   "three/three",
-  "three/particles",
-  "three/gpu-particles"
+  "three/gpu-particles",
+  "three/hobo-stove"
 ]

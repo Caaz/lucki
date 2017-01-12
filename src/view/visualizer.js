@@ -50,6 +50,11 @@ function draw(timestamp) {
 function maximize(element) {
   element.height = window.innerHeight
   element.width = window.innerWidth
+  try {
+    if(selected !== null && visualizers[selected] && visualizers[selected].resize) visualizers[selected].resize()
+  } catch(err) {
+    console.error('Visualizer resize error: ' + err)
+  }
 }
 // Listeners
 electronSettings.observe('visualizer.selected', e => {
