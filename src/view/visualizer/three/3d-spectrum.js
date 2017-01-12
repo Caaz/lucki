@@ -57,6 +57,9 @@ module.exports = {
     renderer = {}
   },
   draw(timestamp, {analyser}) {
+    camera.position.x = Math.cos(timestamp / 2000) * 50
+    camera.position.z = Math.sin(timestamp / 2000) * 50
+    camera.lookAt(scene.position)
     analyser.getByteFrequencyData(data)
     for(let i = 0; i < bufferLength; i++) {
       const strength = Math.pow(data[i] / 256, 2)
