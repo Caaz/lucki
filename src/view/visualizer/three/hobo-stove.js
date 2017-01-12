@@ -59,7 +59,7 @@ module.exports = {
           velocity: new THREE.Vector3(0, data[i] / 256, 0),
           velocityRandomness: 0,
           lifetime: 2,
-          size: 5,
+          size: 30,
           color: 0xffffff,
           colorRandomness: 0.2
         }
@@ -69,13 +69,13 @@ module.exports = {
           particleSystem.spawnParticle(options)
         }
         options.color = 0xff9900
-        options.size = 15
+        // options.size = 15
         options.positionRandomness = 1
         for (let x = 0; x < spawnerOptions.spawnRate * delta * (data[i] / 256 / 1.5) / 2; x++) {
           particleSystem.spawnParticle(options)
         }
         options.color = 0xAA0000
-        options.size = 20
+        // options.size = 20
         options.positionRandomness = 1.2
         options.velocity = new THREE.Vector3(0, data[i] / 256 / 2, 0)
         for (let x = 0; x < spawnerOptions.spawnRate * delta * (data[i] / 256); x++) {
