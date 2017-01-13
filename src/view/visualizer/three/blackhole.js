@@ -32,13 +32,13 @@ module.exports = {
     scene = new THREE.Scene()
     const textureLoader = new THREE.TextureLoader()
     particleSystem = new THREE.GPUParticleSystem({
-      maxParticles: 250000,
+      maxParticles: 500000,
       particleNoiseTex: textureLoader.load('../assets/visualizer/perlin-neutral.png'),
       particleSpriteTex: textureLoader.load('../assets/visualizer/particle.png')
     })
     spawnerOptions = {
-      spawnRate: 10000,
-      timeScale: 1
+      spawnRate: 5000,
+      timeScale: 3
     }
     const sphere = new THREE.Mesh(
       new THREE.SphereGeometry(1, 20, 10),
@@ -93,16 +93,16 @@ module.exports = {
         velocity: new THREE.Vector3(0, smoothed * ((Math.random() > 0.5) ? -1 : 1), 0),
         // positionRandomness: 0,
         velocityRandomness: 0.2,
-        size: 5,
+        size: 15,
         colorRandomness: 0.4
       }
-      for (let x = 0; x < spawnerOptions.spawnRate * delta * (smoothed / 256) / 2; x++) {
+      for (let x = 0; x < spawnerOptions.spawnRate * delta * (smoothed / 256) / 5; x++) {
         particleSystem.spawnParticle(options)
       }
       options.velocity.y = 0
       options.color = 0x2200aa
       // Smooth Speed!
-      let speed = smoothed / 256 * -timestamp / 200
+      let speed = smoothed / 256 * -timestamp / 400
       speeds.pop()
       speeds.unshift(speed)
       speed = 0
@@ -111,9 +111,9 @@ module.exports = {
       })
       speed /= speeds.length
       //
-      for(let i = 1; i < bufferLength; i++) {
+      for(let i = 0; i < bufferLength; i++) {
         const strength = Math.pow(data[i] / 256, 2)
-        options.lifetime = strength * 2
+        options.lifetime = strength * 5
         for(let j = 0; j < 2; j++) {
           options.position.x = Math.cos(speed + (i / bufferLength * Math.PI) + (Math.PI * j))
           options.position.z = Math.sin(speed + (i / bufferLength * Math.PI) + (Math.PI * j))
