@@ -11,6 +11,8 @@ let camera
 let scene
 let renderer
 let particleSystem
+let tick = 0
+// const rate = 2
 // let effect
 
 module.exports = {
@@ -53,19 +55,24 @@ module.exports = {
     camera.lookAt(scene.position)
 
     analyser.getByteFrequencyData(data)
-    // const ghost = data
-    const delta = clock.getDelta()
-    const tick = timestamp / 100
+    let total = 0
+    for(let i = 0; i < bufferLength; i++) total += data[0]
+
+    const rate = Math.pow((total / bufferLength) / 255, 5)
+    const delta = clock.getDelta() * rate
+    tick += delta
+    if(tick < 0) tick = 0
+
     if(delta > 0) {
       const options = {
         position: new THREE.Vector3(),
-        velocity: new THREE.Vector3(),
-        positionRandomness: 1,
-        velocityRandomness: 0.001,
-        size: 10,
-        colorRandomness: 0.5,
+        velocity: new THREE.Vector3(0, 0, 10),
+        positionRandomness: 0,
+        velocityRandomness: 0,
+        size: 5,
+        colorRandomness: 0.1,
         sizeRandomness: 1,
-        lifetime: 50,
+        lifetime: 10,
         color: 0xffffff
       }
       for(let i = 0; i < bufferLength; i++) {
@@ -73,15 +80,10 @@ module.exports = {
           i - (bufferLength / 2),
           (data[i] / 256 * bufferLength / 2),
           -bufferLength)
-        options.velocity.z = 0.5
         options.color = getHex(color({h: (i / bufferLength * 360), s: 100, l: 50}))
-        for (let x = 0; x < 1000 * delta * data[i] / 256; x++) {
-          particleSystem.spawnParticle(options)
-        }
+        for (let x = 0; x < 1000 * delta * data[i] / 256; x++) particleSystem.spawnParticle(options)
         options.position.y = 0
-        for (let x = 0; x < 100 * delta; x++) {
-          particleSystem.spawnParticle(options)
-        }
+        for (let x = 0; x < 100 * delta; x++) particleSystem.spawnParticle(options)
       }
     }
     particleSystem.update(tick)
