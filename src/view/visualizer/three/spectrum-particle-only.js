@@ -27,7 +27,7 @@ module.exports = {
     clock = new THREE.Clock(true)
     data = new Uint8Array(bufferLength)
 
-    // scene.add(new THREE.GridHelper(100))
+    scene.add(new THREE.GridHelper(bufferLength))
 
     const textureLoader = new THREE.TextureLoader()
     particleSystem = new THREE.GPUParticleSystem({
@@ -58,7 +58,7 @@ module.exports = {
     let total = 0
     for(let i = 0; i < bufferLength; i++) total += data[0]
 
-    const rate = Math.pow((total / bufferLength) / 255, 5)
+    const rate = Math.pow((total / bufferLength) / 255, 2) * 2
     const delta = clock.getDelta() * rate
     tick += delta
     if(tick < 0) tick = 0
@@ -66,13 +66,13 @@ module.exports = {
     if(delta > 0) {
       const options = {
         position: new THREE.Vector3(),
-        velocity: new THREE.Vector3(0, 0, 10),
+        velocity: new THREE.Vector3(0, 0, -bufferLength * 2),
         positionRandomness: 0,
         velocityRandomness: 0,
-        size: 5,
+        size: 10,
         colorRandomness: 0.1,
-        sizeRandomness: 1,
-        lifetime: 10,
+        sizeRandomness: 0,
+        lifetime: bufferLength / 2,
         color: 0xffffff
       }
       for(let i = 0; i < bufferLength; i++) {
@@ -81,9 +81,10 @@ module.exports = {
           (data[i] / 256 * bufferLength / 2),
           -bufferLength)
         options.color = getHex(color({h: (i / bufferLength * 360), s: 100, l: 50}))
-        for (let x = 0; x < 1000 * delta * data[i] / 256; x++) particleSystem.spawnParticle(options)
+        for (let x = 0; x < 10 * delta * data[i] / 256; x++) particleSystem.spawnParticle(options)
         options.position.y = 0
-        for (let x = 0; x < 100 * delta; x++) particleSystem.spawnParticle(options)
+        // options.size = 2
+        // for (let x = 0; x < delta; x++) particleSystem.spawnParticle(options)
       }
     }
     particleSystem.update(tick)
