@@ -32,6 +32,7 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "carlin": "git+https://git@github.com/Caaz/carlin.git",
+    "color": "^1.0.3",
     "electron-debug": "^1.0.0",
     "electron-settings": "^2.2.2",
     "font-awesome": "^4.7.0",

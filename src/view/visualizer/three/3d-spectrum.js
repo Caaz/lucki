@@ -1,12 +1,16 @@
 const THREE = window.THREE = require('three')
+const color = require('color')
+require('three/examples/js/GPUParticleSystem')
 // require('three/examples/js/effects/OutlineEffect')
 // Visualizer stuff
 let bufferLength
 let data
 // Three rendering stuff.
+let clock
 let camera
 let scene
 let renderer
+let particleSystem
 // let effect
 
 let bars = []
@@ -14,34 +18,45 @@ let bars = []
 module.exports = {
   gl: true,
   init({analyser, canvas}) {
-    analyser.fftSize = 32
+    analyser.fftSize = 64
     bufferLength = analyser.frequencyBinCount
-    data = new Uint8Array(bufferLength)
     camera = new THREE.PerspectiveCamera(28, window.innerWidth / window.innerHeight, 1, 10000)
-    camera.position.z = -30
-    camera.position.y = 50
-    // console.log(bufferLength)
+    camera.position.y = bufferLength * 3
     scene = new THREE.Scene()
+    clock = new THREE.Clock(true)
+    data = []
     for(let i = 0; i < bufferLength; i++) {
-      const cube = new THREE.Mesh(
-        new THREE.BoxGeometry(1, 1, 1),
-        new THREE.MeshToonMaterial({color: 'rgb(' + hslToRgb(i / bufferLength, 1, 0.5).join(',') + ')'}))
-      cube.position.set(i * 2 - bufferLength, 0, 0)
-      bars.push(cube)
-      scene.add(cube)
+      data.push(new Uint8Array(bufferLength))
+      bars.push([])
+      for(let j = 0; j < bufferLength; j++) {
+        const cube = new THREE.Mesh(
+          new THREE.BoxGeometry(1, 1, 1),
+          new THREE.MeshToonMaterial({color: color({h: (j / bufferLength * 360), s: 100, l: 50}).string()})
+        )
+        cube.position.set(i - bufferLength / 2, 0, j - bufferLength / 2)
+        bars[i].push(cube)
+        scene.add(cube)
+      }
     }
-    scene.add(new THREE.AmbientLight(0x404040))
+    // scene.add(new THREE.AmbientLight(0x404040))
     scene.add(new THREE.HemisphereLight(0xffffbb, 0x080820, 1))
-    const floor = new THREE.Mesh(
-        new THREE.PlaneGeometry(200, 200),
-        new THREE.MeshBasicMaterial({color: 0x2d2d2d, side: THREE.DoubleSide})
-    )
-    floor.rotateX(Math.PI / 2)
-    // floor.ro
-    scene.add(floor)
+    // const floor = new THREE.Mesh(
+    //     new THREE.PlaneGeometry(200, 200),
+    //     new THREE.MeshBasicMaterial({color: 0x000000, side: THREE.DoubleSide})
+    // )
+    // // 0x2d2d2d
+    // floor.rotateX(Math.PI / 2)
+    // floor.position.y = 0.02
+    // scene.add(floor)
 
+    const textureLoader = new THREE.TextureLoader()
+    particleSystem = new THREE.GPUParticleSystem({
+      maxParticles: 100000,
+      particleNoiseTex: textureLoader.load('../assets/visualizer/perlin-neutral.png'),
+      particleSpriteTex: textureLoader.load('../assets/visualizer/particle.png')
+    })
+    scene.add(particleSystem)
     renderer = new THREE.WebGLRenderer({canvas})
-    // effect = new THREE.OutlineEffect(renderer, {defaultThickness: 0.01})
     camera.lookAt(scene.position)
   },
   resize() {
@@ -50,47 +65,57 @@ module.exports = {
     renderer.setSize(window.innerWidth, window.innerHeight)
   },
   destroy() {
-    for(let i = 0; i < bufferLength; i++) bars[i].geometry.dispose()
+    // for(let i = 0; i < bufferLength; i++) bars[i].geometry.dispose()
     bars = []
     camera = {}
     scene = {}
     renderer = {}
   },
   draw(timestamp, {analyser}) {
-    camera.position.x = Math.cos(timestamp / 2000) * 50
-    camera.position.z = Math.sin(timestamp / 2000) * 50
+    camera.position.x = Math.cos(timestamp / 2000) * 2 * bufferLength
+    camera.position.z = Math.sin(timestamp / 2000) * 2 * bufferLength
     camera.lookAt(scene.position)
-    analyser.getByteFrequencyData(data)
+
+    data.unshift(new Uint8Array(bufferLength))
+    const ghost = data.pop()
+    const delta = clock.getDelta()
+    const tick = timestamp / 100
+    if(delta > 0) {
+      const options = {
+        position: new THREE.Vector3(),
+        velocity: new THREE.Vector3(),
+        positionRandomness: 1,
+        velocityRandomness: 0,
+        size: 5,
+        colorRandomness: 0,
+        sizeRandomness: 1,
+        lifetime: 10,
+        color: 0xffffff
+      }
+      for(let i = 0; i < bufferLength; i++) {
+        if(ghost[i] !== 0) {
+          options.position.set(
+            bufferLength / 2 - 1,
+            (ghost[i] / 256 * bufferLength / 2),
+            i - bufferLength / 2)
+          options.velocity.x = 0.5
+          // myColor = color({h: (i / bufferLength * 360), s: 100, l: 50})
+          for (let x = 0; x < 10000 * delta * ghost[i] / 256; x++) {
+            particleSystem.spawnParticle(options)
+          }
+        }
+      }
+    }
+    particleSystem.update(tick)
+
+    analyser.getByteFrequencyData(data[0])
     for(let i = 0; i < bufferLength; i++) {
-      const strength = Math.pow(data[i] / 256, 2)
-      const height = 0.001 + strength * 10
-      bars[i].scale.y = height
-      bars[i].position.y = height / 2
+      for(let j = 0; j < bufferLength; j++) {
+        const height = 0.01 + data[i][j] / 256 * bufferLength / 2
+        bars[i][j].scale.y = height
+        bars[i][j].position.y = height / 2
+      }
     }
     renderer.render(scene, camera)
   }
-}
-
-function hslToRgb(h, s, l) {
-  let r
-  let g
-  let b
-  if(s === 0) r = g = b = l
-  else {
-    const hue2rgb = function hue2rgb(p, q, t) {
-      if(t < 0) t += 1
-      if(t > 1) t -= 1
-      if(t < 1 / 6) return p + (q - p) * 6 * t
-      if(t < 1 / 2) return q
-      if(t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6
-      return p
-    }
-    const q = l < 0.5 ? l * (1 + s) : l + s - l * s
-    const p = 2 * l - q
-    r = hue2rgb(p, q, h + 1 / 3)
-    g = hue2rgb(p, q, h)
-    b = hue2rgb(p, q, h - 1 / 3)
-  }
-
-  return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)]
 }
