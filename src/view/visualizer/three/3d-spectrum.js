@@ -87,7 +87,7 @@ module.exports = {
         positionRandomness: 1,
         velocityRandomness: 0,
         size: 5,
-        colorRandomness: 0,
+        colorRandomness: 0.1,
         sizeRandomness: 1,
         lifetime: 10,
         color: 0xffffff
@@ -99,7 +99,14 @@ module.exports = {
             (ghost[i] / 256 * bufferLength / 2),
             i - bufferLength / 2)
           options.velocity.x = 0.5
-          // myColor = color({h: (i / bufferLength * 360), s: 100, l: 50})
+          options.color = getHex(color({h: (i / bufferLength * 360), s: 100, l: 50}))
+          if(i === 20) {
+            // 20 = 0x003fff
+            // For some reason it's not rendering this color specifically.
+            // console.log(options.color)
+            // options.color = 0xffffff
+            // console.lo
+          }
           for (let x = 0; x < 10000 * delta * ghost[i] / 256; x++) {
             particleSystem.spawnParticle(options)
           }
@@ -118,4 +125,12 @@ module.exports = {
     }
     renderer.render(scene, camera)
   }
+}
+function getHex(inColor) {
+  const val = []
+  val.push(Math.floor(inColor.red()).toString(16))
+  val.push(Math.floor(inColor.green()).toString(16))
+  val.push(Math.floor(inColor.blue()).toString(16))
+  for(let i = 0; i < 3; i++) val[i] = (val[i].length <= 1) ? '0' + val[i] : val[i]
+  return '0x' + val.join('')
 }
