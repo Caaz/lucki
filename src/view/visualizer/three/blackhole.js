@@ -37,7 +37,7 @@ module.exports = {
       particleSpriteTex: textureLoader.load('../assets/visualizer/particle.png')
     })
     spawnerOptions = {
-      spawnRate: 5000,
+      spawnRate: 3000,
       timeScale: 3
     }
     const sphere = new THREE.Mesh(
@@ -74,8 +74,6 @@ module.exports = {
     analyser.getByteFrequencyData(data)
     camera.position.x = Math.cos(-timestamp / 2000) * 20
     camera.position.z = Math.sin(-timestamp / 2000) * 20
-    // camera.position.x = Math.sin(timestamp / 2000) * 20
-    // camera.position.z = Math.sin(1) * 15
     camera.lookAt(scene.position)
 
     const delta = clock.getDelta() * spawnerOptions.timeScale
@@ -91,9 +89,9 @@ module.exports = {
       const options = {
         position: new THREE.Vector3(),
         velocity: new THREE.Vector3(0, smoothed * ((Math.random() > 0.5) ? -1 : 1), 0),
-        // positionRandomness: 0,
-        velocityRandomness: 0.2,
-        size: 15,
+        positionRandomness: 0.2,
+        velocityRandomness: 0.1,
+        size: 10,
         colorRandomness: 0.4
       }
       for (let x = 0; x < spawnerOptions.spawnRate * delta * (smoothed / 256) / 5; x++) {
@@ -113,12 +111,10 @@ module.exports = {
       //
       for(let i = 0; i < bufferLength; i++) {
         const strength = Math.pow(data[i] / 256, 2)
-        options.lifetime = strength * 5
+        // options.lifetime = strength * 5
         for(let j = 0; j < 2; j++) {
-          options.position.x = Math.cos(speed + (i / bufferLength * Math.PI) + (Math.PI * j))
-          options.position.z = Math.sin(speed + (i / bufferLength * Math.PI) + (Math.PI * j))
-          options.velocity.x = Math.cos(speed + (i / bufferLength * Math.PI) + (Math.PI * j))
-          options.velocity.z = Math.sin(speed + (i / bufferLength * Math.PI) + (Math.PI * j))
+          options.velocity.x = Math.cos(speed + (i / bufferLength) * 2 + (Math.PI * j))
+          options.velocity.z = Math.sin(speed + (i / bufferLength) * 2 + (Math.PI * j))
           for (let x = 0; x < spawnerOptions.spawnRate * delta * strength / 2; x++) {
             particleSystem.spawnParticle(options)
           }

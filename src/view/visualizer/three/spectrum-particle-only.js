@@ -33,7 +33,7 @@ module.exports = {
     particleSystem = new THREE.GPUParticleSystem({
       maxParticles: 100000,
       particleNoiseTex: textureLoader.load('../assets/visualizer/perlin-neutral.png'),
-      particleSpriteTex: textureLoader.load('../assets/visualizer/particle.png')
+      particleSpriteTex: textureLoader.load('../assets/visualizer/particle-bold.png')
     })
     scene.add(particleSystem)
     renderer = new THREE.WebGLRenderer({canvas})
@@ -53,12 +53,11 @@ module.exports = {
     camera.position.x = Math.cos(timestamp / 10000) * bufferLength * 3
     camera.position.z = Math.sin(timestamp / 10000) * bufferLength * 3
     camera.lookAt(scene.position)
-
+    const last = Object.assign([], data)
     analyser.getByteFrequencyData(data)
     let total = 0
     for(let i = 0; i < bufferLength; i++) total += data[0]
-
-    const rate = Math.pow((total / bufferLength) / 255, 2) * 2
+    const rate = Math.pow((total / bufferLength) / 255, 2) * 4
     const delta = clock.getDelta() * rate
     tick += delta
     if(tick < 0) tick = 0
@@ -67,11 +66,11 @@ module.exports = {
       const options = {
         position: new THREE.Vector3(),
         velocity: new THREE.Vector3(0, 0, -bufferLength * 2),
-        positionRandomness: 0,
+        positionRandomness: 1,
         velocityRandomness: 0,
-        size: 10,
+        size: 5,
         colorRandomness: 0.1,
-        sizeRandomness: 0,
+        sizeRandomness: 1,
         lifetime: bufferLength / 2,
         color: 0xffffff
       }
@@ -81,8 +80,18 @@ module.exports = {
           (data[i] / 256 * bufferLength / 2),
           -bufferLength)
         options.color = getHex(color({h: (i / bufferLength * 360), s: 100, l: 50}))
-        for (let x = 0; x < 10 * delta * data[i] / 256; x++) particleSystem.spawnParticle(options)
-        options.position.y = 0
+        const jump = Math.abs(last[i] - data[i])
+        options.velocityRandomness = jump / 256 / 4
+        for (let x = 0; x < 200 * delta * data[i] / 256; x++) particleSystem.spawnParticle(options)
+        // console.log(jump)
+        // console.log(last[i] + ' - ' + data[i])
+        if(jump > 20) {
+          options.velocityRandomness = 0.2
+          options.size = 10
+          for (let x = 0; x < 300 * delta * data[i] / 256; x++) particleSystem.spawnParticle(options)
+          options.size = 5
+        }
+        // options.position.y = 0
         // options.size = 2
         // for (let x = 0; x < delta; x++) particleSystem.spawnParticle(options)
       }
