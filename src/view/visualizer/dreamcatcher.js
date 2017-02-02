@@ -3,17 +3,21 @@ let data
 let ctx
 let cv
 let cap
-let max_vols
+let start
 let last_timestamp
+let dots
+let lines_per
 module.exports = {
   init({analyser, canvas}) {
-    analyser.fftSize = 256
+    analyser.fftSize = 512
     bufferLength = analyser.frequencyBinCount
     data = new Uint8Array(bufferLength)
     cv = canvas
     ctx = cv.getContext('2d')
-    ctx.lineWidth=1
-    cap = data.length * 5/9
+    ctx.lineWidth = 1
+    cap = data.length * 5 / 9
+    start = parseInt(cap / 2.5)
+    cap -= start
     lines_per = 5
     last_timestamp = 0
     dots = []
@@ -28,33 +32,30 @@ module.exports = {
     ctx.translate(cv.width / 2, cv.height / 2)
     ctx.rotate(Math.PI * 3 / 2)
     for (let i = 0; i < cap; i++) {
-      if (data[i] > dots[i].max_vol) dots[i].max_vol = data[i]
+      if (data[i + start] > dots[i].max_vol) dots[i].max_vol = data[i + start]
       else if (timestamp - last_timestamp >= 50 && dots[i].max_vol > 1) {
         dots[i].max_vol *= 0.95
         last_timestamp = timestamp
       }
-      dots[i].theta = ((i+1) / (cap)) * Math.PI * 2
+      dots[i].theta = ((i + 1) / (cap)) * Math.PI * 2
       // const minrad = ellipse(theta, cv.width / 2, cv.height / 2)
-      const minrad = Math.min(cv.height,cv.width)/4
+      const minrad = Math.min(cv.height, cv.width) / 4
       const maxrad = ellipse(dots[i].theta, cv.width, cv.height) - minrad
-      dots[i].radius = minrad + (data[i] / 256) * maxrad
+      dots[i].radius = minrad + (data[i+start] / 256) * maxrad
       dots[i].rect()
       dots[i].hue += 1
     }
-
     for (let i = 0; i < cap; i++) {
       for (let j = 1; j < lines_per; j++) {
-        let index = parseInt((j*cap/lines_per + i)%cap)
-        // if (dots[j] === undefined) continue;
-
+        const index = parseInt((j * cap / lines_per + i) % cap, 10)
         ctx.beginPath()
         // ctx.arc(dots[i].x, dots[i].y, 2, 0, 2 * Math.PI)
         ctx.moveTo(dots[i].x, dots[i].y)
         ctx.lineTo(dots[index].x, dots[index].y)
 
-        const grd=ctx.createLinearGradient(dots[i].x, dots[i].y,dots[index].x, dots[index].y);
-        grd.addColorStop(0,'hsl(' + dots[i].hue + ', 100%,50%)');
-        grd.addColorStop(1,'hsl(' + dots[index].hue + ', 100%,50%)');
+        const grd = ctx.createLinearGradient(dots[i].x, dots[i].y, dots[index].x, dots[index].y)
+        grd.addColorStop(0, 'hsl(' + dots[i].hue + ', 100%,50%)')
+        grd.addColorStop(1, 'hsl(' + dots[index].hue + ', 100%,50%)')
 
         ctx.strokeStyle = grd
         // ctx.strokeText(i, dots[i].x, dots[i].y)
@@ -66,7 +67,6 @@ module.exports = {
     ctx.restore()
   }
 }
-
 
 function Dot(hue) {
   this.max_vol = 127
