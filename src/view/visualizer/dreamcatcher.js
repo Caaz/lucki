@@ -9,16 +9,16 @@ let dots
 let lines_per
 module.exports = {
   init({analyser, canvas}) {
-    analyser.fftSize = 512
+    analyser.fftSize = 256
     bufferLength = analyser.frequencyBinCount
     data = new Uint8Array(bufferLength)
     cv = canvas
     ctx = cv.getContext('2d')
     ctx.lineWidth = 1
     cap = data.length * 5 / 9
-    start = parseInt(cap / 2.5)
+    start = 0
     cap -= start
-    lines_per = 5
+    lines_per = 12
     last_timestamp = 0
     dots = []
     for (let i = 0; i < cap; i++) dots.push(new Dot((i / cap) * 360))
@@ -34,16 +34,16 @@ module.exports = {
     for (let i = 0; i < cap; i++) {
       if (data[i + start] > dots[i].max_vol) dots[i].max_vol = data[i + start]
       else if (timestamp - last_timestamp >= 50 && dots[i].max_vol > 1) {
-        dots[i].max_vol *= 0.95
+        dots[i].max_vol *= 0.999
         last_timestamp = timestamp
       }
       dots[i].theta = ((i + 1) / (cap)) * Math.PI * 2
-      // const minrad = ellipse(theta, cv.width / 2, cv.height / 2)
-      const minrad = Math.min(cv.height, cv.width) / 4
+      // const minrad = ellipse(dots[i].theta, cv.width / 2, cv.height / 2)
+      const minrad = Math.min(cv.height, cv.width) / 6
       const maxrad = ellipse(dots[i].theta, cv.width, cv.height) - minrad
-      dots[i].radius = minrad + (data[i+start] / 256) * maxrad
+      dots[i].radius = minrad + (data[i+start] / dots[i].max_vol) * maxrad
       dots[i].rect()
-      dots[i].hue += 1
+      dots[i].hue += 0.25
     }
     for (let i = 0; i < cap; i++) {
       for (let j = 1; j < lines_per; j++) {
