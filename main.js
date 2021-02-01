@@ -18,6 +18,10 @@ settings.defaults({
   player: {
     volume: 0.5
   },
+  library: {
+    subdirectories: true,
+    directory:"/media/caaz/SSD/Music/"
+  },
   visualizer: {
     selected: 'oscilliscope',
     openOnLaunch: false
